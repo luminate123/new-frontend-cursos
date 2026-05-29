@@ -11,6 +11,8 @@ import {
   Loader2,
   MessageSquare,
   Send,
+  ThumbsUp,
+  CornerDownRight,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Progress } from '@/components/ui/progress';
@@ -28,6 +30,26 @@ import {
 import { useAuthStore } from '@/lib/store/auth.store';
 import { toast } from 'sonner';
 import type { Course, Enrollment, Lesson, Section, Comment } from '@/lib/types';
+
+const AVATAR_COLORS = [
+  'bg-blue-600', 'bg-violet-600', 'bg-emerald-600', 'bg-rose-600',
+  'bg-amber-600', 'bg-cyan-600', 'bg-pink-600', 'bg-teal-600',
+];
+
+function avatarColor(name: string): string {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+}
+
+function timeAgo(dateStr: string): string {
+  const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+  if (diff < 60) return 'hace un momento';
+  if (diff < 3600) return `hace ${Math.floor(diff / 60)} min`;
+  if (diff < 86400) return `hace ${Math.floor(diff / 3600)} h`;
+  if (diff < 2592000) return `hace ${Math.floor(diff / 86400)} días`;
+  return `hace ${Math.floor(diff / 2592000)} meses`;
+}
 
 export default function ClassroomPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -277,50 +299,67 @@ export default function ClassroomPage() {
           {/* ── Comments section ───────────────────────────────── */}
           <div className="flex-1 px-6 py-8">
             <div className="mx-auto max-w-screen-xl">
-              <h2 className="mb-6 flex items-center gap-2 text-lg font-bold text-slate-100">
-                <MessageSquare className="h-5 w-5 text-blue-400" />
-                Comentarios
-                {comments.length > 0 && (
-                  <span className="text-sm font-normal text-slate-500">({comments.length})</span>
-                )}
-              </h2>
+
+              {/* Header */}
+              <div className="mb-6 flex items-center justify-between">
+                <h2 className="flex items-center gap-2 text-lg font-bold text-slate-100">
+                  <MessageSquare className="h-5 w-5 text-blue-400" />
+                  Comentarios
+                  {comments.length > 0 && (
+                    <span className="text-sm font-normal text-slate-400">({comments.length})</span>
+                  )}
+                </h2>
+              </div>
 
               {/* Post form — only approved students */}
               {isApproved && (
                 <form onSubmit={handleSubmitComment} className="mb-8">
-                  <div className="flex gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600/20 text-sm font-bold text-blue-400">
-                      {user?.firstName?.[0] ?? '?'}
+                  <div className="flex gap-4">
+                    {/* Current user avatar */}
+                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white ${avatarColor(user?.firstName ?? 'U')}`}>
+                      {user?.firstName?.[0]?.toUpperCase() ?? '?'}
                     </div>
-                    <div className="flex flex-1 flex-col gap-2">
+                    <div className="flex flex-1 flex-col gap-3">
                       <textarea
                         value={commentText}
                         onChange={(e) => setCommentText(e.target.value)}
-                        placeholder="Escribe un comentario sobre el curso..."
+                        placeholder="Escribe su comentario o pregunta..."
                         rows={3}
                         maxLength={1000}
-                        className="w-full resize-none rounded-xl border border-[#1e2d4a] bg-[#0e1525] px-4 py-3 text-sm text-slate-200 placeholder:text-slate-600 focus:border-blue-500/50 focus:outline-none focus:ring-1 focus:ring-blue-500/30"
+                        className="w-full resize-none rounded-xl border border-[#253554] bg-[#0e1a2e] px-4 py-3 text-sm text-slate-200 placeholder:text-slate-500 focus:border-blue-500/60 focus:outline-none focus:ring-1 focus:ring-blue-500/30 transition-colors"
                       />
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-slate-600">{commentText.length}/1000</span>
-                        <Button
-                          type="submit"
-                          size="sm"
-                          disabled={submittingComment || !commentText.trim()}
-                          className="bg-blue-600 hover:bg-blue-700 text-xs"
-                        >
-                          {submittingComment ? (
-                            <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
-                          ) : (
-                            <Send className="mr-1.5 h-3.5 w-3.5" />
-                          )}
-                          Publicar
-                        </Button>
+                        <div className="flex gap-2">
+                          <Button
+                            type="button"
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setCommentText('')}
+                            className="border-[#253554] text-xs text-slate-400 hover:text-slate-200"
+                          >
+                            Cancelar
+                          </Button>
+                          <Button
+                            type="submit"
+                            size="sm"
+                            disabled={submittingComment || !commentText.trim()}
+                            className="bg-blue-600 hover:bg-blue-700 text-xs px-5"
+                          >
+                            {submittingComment ? (
+                              <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+                            ) : null}
+                            Enviar
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </form>
               )}
+
+              {/* Divider */}
+              {comments.length > 0 && <div className="mb-6 border-t border-[#1e2d4a]" />}
 
               {/* Comments list */}
               {loadingComments ? (
@@ -329,37 +368,58 @@ export default function ClassroomPage() {
                   <span className="text-sm">Cargando comentarios...</span>
                 </div>
               ) : comments.length === 0 ? (
-                <p className="text-sm text-slate-600">
-                  {isApproved
-                    ? 'Sé el primero en dejar un comentario.'
-                    : 'No hay comentarios aún.'}
+                <p className="text-sm text-slate-500">
+                  {isApproved ? 'Sé el primero en comentar.' : 'No hay comentarios aún.'}
                 </p>
               ) : (
-                <div className="space-y-6">
-                  {comments.map((comment) => (
-                    <div key={comment.id} className="flex gap-3">
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#162038] text-sm font-bold text-slate-400">
-                        {comment.user?.firstName?.[0] ?? '?'}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-baseline gap-2">
-                          <span className="text-sm font-semibold text-slate-300">
-                            {comment.user?.firstName} {comment.user?.lastName}
-                          </span>
-                          <span className="text-xs text-slate-600">
-                            {new Date(comment.createdAt).toLocaleDateString('es', {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                            })}
-                          </span>
+                <div className="space-y-7">
+                  {comments.map((comment) => {
+                    const firstName = comment.user?.firstName ?? '';
+                    const lastName = comment.user?.lastName ?? '';
+                    const initial = firstName?.[0]?.toUpperCase() ?? '?';
+                    const color = avatarColor(firstName || comment.userId);
+
+                    return (
+                      <div key={comment.id} className="flex gap-4">
+                        {/* Avatar */}
+                        <div className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white ${color}`}>
+                          {initial}
+                          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#080c14] bg-emerald-500" />
                         </div>
-                        <p className="mt-1 text-sm leading-relaxed text-slate-400">
-                          {comment.content}
-                        </p>
+
+                        <div className="flex-1 min-w-0">
+                          {/* Name + role + time */}
+                          <div className="flex flex-wrap items-center gap-2 mb-1">
+                            <span className="text-sm font-semibold text-slate-100">
+                              {firstName} {lastName}
+                            </span>
+                            <span className="rounded-full bg-blue-500/15 border border-blue-500/25 px-2 py-0.5 text-[10px] font-medium text-blue-300">
+                              Estudiante
+                            </span>
+                            <span className="text-xs text-slate-500">
+                              {timeAgo(comment.createdAt)}
+                            </span>
+                          </div>
+
+                          {/* Content */}
+                          <p className="text-sm leading-relaxed text-slate-300">
+                            {comment.content}
+                          </p>
+
+                          {/* Actions */}
+                          <div className="mt-2 flex items-center gap-4">
+                            <button className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-blue-400 transition-colors">
+                              <ThumbsUp className="h-3.5 w-3.5" />
+                            </button>
+                            <button className="flex items-center gap-1 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors">
+                              <CornerDownRight className="h-3 w-3" />
+                              RESPONDER
+                            </button>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
