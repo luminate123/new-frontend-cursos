@@ -41,20 +41,20 @@ export function CourseRoadmap({
         return (
           <div
             key={section.id}
-            className="rounded-xl border border-[#1e2d4a] bg-[#0e1525] overflow-hidden"
+            className="rounded-xl border border-[#c9beab] bg-[#ede7d9] overflow-hidden"
           >
             {/* Section header */}
             <button
               onClick={() => toggle(section.id)}
-              className="flex w-full items-center justify-between p-4 text-left hover:bg-blue-600/5 transition-colors"
+              className="flex w-full items-center justify-between p-4 text-left hover:bg-stone-900/5 transition-colors"
             >
               <div className="flex items-center gap-3">
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600/15 border border-blue-500/20 text-xs font-bold text-blue-400">
+                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-stone-900/10 border border-stone-700/20 text-xs font-bold text-stone-700">
                   {si + 1}
                 </div>
                 <div>
-                  <p className="font-medium text-slate-100 text-sm">{section.title}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">
+                  <p className="font-medium text-stone-900 text-sm">{section.title}</p>
+                  <p className="text-xs text-stone-500 mt-0.5">
                     {completedInSection}/{section.totalLessons} clases
                     {section.totalDurationSeconds > 0 && (
                       <> · {formatDuration(section.totalDurationSeconds)}</>
@@ -63,13 +63,13 @@ export function CourseRoadmap({
                 </div>
               </div>
               <ChevronDown
-                className={`h-4 w-4 text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                className={`h-4 w-4 text-stone-500 transition-transform ${isOpen ? 'rotate-180' : ''}`}
               />
             </button>
 
             {/* Lessons */}
             {isOpen && section.lessons && section.lessons.length > 0 && (
-              <div className="border-t border-[#1e2d4a]">
+              <div className="border-t border-[#c9beab]">
                 {section.lessons.map((lesson) => {
                   const isCompleted = completedLessonIds.includes(lesson.id);
                   const canAccess = isEnrolled || lesson.isFree;
@@ -79,37 +79,37 @@ export function CourseRoadmap({
                       key={lesson.id}
                       onClick={() => canAccess && onLessonClick?.(lesson)}
                       disabled={!canAccess}
-                      className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors border-b border-[#1e2d4a]/60 last:border-0
-                        ${canAccess ? 'hover:bg-blue-600/5 cursor-pointer' : 'cursor-not-allowed opacity-50'}
+                      className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors border-b border-[#c9beab]/60 last:border-0
+                        ${canAccess ? 'hover:bg-stone-900/5 cursor-pointer' : 'cursor-not-allowed opacity-50'}
                       `}
                     >
                       {/* Icon */}
                       <div className="shrink-0">
                         {isCompleted ? (
-                          <CheckCircle className="h-4 w-4 text-emerald-400" />
+                          <CheckCircle className="h-4 w-4 text-emerald-700" />
                         ) : canAccess ? (
-                          <div className="flex h-4 w-4 items-center justify-center rounded-full border border-[#1e2d4a]">
-                            <Play className="h-2 w-2 text-slate-400 translate-x-px" />
+                          <div className="flex h-4 w-4 items-center justify-center rounded-full border border-[#c9beab]">
+                            <Play className="h-2 w-2 text-stone-600 translate-x-px" />
                           </div>
                         ) : (
-                          <Lock className="h-4 w-4 text-slate-600" />
+                          <Lock className="h-4 w-4 text-stone-400" />
                         )}
                       </div>
 
                       {/* Title */}
-                      <span className={`flex-1 text-sm ${isCompleted ? 'text-slate-500 line-through' : 'text-slate-300'}`}>
+                      <span className={`flex-1 text-sm ${isCompleted ? 'text-stone-400 line-through' : 'text-stone-700'}`}>
                         {lesson.title}
                       </span>
 
                       {/* Tags */}
                       <div className="flex shrink-0 items-center gap-2">
                         {lesson.isFree && !isEnrolled && (
-                          <span className="rounded-full bg-emerald-500/10 border border-emerald-500/20 px-1.5 py-0.5 text-[10px] text-emerald-400">
+                          <span className="rounded-full bg-emerald-50 border border-emerald-600/20 px-1.5 py-0.5 text-[10px] text-emerald-700">
                             Preview
                           </span>
                         )}
                         {lesson.durationSeconds && (
-                          <span className="text-xs text-slate-600 tabular-nums">
+                          <span className="text-xs text-stone-400 tabular-nums">
                             {formatDuration(lesson.durationSeconds)}
                           </span>
                         )}

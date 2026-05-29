@@ -102,9 +102,9 @@ export default function RegistroPage() {
           {errors.confirmPassword && <p className="text-xs text-red-400">{errors.confirmPassword.message}</p>}
         </div>
         <SubmitButton isLoading={registerMutation.isPending}>Registrarse</SubmitButton>
-        <p className="text-center text-sm text-slate-400">
+        <p className="text-center text-sm text-stone-600">
           Ya tienes cuenta?{" "}
-          <a href="/login" className="text-blue-400 hover:text-blue-300 transition-colors">
+          <a href="/login" className="text-stone-700 hover:text-stone-900 transition-colors">
             Inicia sesion
           </a>
         </p>

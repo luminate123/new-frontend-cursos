@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
@@ -32,8 +32,8 @@ import { toast } from 'sonner';
 import type { Course, Enrollment, Lesson, Section, Comment } from '@/lib/types';
 
 const AVATAR_COLORS = [
-  'bg-blue-600', 'bg-violet-600', 'bg-emerald-600', 'bg-rose-600',
-  'bg-amber-600', 'bg-cyan-600', 'bg-pink-600', 'bg-teal-600',
+  'bg-stone-900', 'bg-violet-700', 'bg-emerald-700', 'bg-rose-700',
+  'bg-amber-700', 'bg-cyan-700', 'bg-pink-700', 'bg-teal-700',
 ];
 
 function avatarColor(name: string): string {
@@ -87,33 +87,33 @@ function CommentItem({
       <div className={`relative flex shrink-0 items-center justify-center rounded-full font-bold text-white ${isReply ? 'h-8 w-8 text-xs' : 'h-10 w-10 text-sm'} ${color}`}>
         {initial}
         {!isReply && (
-          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#080c14] bg-emerald-500" />
+          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#f5f0e6] bg-emerald-500" />
         )}
       </div>
 
       <div className="flex-1 min-w-0">
         <div className="flex flex-wrap items-center gap-2 mb-1">
-          <span className={`font-semibold text-slate-100 ${isReply ? 'text-xs' : 'text-sm'}`}>
+          <span className={`font-semibold text-stone-900 ${isReply ? 'text-xs' : 'text-sm'}`}>
             {firstName} {lastName}
           </span>
-          <span className="rounded-full bg-blue-500/15 border border-blue-500/25 px-2 py-0.5 text-[10px] font-medium text-blue-300">
+          <span className="rounded-full bg-stone-700/15 border border-stone-700/25 px-2 py-0.5 text-[10px] font-medium text-stone-600">
             Estudiante
           </span>
-          <span className="text-xs text-slate-500">{timeAgo(comment.createdAt)}</span>
+          <span className="text-xs text-stone-500">{timeAgo(comment.createdAt)}</span>
         </div>
 
-        <p className={`leading-relaxed text-slate-300 ${isReply ? 'text-xs' : 'text-sm'}`}>
+        <p className={`leading-relaxed text-stone-700 ${isReply ? 'text-xs' : 'text-sm'}`}>
           {comment.content}
         </p>
 
         <div className="mt-2 flex items-center gap-4">
-          <button className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-blue-400 transition-colors">
+          <button className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-700 transition-colors">
             <ThumbsUp className="h-3.5 w-3.5" />
           </button>
           {isApproved && !isReply && (
             <button
               onClick={() => isOpen ? onReplyClose() : onReplyOpen(comment.id)}
-              className="flex items-center gap-1 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors"
+              className="flex items-center gap-1 text-xs font-semibold text-stone-700 hover:text-stone-600 transition-colors"
             >
               <CornerDownRight className="h-3 w-3" />
               {isOpen ? 'CANCELAR' : 'RESPONDER'}
@@ -135,17 +135,17 @@ function CommentItem({
                 rows={2}
                 maxLength={1000}
                 autoFocus
-                className="w-full resize-none rounded-xl border border-[#253554] bg-[#0e1a2e] px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-500 focus:border-blue-500/60 focus:outline-none focus:ring-1 focus:ring-blue-500/30 transition-colors"
+                className="w-full resize-none rounded-xl border border-[#253554] bg-[#0e1a2e] px-4 py-2.5 text-sm text-stone-800 placeholder:text-stone-500 focus:border-stone-700/60 focus:outline-none focus:ring-1 focus:ring-stone-700/30 transition-colors"
               />
               <div className="flex justify-end gap-2">
-                <Button size="sm" variant="outline" onClick={onReplyClose} className="border-[#253554] text-xs text-slate-400">
+                <Button size="sm" variant="outline" onClick={onReplyClose} className="border-[#253554] text-xs text-stone-600">
                   Cancelar
                 </Button>
                 <Button
                   size="sm"
                   disabled={submitting || !replyText.trim()}
                   onClick={() => onReplySubmit(comment.id)}
-                  className="bg-blue-600 hover:bg-blue-700 text-xs px-4"
+                  className="bg-stone-900 hover:bg-stone-800 text-xs px-4"
                 >
                   {submitting ? <Loader2 className="mr-1.5 h-3 w-3 animate-spin" /> : null}
                   Responder
@@ -157,7 +157,7 @@ function CommentItem({
 
         {/* Replies */}
         {comment.replies && comment.replies.length > 0 && (
-          <div className="mt-4 space-y-4 border-l-2 border-[#1e2d4a] pl-4">
+          <div className="mt-4 space-y-4 border-l-2 border-[#c9beab] pl-4">
             {comment.replies.map((reply) => (
               <CommentItem
                 key={reply.id}
@@ -347,8 +347,8 @@ export default function ClassroomPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#080c14]">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+      <div className="flex min-h-screen items-center justify-center bg-[#f5f0e6]">
+        <Loader2 className="h-8 w-8 animate-spin text-stone-700" />
       </div>
     );
   }
@@ -360,29 +360,29 @@ export default function ClassroomPage() {
   const isCompleted = completedIds.includes(activeLesson.id);
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#080c14] text-slate-100">
+    <div className="flex min-h-screen flex-col bg-[#f5f0e6] text-stone-900">
       <Navbar />
 
       {/* ── Top bar: progress + back ───────────────────────────── */}
-      <div className="border-b border-[#1e2d4a] bg-[#0a1020] px-4 py-2">
+      <div className="border-b border-[#c9beab] bg-[#0a1020] px-4 py-2">
         <div className="mx-auto flex max-w-screen-2xl items-center gap-4">
           <Link
             href={`/cursos/${slug}`}
-            className="flex shrink-0 items-center gap-1.5 text-xs text-slate-500 hover:text-slate-300 transition-colors"
+            className="flex shrink-0 items-center gap-1.5 text-xs text-stone-500 hover:text-stone-700 transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             Volver
           </Link>
 
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold text-slate-200">{course.title}</p>
+            <p className="truncate text-sm font-semibold text-stone-800">{course.title}</p>
           </div>
 
           {isApproved && (
             <div className="flex shrink-0 items-center gap-2">
               <Progress value={progressPct} className="w-28" />
-              <span className="text-xs font-semibold text-blue-400">{progressPct}%</span>
-              <span className="text-xs text-slate-600">
+              <span className="text-xs font-semibold text-stone-700">{progressPct}%</span>
+              <span className="text-xs text-stone-400">
                 {completedIds.length}/{totalLessons}
               </span>
             </div>
@@ -407,7 +407,7 @@ export default function ClassroomPage() {
                     className="h-full w-full"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center text-slate-500">
+                  <div className="flex h-full items-center justify-center text-stone-500">
                     No hay video disponible
                   </div>
                 )}
@@ -416,13 +416,13 @@ export default function ClassroomPage() {
           </div>
 
           {/* Lesson meta + actions */}
-          <div className="border-b border-[#1e2d4a] bg-[#0e1525] px-6 py-4">
+          <div className="border-b border-[#c9beab] bg-[#ede7d9] px-6 py-4">
             <div className="mx-auto max-w-screen-xl">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <h1 className="text-xl font-bold text-slate-100">{activeLesson.title}</h1>
+                  <h1 className="text-xl font-bold text-stone-900">{activeLesson.title}</h1>
                   {activeLesson.description && (
-                    <p className="mt-1 text-sm text-slate-400">{activeLesson.description}</p>
+                    <p className="mt-1 text-sm text-stone-600">{activeLesson.description}</p>
                   )}
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
@@ -430,14 +430,14 @@ export default function ClassroomPage() {
                     <Button
                       size="sm"
                       onClick={handleComplete}
-                      className="bg-emerald-600 hover:bg-emerald-700 text-xs"
+                      className="bg-emerald-700 hover:bg-emerald-800 text-xs"
                     >
                       <CheckCircle className="mr-1.5 h-3.5 w-3.5" />
                       Marcar completada
                     </Button>
                   )}
                   {isCompleted && (
-                    <span className="flex items-center gap-1.5 text-xs text-emerald-400">
+                    <span className="flex items-center gap-1.5 text-xs text-emerald-700">
                       <CheckCircle className="h-4 w-4" /> Completada
                     </span>
                   )}
@@ -445,7 +445,7 @@ export default function ClassroomPage() {
                     size="sm"
                     variant="outline"
                     onClick={handleNextLesson}
-                    className="border-[#1e2d4a] text-xs text-slate-400 hover:text-slate-200"
+                    className="border-[#c9beab] text-xs text-stone-600 hover:text-stone-800"
                   >
                     Siguiente →
                   </Button>
@@ -460,11 +460,11 @@ export default function ClassroomPage() {
 
               {/* Header */}
               <div className="mb-6 flex items-center justify-between">
-                <h2 className="flex items-center gap-2 text-lg font-bold text-slate-100">
-                  <MessageSquare className="h-5 w-5 text-blue-400" />
+                <h2 className="flex items-center gap-2 text-lg font-bold text-stone-900">
+                  <MessageSquare className="h-5 w-5 text-stone-700" />
                   Comentarios
                   {comments.length > 0 && (
-                    <span className="text-sm font-normal text-slate-400">({comments.length})</span>
+                    <span className="text-sm font-normal text-stone-600">({comments.length})</span>
                   )}
                 </h2>
               </div>
@@ -484,17 +484,17 @@ export default function ClassroomPage() {
                         placeholder="Escribe su comentario o pregunta..."
                         rows={3}
                         maxLength={1000}
-                        className="w-full resize-none rounded-xl border border-[#253554] bg-[#0e1a2e] px-4 py-3 text-sm text-slate-200 placeholder:text-slate-500 focus:border-blue-500/60 focus:outline-none focus:ring-1 focus:ring-blue-500/30 transition-colors"
+                        className="w-full resize-none rounded-xl border border-[#253554] bg-[#0e1a2e] px-4 py-3 text-sm text-stone-800 placeholder:text-stone-500 focus:border-stone-700/60 focus:outline-none focus:ring-1 focus:ring-stone-700/30 transition-colors"
                       />
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-slate-600">{commentText.length}/1000</span>
+                        <span className="text-xs text-stone-400">{commentText.length}/1000</span>
                         <div className="flex gap-2">
                           <Button
                             type="button"
                             size="sm"
                             variant="outline"
                             onClick={() => setCommentText('')}
-                            className="border-[#253554] text-xs text-slate-400 hover:text-slate-200"
+                            className="border-[#253554] text-xs text-stone-600 hover:text-stone-800"
                           >
                             Cancelar
                           </Button>
@@ -502,7 +502,7 @@ export default function ClassroomPage() {
                             type="submit"
                             size="sm"
                             disabled={submittingComment || !commentText.trim()}
-                            className="bg-blue-600 hover:bg-blue-700 text-xs px-5"
+                            className="bg-stone-900 hover:bg-stone-800 text-xs px-5"
                           >
                             {submittingComment ? (
                               <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
@@ -517,16 +517,16 @@ export default function ClassroomPage() {
               )}
 
               {/* Divider */}
-              {comments.length > 0 && <div className="mb-6 border-t border-[#1e2d4a]" />}
+              {comments.length > 0 && <div className="mb-6 border-t border-[#c9beab]" />}
 
               {/* Comments list */}
               {loadingComments ? (
-                <div className="flex items-center gap-2 text-slate-500">
+                <div className="flex items-center gap-2 text-stone-500">
                   <Loader2 className="h-4 w-4 animate-spin" />
                   <span className="text-sm">Cargando comentarios...</span>
                 </div>
               ) : comments.length === 0 ? (
-                <p className="text-sm text-slate-500">
+                <p className="text-sm text-stone-500">
                   {isApproved ? 'Sé el primero en comentar.' : 'No hay comentarios aún.'}
                 </p>
               ) : (
@@ -555,15 +555,15 @@ export default function ClassroomPage() {
         {/* ── Sidebar: sections + lessons ───────────────────────── */}
         <aside
           ref={sidebarRef}
-          className="hidden w-80 shrink-0 flex-col overflow-y-auto border-l border-[#1e2d4a] bg-[#0a1020] lg:flex xl:w-96"
+          className="hidden w-80 shrink-0 flex-col overflow-y-auto border-l border-[#c9beab] bg-[#0a1020] lg:flex xl:w-96"
           style={{ height: 'calc(100vh - 112px)', position: 'sticky', top: '112px' }}
         >
           {/* Sidebar header */}
-          <div className="border-b border-[#1e2d4a] px-4 py-3">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <div className="border-b border-[#c9beab] px-4 py-3">
+            <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
               Contenido del curso
             </p>
-            <p className="mt-0.5 text-xs text-slate-600">
+            <p className="mt-0.5 text-xs text-stone-400">
               {course.sections.length} secciones · {totalLessons} clases
             </p>
           </div>
@@ -584,20 +584,20 @@ export default function ClassroomPage() {
                     className="flex w-full items-center justify-between bg-[#111c30] px-4 py-3 text-left transition-colors hover:bg-[#172240]"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-500/25 border border-blue-400/40 text-[11px] font-bold text-blue-300">
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-stone-700/25 border border-stone-700/40 text-[11px] font-bold text-stone-600">
                         {si + 1}
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-semibold text-slate-100">
+                        <p className="truncate text-sm font-semibold text-stone-900">
                           {section.title}
                         </p>
-                        <p className="text-[11px] text-slate-400">
+                        <p className="text-[11px] text-stone-600">
                           {completedInSection}/{section.lessons.length} clases
                         </p>
                       </div>
                     </div>
                     <ChevronDown
-                      className={`ml-2 h-4 w-4 shrink-0 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                      className={`ml-2 h-4 w-4 shrink-0 text-stone-600 transition-transform ${isOpen ? 'rotate-180' : ''}`}
                     />
                   </button>
 
@@ -614,35 +614,35 @@ export default function ClassroomPage() {
                             onClick={() => handleLessonClick(lesson)}
                             disabled={!canAccess}
                             className={`flex w-full items-center gap-2.5 border-b border-[#1a2a42] px-4 py-3 text-left transition-colors last:border-0
-                              ${isActive ? 'bg-blue-600/20 border-l-2 border-l-blue-400' : ''}
+                              ${isActive ? 'bg-stone-900/20 border-l-2 border-l-stone-700' : ''}
                               ${canAccess && !isActive ? 'hover:bg-[#0e1a2e] cursor-pointer' : ''}
                               ${!canAccess ? 'cursor-not-allowed opacity-40' : ''}
                             `}
                           >
                             <div className="shrink-0">
                               {done ? (
-                                <CheckCircle className="h-4 w-4 text-emerald-400" />
+                                <CheckCircle className="h-4 w-4 text-emerald-700" />
                               ) : canAccess ? (
-                                <div className={`flex h-4 w-4 items-center justify-center rounded-full border ${isActive ? 'border-blue-400 bg-blue-500/30' : 'border-slate-500 bg-slate-700/50'}`}>
-                                  <Play className={`h-2 w-2 translate-x-px ${isActive ? 'text-blue-300' : 'text-slate-300'}`} />
+                                <div className={`flex h-4 w-4 items-center justify-center rounded-full border ${isActive ? 'border-stone-700 bg-stone-700/30' : 'border-stone-500 bg-stone-700/20'}`}>
+                                  <Play className={`h-2 w-2 translate-x-px ${isActive ? 'text-stone-600' : 'text-stone-700'}`} />
                                 </div>
                               ) : (
-                                <Lock className="h-4 w-4 text-slate-500" />
+                                <Lock className="h-4 w-4 text-stone-500" />
                               )}
                             </div>
                             <span
                               className={`flex-1 truncate text-xs leading-snug ${
                                 isActive
-                                  ? 'font-semibold text-blue-200'
+                                  ? 'font-semibold text-stone-900'
                                   : done
-                                  ? 'text-slate-500 line-through'
-                                  : 'text-slate-300'
+                                  ? 'text-stone-500 line-through'
+                                  : 'text-stone-700'
                               }`}
                             >
                               {lesson.title}
                             </span>
                             {lesson.durationSeconds && (
-                              <span className="shrink-0 text-[10px] text-slate-500 tabular-nums">
+                              <span className="shrink-0 text-[10px] text-stone-500 tabular-nums">
                                 {formatDuration(lesson.durationSeconds)}
                               </span>
                             )}

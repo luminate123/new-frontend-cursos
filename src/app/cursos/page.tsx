@@ -71,25 +71,25 @@ export default function CursosPage() {
   const hasFilters = search || category || level;
 
   return (
-    <div className="min-h-screen bg-[#080c14] text-slate-100">
+    <div className="min-h-screen bg-[#f5f0e6] text-stone-900">
       <Navbar />
 
       {/* ── Hero header ─────────────────────────────────────────────── */}
-      <div className="border-b border-[#1e2d4a] bg-gradient-to-b from-[#0e1525] to-[#080c14]">
+      <div className="border-b border-[#c9beab] bg-gradient-to-b from-[#ede7d9] to-[#f5f0e6]">
         <div className="mx-auto max-w-7xl px-4 py-12">
           <div className="max-w-2xl">
             <h1 className="text-4xl font-black tracking-tight">
               Explora{' '}
-              <span className="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-stone-800 to-stone-700 bg-clip-text text-transparent">
                 nuestros cursos
               </span>
             </h1>
-            <p className="mt-2 text-slate-500">
+            <p className="mt-2 text-stone-500">
               {data ? (
                 <>
-                  <span className="font-semibold text-slate-300">{data.meta.total}</span> cursos disponibles
+                  <span className="font-semibold text-stone-700">{data.meta.total}</span> cursos disponibles
                   {isAuthenticated && Object.keys(enrollmentMap).length > 0 && (
-                    <> · <span className="text-blue-400 font-medium">{Object.keys(enrollmentMap).length} con solicitud activa</span></>
+                    <> · <span className="text-stone-700 font-medium">{Object.keys(enrollmentMap).length} con solicitud activa</span></>
                   )}
                 </>
               ) : 'Cargando catálogo...'}
@@ -100,18 +100,18 @@ export default function CursosPage() {
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
             {/* Search */}
             <div className="relative flex-1 max-w-lg">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-stone-500" />
               <input
                 type="text"
                 placeholder="Buscar por título, tema o instructor..."
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                className="h-10 w-full rounded-xl border border-[#1e2d4a] bg-[#0e1525] pl-9 pr-4 text-sm text-slate-100 placeholder:text-slate-600 focus:border-blue-500/60 focus:outline-none focus:ring-2 focus:ring-blue-500/10 transition-colors"
+                className="h-10 w-full rounded-xl border border-[#c9beab] bg-[#ede7d9] pl-9 pr-4 text-sm text-stone-900 placeholder:text-stone-400 focus:border-stone-700/60 focus:outline-none focus:ring-2 focus:ring-stone-700/10 transition-colors"
               />
               {search && (
                 <button
                   onClick={() => setSearch('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-700"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -122,7 +122,7 @@ export default function CursosPage() {
             <select
               value={category}
               onChange={(e) => { setCategory(e.target.value as CourseCategory | ''); setPage(1); }}
-              className="h-10 rounded-xl border border-[#1e2d4a] bg-[#0e1525] px-3 text-sm text-slate-300 focus:border-blue-500/60 focus:outline-none transition-colors"
+              className="h-10 rounded-xl border border-[#c9beab] bg-[#ede7d9] px-3 text-sm text-stone-700 focus:border-stone-700/60 focus:outline-none transition-colors"
             >
               <option value="">Todas las categorías</option>
               {CATEGORIES.map(([val, label]) => (
@@ -134,7 +134,7 @@ export default function CursosPage() {
             <select
               value={level}
               onChange={(e) => { setLevel(e.target.value as CourseLevel | ''); setPage(1); }}
-              className="h-10 rounded-xl border border-[#1e2d4a] bg-[#0e1525] px-3 text-sm text-slate-300 focus:border-blue-500/60 focus:outline-none transition-colors"
+              className="h-10 rounded-xl border border-[#c9beab] bg-[#ede7d9] px-3 text-sm text-stone-700 focus:border-stone-700/60 focus:outline-none transition-colors"
             >
               <option value="">Todos los niveles</option>
               {LEVELS.map(([val, label]) => (
@@ -143,7 +143,7 @@ export default function CursosPage() {
             </select>
 
             {hasFilters && (
-              <Button variant="ghost" size="sm" onClick={clearFilters} className="text-slate-500 hover:text-slate-300 gap-1.5">
+              <Button variant="ghost" size="sm" onClick={clearFilters} className="text-stone-500 hover:text-stone-700 gap-1.5">
                 <X className="h-3.5 w-3.5" /> Limpiar
               </Button>
             )}
@@ -156,7 +156,7 @@ export default function CursosPage() {
                 <button
                   key={val}
                   onClick={() => { setCategory(val); setPage(1); }}
-                  className="flex items-center gap-1.5 rounded-full border border-[#1e2d4a] bg-[#0e1525]/60 px-3 py-1 text-xs text-slate-400 hover:border-blue-500/40 hover:text-blue-400 transition-colors"
+                  className="flex items-center gap-1.5 rounded-full border border-[#c9beab] bg-[#ede7d9]/60 px-3 py-1 text-xs text-stone-600 hover:border-stone-700/40 hover:text-stone-900 transition-colors"
                 >
                   <span>{CATEGORY_ICONS[val]}</span>
                   {label}
@@ -169,25 +169,25 @@ export default function CursosPage() {
 
       {/* ── Active filter chips ──────────────────────────────────────── */}
       {hasFilters && (
-        <div className="border-b border-[#1e2d4a] bg-[#0e1525]/30">
+        <div className="border-b border-[#c9beab] bg-[#ede7d9]/30">
           <div className="mx-auto max-w-7xl px-4 py-3 flex items-center gap-2 flex-wrap">
-            <span className="text-xs text-slate-600">Filtros activos:</span>
+            <span className="text-xs text-stone-500">Filtros activos:</span>
             {search && (
-              <span className="flex items-center gap-1 rounded-full border border-[#1e2d4a] bg-[#0e1525] px-2.5 py-0.5 text-xs text-slate-300">
+              <span className="flex items-center gap-1 rounded-full border border-[#c9beab] bg-[#ede7d9] px-2.5 py-0.5 text-xs text-stone-700">
                 "{search}"
-                <button onClick={() => setSearch('')}><X className="h-3 w-3 text-slate-500 hover:text-red-400" /></button>
+                <button onClick={() => setSearch('')}><X className="h-3 w-3 text-stone-500 hover:text-red-600" /></button>
               </span>
             )}
             {category && (
-              <span className="flex items-center gap-1 rounded-full border border-[#1e2d4a] bg-[#0e1525] px-2.5 py-0.5 text-xs text-slate-300">
+              <span className="flex items-center gap-1 rounded-full border border-[#c9beab] bg-[#ede7d9] px-2.5 py-0.5 text-xs text-stone-700">
                 {CATEGORY_ICONS[category]} {CATEGORY_LABELS[category]}
-                <button onClick={() => setCategory('')}><X className="h-3 w-3 text-slate-500 hover:text-red-400" /></button>
+                <button onClick={() => setCategory('')}><X className="h-3 w-3 text-stone-500 hover:text-red-600" /></button>
               </span>
             )}
             {level && (
-              <span className="flex items-center gap-1 rounded-full border border-[#1e2d4a] bg-[#0e1525] px-2.5 py-0.5 text-xs text-slate-300">
+              <span className="flex items-center gap-1 rounded-full border border-[#c9beab] bg-[#ede7d9] px-2.5 py-0.5 text-xs text-stone-700">
                 {LEVEL_LABELS[level]}
-                <button onClick={() => setLevel('')}><X className="h-3 w-3 text-slate-500 hover:text-red-400" /></button>
+                <button onClick={() => setLevel('')}><X className="h-3 w-3 text-stone-500 hover:text-red-600" /></button>
               </span>
             )}
           </div>
@@ -199,20 +199,20 @@ export default function CursosPage() {
         {loading ? (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="rounded-2xl border border-[#1e2d4a] bg-[#0e1525] animate-pulse">
-                <div className="aspect-video bg-[#162038] rounded-t-2xl" />
+              <div key={i} className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] animate-pulse">
+                <div className="aspect-video bg-[#e4ddd0] rounded-t-2xl" />
                 <div className="p-4 space-y-3">
-                  <div className="h-3 w-20 rounded bg-[#162038]" />
-                  <div className="h-4 w-3/4 rounded bg-[#162038]" />
-                  <div className="h-3 w-full rounded bg-[#162038]" />
-                  <div className="h-3 w-1/2 rounded bg-[#162038]" />
+                  <div className="h-3 w-20 rounded bg-[#e4ddd0]" />
+                  <div className="h-4 w-3/4 rounded bg-[#e4ddd0]" />
+                  <div className="h-3 w-full rounded bg-[#e4ddd0]" />
+                  <div className="h-3 w-1/2 rounded bg-[#e4ddd0]" />
                 </div>
               </div>
             ))}
           </div>
         ) : data && data.data.length > 0 ? (
           <>
-            <p className="mb-5 text-sm text-slate-600">
+            <p className="mb-5 text-sm text-stone-500">
               {data.meta.total} resultado{data.meta.total !== 1 ? 's' : ''}
               {hasFilters ? ' para tu búsqueda' : ''}
             </p>
@@ -240,7 +240,7 @@ export default function CursosPage() {
                   size="sm"
                   disabled={page === 1}
                   onClick={() => setPage((p) => p - 1)}
-                  className="border-[#1e2d4a] text-slate-400 hover:text-slate-200"
+                  className="border-[#c9beab] text-stone-600 hover:text-stone-900"
                 >
                   ← Anterior
                 </Button>
@@ -254,15 +254,15 @@ export default function CursosPage() {
                     }, [])
                     .map((p, i) =>
                       p === 'ellipsis' ? (
-                        <span key={`e${i}`} className="px-2 text-slate-600">…</span>
+                        <span key={`e${i}`} className="px-2 text-stone-400">…</span>
                       ) : (
                         <button
                           key={p}
                           onClick={() => setPage(p as number)}
                           className={`h-8 w-8 rounded-lg text-sm font-medium transition-colors ${
                             page === p
-                              ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30'
-                              : 'border border-[#1e2d4a] text-slate-400 hover:border-blue-500/40 hover:text-blue-400'
+                              ? 'bg-stone-900 text-[#f5f0e6] shadow-md shadow-stone-900/20'
+                              : 'border border-[#c9beab] text-stone-600 hover:border-stone-700/40 hover:text-stone-900'
                           }`}
                         >
                           {p}
@@ -275,7 +275,7 @@ export default function CursosPage() {
                   size="sm"
                   disabled={page === data.meta.lastPage}
                   onClick={() => setPage((p) => p + 1)}
-                  className="border-[#1e2d4a] text-slate-400 hover:text-slate-200"
+                  className="border-[#c9beab] text-stone-600 hover:text-stone-900"
                 >
                   Siguiente →
                 </Button>
@@ -284,17 +284,17 @@ export default function CursosPage() {
           </>
         ) : (
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="mb-4 rounded-2xl border border-[#1e2d4a] bg-[#0e1525] p-6">
-              <Search className="h-10 w-10 text-slate-700" />
+            <div className="mb-4 rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-6">
+              <Search className="h-10 w-10 text-stone-400" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-300">No se encontraron cursos</h3>
-            <p className="mt-1 text-sm text-slate-600 max-w-xs">
+            <h3 className="text-lg font-semibold text-stone-700">No se encontraron cursos</h3>
+            <p className="mt-1 text-sm text-stone-500 max-w-xs">
               {hasFilters
                 ? 'Prueba con otros filtros o términos de búsqueda'
                 : 'Aún no hay cursos publicados. Vuelve pronto.'}
             </p>
             {hasFilters && (
-              <Button variant="outline" className="mt-5 border-[#1e2d4a] text-slate-400 gap-2" onClick={clearFilters}>
+              <Button variant="outline" className="mt-5 border-[#c9beab] text-stone-600 gap-2" onClick={clearFilters}>
                 <X className="h-4 w-4" /> Limpiar filtros
               </Button>
             )}

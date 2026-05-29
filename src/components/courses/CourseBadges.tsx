@@ -20,9 +20,9 @@ export function CategoryBadge({ category }: { category: CourseCategory }) {
 export function StarRating({ rating, count }: { rating: number; count: number }) {
   return (
     <div className="flex items-center gap-1">
-      <span className="text-amber-400 text-sm">★</span>
-      <span className="text-sm font-medium text-slate-300">{Number(rating).toFixed(1)}</span>
-      <span className="text-xs text-slate-500">({count.toLocaleString()})</span>
+      <span className="text-amber-600 text-sm">★</span>
+      <span className="text-sm font-medium text-stone-700">{Number(rating).toFixed(1)}</span>
+      <span className="text-xs text-stone-500">({count.toLocaleString()})</span>
     </div>
   );
 }

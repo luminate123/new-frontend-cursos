@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -21,14 +21,14 @@ import type { Course, Section, Lesson } from '@/lib/types';
 
 // ─── Tiny helpers ─────────────────────────────────────────────────────────────
 
-const inputCls = 'w-full rounded-lg border border-[#1e2d4a] bg-[#162038] px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:border-blue-500/60 focus:outline-none focus:ring-2 focus:ring-blue-500/10 transition-colors';
+const inputCls = 'w-full rounded-lg border border-[#c9beab] bg-[#e4ddd0] px-3 py-2 text-sm text-stone-900 placeholder-stone-400 focus:border-stone-700/60 focus:outline-none focus:ring-2 focus:ring-stone-700/10 transition-colors';
 const selectCls = inputCls + ' cursor-pointer';
 
 function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
     <div>
-      <label className="mb-1 block text-xs font-medium text-slate-500">
-        {label}{required && <span className="ml-0.5 text-red-400">*</span>}
+      <label className="mb-1 block text-xs font-medium text-stone-500">
+        {label}{required && <span className="ml-0.5 text-red-700">*</span>}
       </label>
       {children}
     </div>
@@ -87,8 +87,8 @@ function LessonForm({
   };
 
   return (
-    <div className="rounded-lg border border-[#1e2d4a] bg-[#0e1525] p-4 space-y-3">
-      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">
+    <div className="rounded-lg border border-[#c9beab] bg-[#ede7d9] p-4 space-y-3">
+      <p className="text-xs font-semibold text-stone-600 uppercase tracking-wide">
         {lesson ? 'Editar clase' : 'Nueva clase'}
       </p>
 
@@ -122,16 +122,16 @@ function LessonForm({
           type="checkbox"
           checked={form.isFree}
           onChange={(e) => setForm((p) => ({ ...p, isFree: e.target.checked }))}
-          className="h-4 w-4 rounded border-slate-600 accent-blue-500"
+          className="h-4 w-4 rounded border-stone-500 accent-stone-900"
         />
-        <span className="text-sm text-slate-400">Clase gratuita (previa del curso)</span>
+        <span className="text-sm text-stone-600">Clase gratuita (previa del curso)</span>
       </label>
 
       <div className="flex justify-end gap-2 pt-1">
-        <Button size="sm" variant="outline" className="border-[#1e2d4a] text-slate-400 text-xs" onClick={onCancel}>
+        <Button size="sm" variant="outline" className="border-[#c9beab] text-stone-600 text-xs" onClick={onCancel}>
           Cancelar
         </Button>
-        <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-xs shadow-sm shadow-blue-600/20" onClick={handleSave} disabled={saving}>
+        <Button size="sm" className="bg-stone-900 hover:bg-stone-800 text-xs shadow-sm shadow-stone-900/20" onClick={handleSave} disabled={saving}>
           {saving ? <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" /> : null}
           {lesson ? 'Guardar cambios' : 'Agregar clase'}
         </Button>
@@ -213,10 +213,10 @@ function SectionBlock({
   };
 
   return (
-    <div className="rounded-xl border border-[#1e2d4a] bg-[#0e1525] overflow-hidden">
+    <div className="rounded-xl border border-[#c9beab] bg-[#ede7d9] overflow-hidden">
       {/* Section header */}
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-[#1e2d4a]">
-        <GripVertical className="h-4 w-4 text-slate-600 shrink-0" />
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-[#c9beab]">
+        <GripVertical className="h-4 w-4 text-stone-400 shrink-0" />
 
         {editingTitle ? (
           <input
@@ -224,26 +224,26 @@ function SectionBlock({
             value={titleDraft}
             onChange={(e) => setTitleDraft(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter') saveTitle(); if (e.key === 'Escape') setEditingTitle(false); }}
-            className="flex-1 rounded border border-blue-500/60 bg-[#162038] px-2 py-0.5 text-sm text-slate-100 focus:outline-none"
+            className="flex-1 rounded border border-stone-700/60 bg-[#e4ddd0] px-2 py-0.5 text-sm text-stone-900 focus:outline-none"
           />
         ) : (
-          <span className="flex-1 text-sm font-semibold text-slate-200">{section.title}</span>
+          <span className="flex-1 text-sm font-semibold text-stone-800">{section.title}</span>
         )}
 
         <div className="flex items-center gap-1 shrink-0">
-          <span className="text-[11px] text-slate-600 mr-1">{section.lessons.length} clase{section.lessons.length !== 1 ? 's' : ''}</span>
+          <span className="text-[11px] text-stone-400 mr-1">{section.lessons.length} clase{section.lessons.length !== 1 ? 's' : ''}</span>
 
           {editingTitle ? (
             <>
-              <button onClick={saveTitle} className="rounded p-1 text-emerald-400 hover:bg-[#162038]">
+              <button onClick={saveTitle} className="rounded p-1 text-emerald-700 hover:bg-[#e4ddd0]">
                 <Check className="h-3.5 w-3.5" />
               </button>
-              <button onClick={() => setEditingTitle(false)} className="rounded p-1 text-slate-500 hover:bg-[#162038]">
+              <button onClick={() => setEditingTitle(false)} className="rounded p-1 text-stone-500 hover:bg-[#e4ddd0]">
                 <X className="h-3.5 w-3.5" />
               </button>
             </>
           ) : (
-            <button onClick={() => setEditingTitle(true)} className="rounded p-1 text-slate-500 hover:bg-[#162038] hover:text-slate-300">
+            <button onClick={() => setEditingTitle(true)} className="rounded p-1 text-stone-500 hover:bg-[#e4ddd0] hover:text-stone-700">
               <Pencil className="h-3.5 w-3.5" />
             </button>
           )}
@@ -251,12 +251,12 @@ function SectionBlock({
           <button
             onClick={handleDeleteSection}
             disabled={deletingSection}
-            className="rounded p-1 text-slate-600 hover:bg-[#162038] hover:text-red-400"
+            className="rounded p-1 text-stone-400 hover:bg-[#e4ddd0] hover:text-red-700"
           >
             {deletingSection ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
           </button>
 
-          <button onClick={() => setOpen((v) => !v)} className="rounded p-1 text-slate-500 hover:bg-[#162038]">
+          <button onClick={() => setOpen((v) => !v)} className="rounded p-1 text-stone-500 hover:bg-[#e4ddd0]">
             {open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </button>
         </div>
@@ -266,7 +266,7 @@ function SectionBlock({
       {open && (
         <div className="p-3 space-y-2">
           {section.lessons.length === 0 && !addingLesson && (
-            <p className="py-4 text-center text-xs text-slate-600">Sin clases aún — agrega la primera</p>
+            <p className="py-4 text-center text-xs text-stone-400">Sin clases aún — agrega la primera</p>
           )}
 
           {section.lessons.map((lesson, idx) => (
@@ -279,35 +279,35 @@ function SectionBlock({
                   onCancel={() => setEditingLesson(null)}
                 />
               ) : (
-                <div className="flex items-center gap-2 rounded-lg border border-[#1e2d4a] bg-[#162038]/40 px-3 py-2 group hover:border-blue-500/30 hover:bg-blue-600/5 transition-colors">
-                  <span className="text-[11px] text-slate-600 w-5 shrink-0 text-right">{idx + 1}</span>
+                <div className="flex items-center gap-2 rounded-lg border border-[#c9beab] bg-[#e4ddd0]/40 px-3 py-2 group hover:border-stone-700/30 hover:bg-stone-900/5 transition-colors">
+                  <span className="text-[11px] text-stone-400 w-5 shrink-0 text-right">{idx + 1}</span>
                   {lesson.isFree ? (
-                    <Play className="h-3.5 w-3.5 shrink-0 text-emerald-400" />
+                    <Play className="h-3.5 w-3.5 shrink-0 text-emerald-700" />
                   ) : (
-                    <Lock className="h-3.5 w-3.5 shrink-0 text-slate-600" />
+                    <Lock className="h-3.5 w-3.5 shrink-0 text-stone-400" />
                   )}
-                  <span className="flex-1 text-sm text-slate-300 truncate">{lesson.title}</span>
+                  <span className="flex-1 text-sm text-stone-700 truncate">{lesson.title}</span>
                   {lesson.durationSeconds && (
-                    <span className="text-[11px] text-slate-600 shrink-0">
+                    <span className="text-[11px] text-stone-400 shrink-0">
                       {Math.floor(lesson.durationSeconds / 60)}m
                     </span>
                   )}
                   {lesson.isFree && (
-                    <span className="shrink-0 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-1.5 py-0.5 text-[10px] text-emerald-400">
+                    <span className="shrink-0 rounded-full border border-emerald-500/30 bg-emerald-50 px-1.5 py-0.5 text-[10px] text-emerald-700">
                       Gratis
                     </span>
                   )}
                   <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                     <button
                       onClick={() => setEditingLesson(lesson.id)}
-                      className="rounded p-1 text-slate-500 hover:text-blue-400"
+                      className="rounded p-1 text-stone-500 hover:text-stone-700"
                     >
                       <Pencil className="h-3.5 w-3.5" />
                     </button>
                     <button
                       onClick={() => handleDeleteLesson(lesson)}
                       disabled={deletingLesson === lesson.id}
-                      className="rounded p-1 text-slate-500 hover:text-red-400"
+                      className="rounded p-1 text-stone-500 hover:text-red-700"
                     >
                       {deletingLesson === lesson.id
                         ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -329,7 +329,7 @@ function SectionBlock({
           ) : (
             <button
               onClick={() => setAddingLesson(true)}
-              className="flex w-full items-center gap-2 rounded-lg border border-dashed border-[#1e2d4a] px-3 py-2 text-xs text-slate-500 hover:border-blue-500/40 hover:text-blue-400 transition-colors"
+              className="flex w-full items-center gap-2 rounded-lg border border-dashed border-[#c9beab] px-3 py-2 text-xs text-stone-500 hover:border-stone-700/40 hover:text-stone-700 transition-colors"
             >
               <Plus className="h-3.5 w-3.5" />
               Agregar clase
@@ -355,17 +355,17 @@ function StringListInput({ label, values, onChange, placeholder }: {
   };
   return (
     <div>
-      <label className="mb-1 block text-xs font-medium text-slate-500">{label}</label>
+      <label className="mb-1 block text-xs font-medium text-stone-500">{label}</label>
       <div className="flex gap-2 mb-2">
         <input value={draft} onChange={(e) => setDraft(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), add())} placeholder={placeholder} className={inputCls} />
-        <Button type="button" size="sm" onClick={add} variant="outline" className="border-[#1e2d4a] text-slate-400 shrink-0"><Plus className="h-4 w-4" /></Button>
+        <Button type="button" size="sm" onClick={add} variant="outline" className="border-[#c9beab] text-stone-600 shrink-0"><Plus className="h-4 w-4" /></Button>
       </div>
       {values.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {values.map((v, i) => (
-            <span key={i} className="flex items-center gap-1 rounded-full bg-[#162038] border border-[#1e2d4a] px-2.5 py-0.5 text-xs text-slate-300">
+            <span key={i} className="flex items-center gap-1 rounded-full bg-[#e4ddd0] border border-[#c9beab] px-2.5 py-0.5 text-xs text-stone-700">
               {v}
-              <button type="button" onClick={() => onChange(values.filter((_, j) => j !== i))}><X className="h-3 w-3 text-slate-500 hover:text-red-400" /></button>
+              <button type="button" onClick={() => onChange(values.filter((_, j) => j !== i))}><X className="h-3 w-3 text-stone-500 hover:text-red-700" /></button>
             </span>
           ))}
         </div>
@@ -497,8 +497,8 @@ export default function CourseEditorPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#080c14]">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-[#f5f0e6]">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-stone-700 border-t-transparent" />
       </div>
     );
   }
@@ -508,15 +508,15 @@ export default function CourseEditorPage() {
   const totalLessons = sections.reduce((acc, s) => acc + s.lessons.length, 0);
 
   return (
-    <div className="min-h-screen bg-[#080c14] text-slate-100">
+    <div className="min-h-screen bg-[#f5f0e6] text-stone-900">
       <Navbar />
 
       <div className="mx-auto max-w-4xl px-4 py-8">
         {/* Breadcrumb */}
-        <div className="mb-4 flex items-center gap-1.5 text-xs text-slate-500">
-          <Link href="/dashboard" className="hover:text-slate-300 transition-colors">Dashboard</Link>
+        <div className="mb-4 flex items-center gap-1.5 text-xs text-stone-500">
+          <Link href="/dashboard" className="hover:text-stone-700 transition-colors">Dashboard</Link>
           <ChevronRight className="h-3 w-3" />
-          <span className="truncate max-w-48 text-slate-300">{course.title}</span>
+          <span className="truncate max-w-48 text-stone-700">{course.title}</span>
         </div>
 
         {/* Header */}
@@ -526,20 +526,20 @@ export default function CourseEditorPage() {
               <h1 className="text-2xl font-black">{course.title}</h1>
               <span className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${
                 course.isPublished
-                  ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-400'
-                  : 'border-[#1e2d4a] bg-[#162038] text-slate-500'
+                  ? 'border-emerald-500/40 bg-emerald-50 text-emerald-700'
+                  : 'border-[#c9beab] bg-[#e4ddd0] text-stone-500'
               }`}>
                 {course.isPublished ? 'Publicado' : 'Borrador'}
               </span>
             </div>
-            <p className="mt-1 text-xs text-slate-500">
+            <p className="mt-1 text-xs text-stone-500">
               {sections.length} secciones · {totalLessons} clases
             </p>
           </div>
 
           <div className="flex items-center gap-2">
             <Link href={`/cursos/${course.slug}`} target="_blank">
-              <Button size="sm" variant="outline" className="border-[#1e2d4a] text-slate-400 hover:text-slate-200 text-xs gap-1.5">
+              <Button size="sm" variant="outline" className="border-[#c9beab] text-stone-600 hover:text-stone-800 text-xs gap-1.5">
                 <Eye className="h-3.5 w-3.5" /> Preview
               </Button>
             </Link>
@@ -548,7 +548,7 @@ export default function CourseEditorPage() {
               onClick={handleTogglePublish}
               disabled={togglingPublish}
               className={course.isPublished
-                ? 'border border-[#1e2d4a] bg-transparent hover:bg-[#162038] text-slate-400 text-xs'
+                ? 'border border-[#c9beab] bg-transparent hover:bg-[#e4ddd0] text-stone-600 text-xs'
                 : 'bg-emerald-600 hover:bg-emerald-700 text-xs'}
             >
               {togglingPublish ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <Globe className="mr-1.5 h-3.5 w-3.5" />}
@@ -558,15 +558,15 @@ export default function CourseEditorPage() {
         </div>
 
         {/* Tabs */}
-        <div className="mb-6 flex border-b border-[#1e2d4a]">
+        <div className="mb-6 flex border-b border-[#c9beab]">
           {([['content', 'Contenido', BookOpen], ['info', 'Información', Pencil]] as const).map(([t, label, Icon]) => (
             <button
               key={t}
               onClick={() => setTab(t as Tab)}
               className={`flex items-center gap-1.5 px-4 py-2.5 text-sm font-medium border-b-2 -mb-px transition-colors ${
                 tab === t
-                  ? 'border-blue-500 text-blue-400'
-                  : 'border-transparent text-slate-500 hover:text-slate-300'
+                  ? 'border-stone-700 text-stone-700'
+                  : 'border-transparent text-stone-500 hover:text-stone-700'
               }`}
             >
               <Icon className="h-4 w-4" />
@@ -579,10 +579,10 @@ export default function CourseEditorPage() {
         {tab === 'content' && (
           <div className="space-y-4">
             {sections.length === 0 && (
-              <div className="rounded-2xl border border-dashed border-[#1e2d4a] p-12 text-center">
+              <div className="rounded-2xl border border-dashed border-[#c9beab] p-12 text-center">
                 <BookOpen className="mx-auto mb-3 h-8 w-8 text-slate-700" />
-                <p className="text-sm text-slate-500">Sin secciones aún</p>
-                <p className="mt-1 text-xs text-slate-600">Agrega una sección para empezar a organizar las clases</p>
+                <p className="text-sm text-stone-500">Sin secciones aún</p>
+                <p className="mt-1 text-xs text-stone-400">Agrega una sección para empezar a organizar las clases</p>
               </div>
             )}
 
@@ -602,8 +602,8 @@ export default function CourseEditorPage() {
 
             {/* Add section */}
             {addingSection ? (
-              <div className="rounded-xl border border-[#1e2d4a] bg-[#0e1525] p-4 space-y-3">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Nueva sección</p>
+              <div className="rounded-xl border border-[#c9beab] bg-[#ede7d9] p-4 space-y-3">
+                <p className="text-xs font-semibold text-stone-600 uppercase tracking-wide">Nueva sección</p>
                 <div className="flex gap-2">
                   <input
                     autoFocus
@@ -615,10 +615,10 @@ export default function CourseEditorPage() {
                   />
                 </div>
                 <div className="flex justify-end gap-2">
-                  <Button size="sm" variant="outline" className="border-[#1e2d4a] text-slate-400 text-xs" onClick={() => { setAddingSection(false); setAddingSectionTitle(''); }}>
+                  <Button size="sm" variant="outline" className="border-[#c9beab] text-stone-600 text-xs" onClick={() => { setAddingSection(false); setAddingSectionTitle(''); }}>
                     Cancelar
                   </Button>
-                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-xs shadow-sm shadow-blue-600/20" onClick={handleAddSection} disabled={savingSection}>
+                  <Button size="sm" className="bg-stone-900 hover:bg-stone-800 text-xs shadow-sm shadow-stone-900/20" onClick={handleAddSection} disabled={savingSection}>
                     {savingSection ? <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" /> : null}
                     Agregar sección
                   </Button>
@@ -627,7 +627,7 @@ export default function CourseEditorPage() {
             ) : (
               <button
                 onClick={() => setAddingSection(true)}
-                className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#1e2d4a] py-4 text-sm text-slate-500 hover:border-blue-500/40 hover:text-blue-400 transition-colors"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#c9beab] py-4 text-sm text-stone-500 hover:border-stone-700/40 hover:text-stone-700 transition-colors"
               >
                 <Plus className="h-4 w-4" />
                 Agregar sección
@@ -639,8 +639,8 @@ export default function CourseEditorPage() {
         {/* ── Info tab ───────────────────────────────────────────────── */}
         {tab === 'info' && (
           <form onSubmit={handleSaveInfo} className="space-y-5">
-            <div className="rounded-2xl border border-[#1e2d4a] bg-[#0e1525] p-5 space-y-4">
-              <h3 className="text-sm font-semibold text-slate-300">Información básica</h3>
+            <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-5 space-y-4">
+              <h3 className="text-sm font-semibold text-stone-700">Información básica</h3>
 
               <Field label="Título" required>
                 <input value={info.title} onChange={setInfoField('title')} className={inputCls} />
@@ -655,8 +655,8 @@ export default function CourseEditorPage() {
               </Field>
             </div>
 
-            <div className="rounded-2xl border border-[#1e2d4a] bg-[#0e1525] p-5 space-y-4">
-              <h3 className="text-sm font-semibold text-slate-300">Clasificación</h3>
+            <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-5 space-y-4">
+              <h3 className="text-sm font-semibold text-stone-700">Clasificación</h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label="Nivel">
                   <select value={info.level} onChange={setInfoField('level')} className={selectCls}>
@@ -677,8 +677,8 @@ export default function CourseEditorPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-[#1e2d4a] bg-[#0e1525] p-5 space-y-4">
-              <h3 className="text-sm font-semibold text-slate-300">Multimedia</h3>
+            <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-5 space-y-4">
+              <h3 className="text-sm font-semibold text-stone-700">Multimedia</h3>
               <Field label="URL portada">
                 <input value={info.thumbnail} onChange={setInfoField('thumbnail')} placeholder="https://..." className={inputCls} />
               </Field>
@@ -687,15 +687,15 @@ export default function CourseEditorPage() {
               </Field>
             </div>
 
-            <div className="rounded-2xl border border-[#1e2d4a] bg-[#0e1525] p-5 space-y-4">
-              <h3 className="text-sm font-semibold text-slate-300">Contenido del curso</h3>
+            <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-5 space-y-4">
+              <h3 className="text-sm font-semibold text-stone-700">Contenido del curso</h3>
               <StringListInput label="Qué aprenderán" values={whatYouLearn} onChange={setWhatYouLearn} placeholder="Ej: Crear APIs REST con NestJS" />
               <StringListInput label="Requisitos" values={requirements} onChange={setRequirements} placeholder="Ej: JavaScript básico" />
               <StringListInput label="Tags" values={tags} onChange={setTags} placeholder="Ej: react, frontend" />
             </div>
 
             <div className="flex justify-end">
-              <Button type="submit" disabled={savingInfo} className="bg-blue-600 hover:bg-blue-700 font-semibold min-w-36 shadow-lg shadow-blue-600/20">
+              <Button type="submit" disabled={savingInfo} className="bg-stone-900 hover:bg-stone-800 font-semibold min-w-36 shadow-lg shadow-stone-900/20">
                 {savingInfo ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
                 {savingInfo ? 'Guardando...' : 'Guardar cambios'}
               </Button>

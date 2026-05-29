@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -33,26 +33,26 @@ function StringListInput({
 
   return (
     <div>
-      <label className="mb-1.5 block text-sm font-medium text-slate-400">{label}</label>
+      <label className="mb-1.5 block text-sm font-medium text-stone-600">{label}</label>
       <div className="flex gap-2 mb-2">
         <input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), add())}
           placeholder={placeholder}
-          className="flex-1 rounded-lg border border-[#1e2d4a] bg-[#162038] px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:border-blue-500/60 focus:outline-none focus:ring-2 focus:ring-blue-500/10 transition-colors"
+          className="flex-1 rounded-lg border border-[#c9beab] bg-[#e4ddd0] px-3 py-2 text-sm text-stone-900 placeholder-stone-400 focus:border-stone-700/60 focus:outline-none focus:ring-2 focus:ring-stone-700/10 transition-colors"
         />
-        <Button type="button" size="sm" onClick={add} variant="outline" className="border-[#1e2d4a] text-slate-400">
+        <Button type="button" size="sm" onClick={add} variant="outline" className="border-[#c9beab] text-stone-600">
           <Plus className="h-4 w-4" />
         </Button>
       </div>
       {values.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {values.map((v, i) => (
-            <span key={i} className="flex items-center gap-1 rounded-full bg-[#162038] border border-[#1e2d4a] px-2.5 py-0.5 text-xs text-slate-300">
+            <span key={i} className="flex items-center gap-1 rounded-full bg-[#e4ddd0] border border-[#c9beab] px-2.5 py-0.5 text-xs text-stone-700">
               {v}
               <button type="button" onClick={() => onChange(values.filter((_, j) => j !== i))}>
-                <X className="h-3 w-3 text-slate-500 hover:text-red-400" />
+                <X className="h-3 w-3 text-stone-500 hover:text-red-700" />
               </button>
             </span>
           ))}
@@ -67,15 +67,15 @@ function StringListInput({
 function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
     <div>
-      <label className="mb-1.5 block text-sm font-medium text-slate-400">
-        {label} {required && <span className="text-red-400">*</span>}
+      <label className="mb-1.5 block text-sm font-medium text-stone-600">
+        {label} {required && <span className="text-red-700">*</span>}
       </label>
       {children}
     </div>
   );
 }
 
-const inputCls = 'w-full rounded-lg border border-[#1e2d4a] bg-[#162038] px-3 py-2 text-sm text-slate-100 placeholder-slate-600 focus:border-blue-500/60 focus:outline-none focus:ring-2 focus:ring-blue-500/10 transition-colors';
+const inputCls = 'w-full rounded-lg border border-[#c9beab] bg-[#e4ddd0] px-3 py-2 text-sm text-stone-900 placeholder-stone-400 focus:border-stone-700/60 focus:outline-none focus:ring-2 focus:ring-stone-700/10 transition-colors';
 const selectCls = inputCls + ' cursor-pointer';
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -133,27 +133,27 @@ export default function NuevoCursoPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080c14] text-slate-100">
+    <div className="min-h-screen bg-[#f5f0e6] text-stone-900">
       <Navbar />
       <div className="mx-auto max-w-3xl px-4 py-10">
         {/* Breadcrumb */}
-        <div className="mb-6 flex items-center gap-1.5 text-xs text-slate-500">
-          <Link href="/dashboard" className="hover:text-slate-300 transition-colors">Dashboard</Link>
+        <div className="mb-6 flex items-center gap-1.5 text-xs text-stone-500">
+          <Link href="/dashboard" className="hover:text-stone-700 transition-colors">Dashboard</Link>
           <ChevronRight className="h-3 w-3" />
-          <span className="text-slate-300">Nuevo curso</span>
+          <span className="text-stone-700">Nuevo curso</span>
         </div>
 
         <h1 className="mb-1 text-2xl font-black">Crear nuevo curso</h1>
-        <p className="mb-8 text-sm text-slate-500">Completa la información básica. Luego agregas secciones y clases.</p>
+        <p className="mb-8 text-sm text-stone-500">Completa la información básica. Luego agregas secciones y clases.</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic info */}
-          <div className="rounded-2xl border border-[#1e2d4a] bg-[#0e1525] p-6 space-y-5">
-            <h2 className="font-semibold text-slate-200">Información básica</h2>
+          <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-6 space-y-5">
+            <h2 className="font-semibold text-stone-800">Información básica</h2>
 
             <Field label="Título del curso" required>
               <input value={form.title} onChange={set('title')} placeholder="Ej: Introducción a React con TypeScript" className={inputCls} />
-              <p className="mt-1 text-[11px] text-slate-600">{form.title.length}/5+ caracteres requeridos</p>
+              <p className="mt-1 text-[11px] text-stone-400">{form.title.length}/5+ caracteres requeridos</p>
             </Field>
 
             <Field label="Descripción corta">
@@ -168,13 +168,13 @@ export default function NuevoCursoPage() {
                 placeholder="Describe qué aprenderán los estudiantes, el enfoque del curso, etc."
                 className={inputCls + ' resize-none'}
               />
-              <p className="mt-1 text-[11px] text-slate-600">{form.description.length}/20+ caracteres requeridos</p>
+              <p className="mt-1 text-[11px] text-stone-400">{form.description.length}/20+ caracteres requeridos</p>
             </Field>
           </div>
 
           {/* Classification */}
-          <div className="rounded-2xl border border-[#1e2d4a] bg-[#0e1525] p-6 space-y-5">
-            <h2 className="font-semibold text-slate-200">Clasificación</h2>
+          <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-6 space-y-5">
+            <h2 className="font-semibold text-stone-800">Clasificación</h2>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Nivel">
@@ -199,14 +199,14 @@ export default function NuevoCursoPage() {
 
               <Field label="Precio (USD)">
                 <input type="number" min="0" step="0.01" value={form.price} onChange={set('price')} placeholder="0" className={inputCls} />
-                <p className="mt-1 text-[11px] text-slate-600">0 = gratis</p>
+                <p className="mt-1 text-[11px] text-stone-400">0 = gratis</p>
               </Field>
             </div>
           </div>
 
           {/* Media */}
-          <div className="rounded-2xl border border-[#1e2d4a] bg-[#0e1525] p-6 space-y-5">
-            <h2 className="font-semibold text-slate-200">Multimedia (opcional)</h2>
+          <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-6 space-y-5">
+            <h2 className="font-semibold text-stone-800">Multimedia (opcional)</h2>
 
             <Field label="URL de portada (imagen)">
               <input value={form.thumbnail} onChange={set('thumbnail')} placeholder="https://..." className={inputCls} />
@@ -218,8 +218,8 @@ export default function NuevoCursoPage() {
           </div>
 
           {/* Content lists */}
-          <div className="rounded-2xl border border-[#1e2d4a] bg-[#0e1525] p-6 space-y-5">
-            <h2 className="font-semibold text-slate-200">Contenido del curso</h2>
+          <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-6 space-y-5">
+            <h2 className="font-semibold text-stone-800">Contenido del curso</h2>
 
             <StringListInput
               label="Qué aprenderán los estudiantes"
@@ -246,11 +246,11 @@ export default function NuevoCursoPage() {
           {/* Actions */}
           <div className="flex justify-end gap-3">
             <Link href="/dashboard">
-              <Button type="button" variant="outline" className="border-[#1e2d4a] text-slate-400 hover:text-slate-200">
+              <Button type="button" variant="outline" className="border-[#c9beab] text-stone-600 hover:text-stone-800">
                 Cancelar
               </Button>
             </Link>
-            <Button type="submit" disabled={saving} className="bg-blue-600 hover:bg-blue-700 font-semibold min-w-36 shadow-lg shadow-blue-600/20">
+            <Button type="submit" disabled={saving} className="bg-stone-900 hover:bg-stone-800 font-semibold min-w-36 shadow-lg shadow-stone-900/20">
               {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
               {saving ? 'Creando...' : 'Crear curso →'}
             </Button>

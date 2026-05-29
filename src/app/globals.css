@@ -31,32 +31,32 @@
 :root {
   --radius: 0.625rem;
 
-  /* Deep navy background scheme */
-  --background: #080c14;
-  --foreground: #f0f4ff;
-  --card: #0e1525;
-  --card-foreground: #f0f4ff;
-  --popover: #0e1525;
-  --popover-foreground: #f0f4ff;
+  /* Kore Training & Consulting — cream/warm palette */
+  --background: #f5f0e6;
+  --foreground: #1a1208;
+  --card: #ede7d9;
+  --card-foreground: #1a1208;
+  --popover: #ede7d9;
+  --popover-foreground: #1a1208;
 
-  /* Blue as primary */
-  --primary: #2563eb;
-  --primary-foreground: #f0f4ff;
+  /* Dark as primary */
+  --primary: #1a1208;
+  --primary-foreground: #f5f0e6;
 
   /* Surfaces */
-  --secondary: #162038;
-  --secondary-foreground: #f0f4ff;
-  --muted: #162038;
-  --muted-foreground: #7b8db0;
-  --accent: #162038;
-  --accent-foreground: #f0f4ff;
+  --secondary: #e4ddd0;
+  --secondary-foreground: #1a1208;
+  --muted: #e4ddd0;
+  --muted-foreground: #6b5e4a;
+  --accent: #e4ddd0;
+  --accent-foreground: #1a1208;
 
   /* Functional */
-  --destructive: #ef4444;
-  --destructive-foreground: #f0f4ff;
-  --border: #1e2d4a;
-  --input: #1e2d4a;
-  --ring: #3b82f6;
+  --destructive: #dc2626;
+  --destructive-foreground: #f5f0e6;
+  --border: #c9beab;
+  --input: #c9beab;
+  --ring: #1a1208;
 }
 
 body {
@@ -67,6 +67,6 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #080c14; }
-::-webkit-scrollbar-thumb { background: #1e2d4a; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+::-webkit-scrollbar-track { background: #f5f0e6; }
+::-webkit-scrollbar-thumb { background: #c9beab; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #1a1208; }

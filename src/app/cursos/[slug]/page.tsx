@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
@@ -116,17 +116,17 @@ export default function CourseDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#080c14]">
+      <div className="min-h-screen bg-[#f5f0e6]">
         <Navbar />
         <div className="mx-auto max-w-7xl px-4 py-12">
-          <div className="h-10 w-48 rounded bg-[#162038] animate-pulse mb-6" />
+          <div className="h-10 w-48 rounded bg-[#e4ddd0] animate-pulse mb-6" />
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2 space-y-4">
-              <div className="aspect-video rounded-xl bg-[#162038] animate-pulse" />
-              <div className="h-8 w-3/4 rounded bg-[#162038] animate-pulse" />
-              <div className="h-4 w-full rounded bg-[#162038] animate-pulse" />
+              <div className="aspect-video rounded-xl bg-[#e4ddd0] animate-pulse" />
+              <div className="h-8 w-3/4 rounded bg-[#e4ddd0] animate-pulse" />
+              <div className="h-4 w-full rounded bg-[#e4ddd0] animate-pulse" />
             </div>
-            <div className="h-96 rounded-xl bg-[#162038] animate-pulse" />
+            <div className="h-96 rounded-xl bg-[#e4ddd0] animate-pulse" />
           </div>
         </div>
       </div>
@@ -149,31 +149,31 @@ export default function CourseDetailPage() {
       : null);
 
   return (
-    <div className="min-h-screen bg-[#080c14] text-slate-100">
+    <div className="min-h-screen bg-[#f5f0e6] text-stone-900">
       <Navbar />
 
       {/* Video player */}
       {activeLesson && activeLesson.youtubeVideoId && canWatchActive && (
-        <div className="border-b border-[#1e2d4a] bg-[#0e1525]">
+        <div className="border-b border-[#c9beab] bg-[#ede7d9]">
           <div className="mx-auto max-w-7xl px-4 py-4">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <p className="text-xs text-slate-500 uppercase tracking-wide">Reproduciendo</p>
-                <h3 className="font-semibold text-slate-100">{activeLesson.title}</h3>
+                <p className="text-xs text-stone-500 uppercase tracking-wide">Reproduciendo</p>
+                <h3 className="font-semibold text-stone-900">{activeLesson.title}</h3>
               </div>
               <div className="flex gap-2">
                 {isApproved && !completedIds.includes(activeLesson.id) && (
-                  <Button size="sm" onClick={handleComplete} className="bg-emerald-600 hover:bg-emerald-700 text-xs">
+                  <Button size="sm" onClick={handleComplete} className="bg-emerald-700 hover:bg-emerald-800 text-xs">
                     <CheckCircle className="mr-1 h-3.5 w-3.5" />
                     Marcar completada
                   </Button>
                 )}
                 {!isApproved && activeLesson.isFree && (
-                  <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-[11px] text-emerald-400">
+                  <span className="rounded-full border border-emerald-600/30 bg-emerald-50 px-2.5 py-1 text-[11px] text-emerald-700">
                     Vista previa gratuita
                   </span>
                 )}
-                <Button size="sm" variant="outline" onClick={() => setActiveLesson(null)} className="border-[#1e2d4a] text-slate-400 text-xs">
+                <Button size="sm" variant="outline" onClick={() => setActiveLesson(null)} className="border-[#c9beab] text-stone-600 text-xs">
                   Cerrar
                 </Button>
               </div>
@@ -187,7 +187,7 @@ export default function CourseDetailPage() {
               />
             </div>
             {activeLesson.description && (
-              <p className="mt-3 text-sm text-slate-400">{activeLesson.description}</p>
+              <p className="mt-3 text-sm text-stone-600">{activeLesson.description}</p>
             )}
           </div>
         </div>
@@ -195,7 +195,7 @@ export default function CourseDetailPage() {
 
       <div className="mx-auto max-w-7xl px-4 py-8">
         {/* Back */}
-        <Link href="/cursos" className="mb-6 inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-300 transition-colors">
+        <Link href="/cursos" className="mb-6 inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-700 transition-colors">
           <ArrowLeft className="h-4 w-4" />
           Volver a cursos
         </Link>
@@ -206,7 +206,7 @@ export default function CourseDetailPage() {
             {/* Hero */}
             <div>
               {!activeLesson && thumbnail && (
-                <div className="mb-6 aspect-video overflow-hidden rounded-2xl bg-[#162038]">
+                <div className="mb-6 aspect-video overflow-hidden rounded-2xl bg-[#e4ddd0]">
                   <img src={thumbnail} alt={course.title} className="h-full w-full object-cover" />
                 </div>
               )}
@@ -215,20 +215,20 @@ export default function CourseDetailPage() {
                 <CategoryBadge category={course.category} />
                 <LevelBadge level={course.level} />
                 {course.language && (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-[#1e2d4a] px-2 py-0.5 text-xs text-slate-400">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-[#c9beab] px-2 py-0.5 text-xs text-stone-600">
                     <Globe className="h-3 w-3" />
                     {course.language.toUpperCase()}
                   </span>
                 )}
               </div>
 
-              <h1 className="text-3xl font-black text-slate-100">{course.title}</h1>
+              <h1 className="text-3xl font-black text-stone-900">{course.title}</h1>
 
               {course.shortDescription && (
-                <p className="mt-2 text-lg text-slate-400">{course.shortDescription}</p>
+                <p className="mt-2 text-lg text-stone-600">{course.shortDescription}</p>
               )}
 
-              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-slate-500">
+              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-stone-500">
                 {course.ratingCount > 0 && (
                   <StarRating rating={course.rating} count={course.ratingCount} />
                 )}
@@ -255,12 +255,12 @@ export default function CourseDetailPage() {
               {/* Instructor */}
               {course.instructor && (
                 <div className="mt-4 flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600/20 text-sm font-bold text-blue-400">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-stone-900/15 text-sm font-bold text-stone-700">
                     {course.instructor.firstName[0]}
                   </div>
                   <div>
-                    <p className="text-xs text-slate-500">Instructor</p>
-                    <p className="text-sm font-medium text-slate-300">
+                    <p className="text-xs text-stone-500">Instructor</p>
+                    <p className="text-sm font-medium text-stone-700">
                       {course.instructor.firstName} {course.instructor.lastName}
                     </p>
                   </div>
@@ -270,15 +270,15 @@ export default function CourseDetailPage() {
 
             {/* Rejection notice */}
             {isRejected && (
-              <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-5">
+              <div className="rounded-xl border border-red-600/30 bg-red-50 p-5">
                 <div className="flex items-start gap-3">
-                  <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-400" />
+                  <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-700" />
                   <div>
-                    <p className="font-semibold text-red-400">Solicitud rechazada</p>
+                    <p className="font-semibold text-red-700">Solicitud rechazada</p>
                     {enrollment?.rejectionReason && (
                       <p className="mt-1 text-sm text-red-300/70">{enrollment.rejectionReason}</p>
                     )}
-                    <p className="mt-2 text-xs text-slate-500">Puedes volver a solicitar la inscripción.</p>
+                    <p className="mt-2 text-xs text-stone-500">Puedes volver a solicitar la inscripción.</p>
                   </div>
                 </div>
               </div>
@@ -286,12 +286,12 @@ export default function CourseDetailPage() {
 
             {/* What you'll learn */}
             {course.whatYouLearn?.length > 0 && (
-              <div className="rounded-2xl border border-[#1e2d4a] bg-[#0e1525] p-6">
+              <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-6">
                 <h2 className="text-lg font-bold mb-4">Lo que aprenderás</h2>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {course.whatYouLearn.map((item, i) => (
-                    <div key={i} className="flex items-start gap-2 text-sm text-slate-400">
-                      <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
+                    <div key={i} className="flex items-start gap-2 text-sm text-stone-600">
+                      <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700" />
                       {item}
                     </div>
                   ))}
@@ -302,7 +302,7 @@ export default function CourseDetailPage() {
             {/* Description */}
             <div>
               <h2 className="text-lg font-bold mb-3">Descripción</h2>
-              <p className="text-slate-400 leading-relaxed whitespace-pre-line">{course.description}</p>
+              <p className="text-stone-600 leading-relaxed whitespace-pre-line">{course.description}</p>
             </div>
 
             {/* Requirements */}
@@ -311,8 +311,8 @@ export default function CourseDetailPage() {
                 <h2 className="text-lg font-bold mb-3">Requisitos</h2>
                 <ul className="space-y-1.5">
                   {course.requirements.map((req, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-slate-400">
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-blue-400" />
+                    <li key={i} className="flex items-start gap-2 text-sm text-stone-600">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-stone-700" />
                       {req}
                     </li>
                   ))}
@@ -325,7 +325,7 @@ export default function CourseDetailPage() {
               <div>
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="text-lg font-bold">Contenido del curso</h2>
-                  <span className="text-sm text-slate-500">
+                  <span className="text-sm text-stone-500">
                     {course.sections.length} secciones · {course.totalLessons} clases
                   </span>
                 </div>
@@ -341,9 +341,9 @@ export default function CourseDetailPage() {
 
           {/* ── Sidebar ──────────────────────────────────────────────── */}
           <div className="lg:col-span-1">
-            <div className="sticky top-20 rounded-2xl border border-[#1e2d4a] bg-[#0e1525] overflow-hidden">
+            <div className="sticky top-20 rounded-2xl border border-[#c9beab] bg-[#ede7d9] overflow-hidden">
               {thumbnail && (
-                <div className="aspect-video bg-[#162038]">
+                <div className="aspect-video bg-[#e4ddd0]">
                   <img src={thumbnail} alt={course.title} className="h-full w-full object-cover" />
                 </div>
               )}
@@ -351,9 +351,9 @@ export default function CourseDetailPage() {
               <div className="p-5 space-y-4">
                 {/* Price */}
                 <div className="flex items-center justify-between">
-                  <span className="text-3xl font-black text-slate-100">
+                  <span className="text-3xl font-black text-stone-900">
                     {Number(course.price) === 0 ? (
-                      <span className="text-emerald-400">Gratis</span>
+                      <span className="text-emerald-700">Gratis</span>
                     ) : (
                       `$${Number(course.price).toFixed(2)}`
                     )}
@@ -363,12 +363,12 @@ export default function CourseDetailPage() {
                 {/* Progress */}
                 {isApproved && enrollment && (
                   <div className="space-y-1.5">
-                    <div className="flex justify-between text-xs text-slate-500">
+                    <div className="flex justify-between text-xs text-stone-500">
                       <span>Tu progreso</span>
-                      <span className="font-semibold text-blue-400">{enrollment.progressPercentage}%</span>
+                      <span className="font-semibold text-stone-700">{enrollment.progressPercentage}%</span>
                     </div>
                     <Progress value={enrollment.progressPercentage} />
-                    <p className="text-xs text-slate-600">
+                    <p className="text-xs text-stone-400">
                       {completedIds.length} de {course.totalLessons} clases completadas
                     </p>
                   </div>
@@ -377,12 +377,12 @@ export default function CourseDetailPage() {
                 {/* CTA */}
                 {isOwnCourse ? (
                   <div className="space-y-2">
-                    <div className="flex items-center justify-center gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 px-4 py-3">
-                      <BookOpen className="h-4 w-4 text-blue-400" />
-                      <p className="text-sm font-medium text-blue-400">Eres el instructor</p>
+                    <div className="flex items-center justify-center gap-2 rounded-xl border border-stone-700/20 bg-stone-900/10 px-4 py-3">
+                      <BookOpen className="h-4 w-4 text-stone-700" />
+                      <p className="text-sm font-medium text-stone-700">Eres el instructor</p>
                     </div>
                     <Button
-                      className="w-full bg-blue-600 hover:bg-blue-700 font-semibold shadow-lg shadow-blue-600/20"
+                      className="w-full bg-stone-900 hover:bg-stone-800 font-semibold shadow-lg shadow-stone-900/20"
                       onClick={() => router.push(`/cursos/${slug}/classroom`)}
                     >
                       <Play className="mr-2 h-4 w-4" />
@@ -391,7 +391,7 @@ export default function CourseDetailPage() {
                   </div>
                 ) : isApproved ? (
                   <Button
-                    className="w-full bg-blue-600 hover:bg-blue-700 font-semibold shadow-lg shadow-blue-600/20"
+                    className="w-full bg-stone-900 hover:bg-stone-800 font-semibold shadow-lg shadow-stone-900/20"
                     onClick={() => router.push(`/cursos/${slug}/classroom`)}
                   >
                     <Play className="mr-2 h-4 w-4" />
@@ -399,16 +399,16 @@ export default function CourseDetailPage() {
                   </Button>
                 ) : isPending ? (
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2 rounded-xl bg-amber-500/10 border border-amber-500/20 px-4 py-3">
-                      <Clock3 className="h-4 w-4 shrink-0 text-amber-400" />
+                    <div className="flex items-center gap-2 rounded-xl bg-amber-50 border border-amber-600/20 px-4 py-3">
+                      <Clock3 className="h-4 w-4 shrink-0 text-amber-700" />
                       <div>
-                        <p className="text-sm font-medium text-amber-400">Solicitud pendiente</p>
-                        <p className="text-xs text-slate-500">El instructor revisará tu solicitud</p>
+                        <p className="text-sm font-medium text-amber-700">Solicitud pendiente</p>
+                        <p className="text-xs text-stone-500">El instructor revisará tu solicitud</p>
                       </div>
                     </div>
                     <Button
                       variant="outline"
-                      className="w-full border-[#1e2d4a] text-slate-400 hover:text-red-400 hover:border-red-500/30 text-sm"
+                      className="w-full border-[#c9beab] text-stone-600 hover:text-red-700 hover:border-red-600/30 text-sm"
                       onClick={handleCancelRequest}
                       disabled={cancelling}
                     >
@@ -418,7 +418,7 @@ export default function CourseDetailPage() {
                   </div>
                 ) : isRejected ? (
                   <Button
-                    className="w-full bg-blue-600 hover:bg-blue-700 font-semibold shadow-lg shadow-blue-600/20"
+                    className="w-full bg-stone-900 hover:bg-stone-800 font-semibold shadow-lg shadow-stone-900/20"
                     onClick={handleRequestEnrollment}
                     disabled={enrolling}
                   >
@@ -427,7 +427,7 @@ export default function CourseDetailPage() {
                   </Button>
                 ) : (
                   <Button
-                    className="w-full bg-blue-600 hover:bg-blue-700 font-semibold shadow-lg shadow-blue-600/20"
+                    className="w-full bg-stone-900 hover:bg-stone-800 font-semibold shadow-lg shadow-stone-900/20"
                     onClick={handleRequestEnrollment}
                     disabled={enrolling}
                   >
@@ -441,43 +441,43 @@ export default function CourseDetailPage() {
                 )}
 
                 {!isAuthenticated && (
-                  <p className="text-center text-xs text-slate-500">
-                    <Link href="/login" className="text-blue-400 hover:text-blue-300 transition-colors">Inicia sesión</Link>
+                  <p className="text-center text-xs text-stone-500">
+                    <Link href="/login" className="text-stone-700 hover:text-stone-900 transition-colors">Inicia sesión</Link>
                     {' '}para inscribirte
                   </p>
                 )}
 
                 {/* Course info */}
-                <div className="space-y-2 border-t border-[#1e2d4a] pt-4 text-sm">
+                <div className="space-y-2 border-t border-[#c9beab] pt-4 text-sm">
                   {course.totalLessons > 0 && (
-                    <div className="flex items-center justify-between text-slate-500">
+                    <div className="flex items-center justify-between text-stone-500">
                       <span className="flex items-center gap-1.5"><BookOpen className="h-4 w-4" />Clases</span>
-                      <span className="text-slate-300">{course.totalLessons}</span>
+                      <span className="text-stone-700">{course.totalLessons}</span>
                     </div>
                   )}
                   {course.totalDurationSeconds > 0 && (
-                    <div className="flex items-center justify-between text-slate-500">
+                    <div className="flex items-center justify-between text-stone-500">
                       <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" />Duración</span>
-                      <span className="text-slate-300">{formatDuration(course.totalDurationSeconds)}</span>
+                      <span className="text-stone-700">{formatDuration(course.totalDurationSeconds)}</span>
                     </div>
                   )}
-                  <div className="flex items-center justify-between text-slate-500">
+                  <div className="flex items-center justify-between text-stone-500">
                     <span className="flex items-center gap-1.5"><Globe className="h-4 w-4" />Idioma</span>
-                    <span className="text-slate-300">{course.language?.toUpperCase()}</span>
+                    <span className="text-stone-700">{course.language?.toUpperCase()}</span>
                   </div>
                   {course.enrollmentCount > 0 && (
-                    <div className="flex items-center justify-between text-slate-500">
+                    <div className="flex items-center justify-between text-stone-500">
                       <span className="flex items-center gap-1.5"><Users className="h-4 w-4" />Estudiantes</span>
-                      <span className="text-slate-300">{course.enrollmentCount.toLocaleString()}</span>
+                      <span className="text-stone-700">{course.enrollmentCount.toLocaleString()}</span>
                     </div>
                   )}
                 </div>
 
                 {/* Tags */}
                 {course.tags?.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 border-t border-[#1e2d4a] pt-4">
+                  <div className="flex flex-wrap gap-1.5 border-t border-[#c9beab] pt-4">
                     {course.tags.map((tag) => (
-                      <span key={tag} className="rounded-full bg-[#162038] px-2 py-0.5 text-xs text-slate-500 border border-[#1e2d4a]">
+                      <span key={tag} className="rounded-full bg-[#e4ddd0] px-2 py-0.5 text-xs text-stone-500 border border-[#c9beab]">
                         #{tag}
                       </span>
                     ))}

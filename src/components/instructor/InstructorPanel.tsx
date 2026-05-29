@@ -105,7 +105,7 @@ export function InstructorPanel() {
     return (
       <div className="space-y-3">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-16 rounded-xl border border-[#1e2d4a] bg-[#0e1525] animate-pulse" />
+          <div key={i} className="h-16 rounded-xl border border-[#c9beab] bg-[#ede7d9] animate-pulse" />
         ))}
       </div>
     );
@@ -123,17 +123,17 @@ export function InstructorPanel() {
       {/* Stats */}
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
         {[
-          { label: 'Mis cursos', value: courseData.length, icon: BookOpen, color: 'text-blue-400', bg: 'bg-blue-500/10 border-blue-500/20' },
-          { label: 'Estudiantes activos', value: totalStudents, icon: Users, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
-          { label: 'Solicitudes pendientes', value: pendingCount, icon: Clock3, color: 'text-amber-400', bg: 'bg-amber-500/10 border-amber-500/20' },
+          { label: 'Mis cursos', value: courseData.length, icon: BookOpen, color: 'text-stone-700', bg: 'bg-stone-900/10 border-stone-700/20' },
+          { label: 'Estudiantes activos', value: totalStudents, icon: Users, color: 'text-emerald-700', bg: 'bg-emerald-500/10 border-emerald-500/20' },
+          { label: 'Solicitudes pendientes', value: pendingCount, icon: Clock3, color: 'text-amber-700', bg: 'bg-amber-500/10 border-amber-500/20' },
         ].map((stat) => (
-          <div key={stat.label} className={`flex items-center gap-4 rounded-xl border bg-[#0e1525] p-5 ${stat.bg}`}>
+          <div key={stat.label} className={`flex items-center gap-4 rounded-xl border bg-[#ede7d9] p-5 ${stat.bg}`}>
             <div className={`rounded-xl p-3 ${stat.bg}`}>
               <stat.icon className={`h-5 w-5 ${stat.color}`} />
             </div>
             <div>
               <p className={`text-2xl font-black ${stat.color}`}>{stat.value}</p>
-              <p className="text-xs text-slate-500">{stat.label}</p>
+              <p className="text-xs text-stone-500">{stat.label}</p>
             </div>
           </div>
         ))}
@@ -142,7 +142,7 @@ export function InstructorPanel() {
       {/* Toolbar: filter + new course button */}
       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2">
-          <span className="text-sm text-slate-500">Filtrar:</span>
+          <span className="text-sm text-stone-500">Filtrar:</span>
           {(Object.keys(FILTER_LABELS) as FilterStatus[]).map((s) => (
             <button
               key={s}
@@ -150,13 +150,13 @@ export function InstructorPanel() {
               className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
                 filterStatus === s
                   ? s === 'PENDING'
-                    ? 'border-amber-500/50 bg-amber-500/10 text-amber-400'
+                    ? 'border-amber-600/50 bg-amber-50 text-amber-700'
                     : s === 'APPROVED'
-                    ? 'border-emerald-500/50 bg-emerald-500/10 text-emerald-400'
+                    ? 'border-emerald-600/50 bg-emerald-50 text-emerald-700'
                     : s === 'REJECTED'
-                    ? 'border-red-500/50 bg-red-500/10 text-red-400'
-                    : 'border-blue-500/50 bg-blue-500/10 text-blue-400'
-                  : 'border-[#1e2d4a] text-slate-500 hover:border-slate-600'
+                    ? 'border-red-600/50 bg-red-50 text-red-700'
+                    : 'border-stone-700/50 bg-stone-900/10 text-stone-700'
+                  : 'border-[#c9beab] text-stone-500 hover:border-stone-500'
               }`}
             >
               {FILTER_LABELS[s]}
@@ -165,7 +165,7 @@ export function InstructorPanel() {
         </div>
 
         <Link href="/dashboard/instructor/cursos/nuevo">
-          <Button className="bg-blue-600 hover:bg-blue-700 font-semibold text-sm shadow-lg shadow-blue-600/20">
+          <Button className="bg-stone-900 hover:bg-stone-800 font-semibold text-sm shadow-lg shadow-stone-900/20">
             <Plus className="mr-1.5 h-4 w-4" />
             Nuevo curso
           </Button>
@@ -174,12 +174,12 @@ export function InstructorPanel() {
 
       {/* Course list */}
       {courseData.length === 0 ? (
-        <div className="rounded-2xl border border-[#1e2d4a] bg-[#0e1525] p-12 text-center">
-          <BookOpen className="mx-auto mb-4 h-10 w-10 text-slate-700" />
-          <h3 className="text-lg font-semibold text-slate-400">Sin cursos aún</h3>
-          <p className="mt-1 text-sm text-slate-600">Crea tu primer curso para comenzar</p>
+        <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-12 text-center">
+          <BookOpen className="mx-auto mb-4 h-10 w-10 text-stone-400" />
+          <h3 className="text-lg font-semibold text-stone-600">Sin cursos aún</h3>
+          <p className="mt-1 text-sm text-stone-500">Crea tu primer curso para comenzar</p>
           <Link href="/dashboard/instructor/cursos/nuevo">
-            <Button className="mt-6 bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-600/20">Crear curso</Button>
+            <Button className="mt-6 bg-stone-900 hover:bg-stone-800 shadow-lg shadow-stone-900/20">Crear curso</Button>
           </Link>
         </div>
       ) : (
@@ -192,33 +192,33 @@ export function InstructorPanel() {
             const pending = enrollments.filter((e) => e.status === 'PENDING').length;
 
             return (
-              <div key={course.id} className="rounded-xl border border-[#1e2d4a] bg-[#0e1525] overflow-hidden">
+              <div key={course.id} className="rounded-xl border border-[#c9beab] bg-[#ede7d9] overflow-hidden">
                 {/* Course header */}
                 <button
                   onClick={() => toggleCourse(course.id)}
-                  className="w-full flex items-center justify-between px-5 py-4 hover:bg-blue-600/5 transition-colors text-left"
+                  className="w-full flex items-center justify-between px-5 py-4 hover:bg-stone-900/5 transition-colors text-left"
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     {course.thumbnail ? (
                       <img src={course.thumbnail} alt="" className="h-10 w-14 shrink-0 rounded-md object-cover" />
                     ) : (
-                      <div className="h-10 w-14 shrink-0 rounded-md bg-[#162038] flex items-center justify-center">
-                        <BookOpen className="h-5 w-5 text-slate-600" />
+                      <div className="h-10 w-14 shrink-0 rounded-md bg-[#e4ddd0] flex items-center justify-center">
+                        <BookOpen className="h-5 w-5 text-stone-400" />
                       </div>
                     )}
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <p className="font-semibold text-slate-200 truncate">{course.title}</p>
+                        <p className="font-semibold text-stone-800 truncate">{course.title}</p>
                         {!course.isPublished && (
-                          <span className="shrink-0 rounded-full border border-[#1e2d4a] px-1.5 py-0.5 text-[10px] text-slate-500">
+                          <span className="shrink-0 rounded-full border border-[#c9beab] px-1.5 py-0.5 text-[10px] text-stone-500">
                             Borrador
                           </span>
                         )}
                       </div>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-stone-500">
                         {enrollments.filter((e) => e.status === 'APPROVED').length} estudiantes
                         {pending > 0 && (
-                          <span className="ml-2 text-amber-400 font-medium">
+                          <span className="ml-2 text-amber-700 font-medium">
                             · {pending} pendiente{pending !== 1 ? 's' : ''}
                           </span>
                         )}
@@ -230,7 +230,7 @@ export function InstructorPanel() {
                     <Link
                       href={`/dashboard/instructor/cursos/${course.id}`}
                       onClick={(e) => e.stopPropagation()}
-                      className="rounded-lg border border-[#1e2d4a] p-1.5 text-slate-500 hover:text-blue-400 hover:border-blue-500/30 transition-colors"
+                      className="rounded-lg border border-[#c9beab] p-1.5 text-stone-500 hover:text-stone-700 hover:border-stone-700/30 transition-colors"
                       title="Editar"
                     >
                       <Pencil className="h-4 w-4" />
@@ -238,45 +238,45 @@ export function InstructorPanel() {
                     <Link
                       href={`/cursos/${course.slug}`}
                       onClick={(e) => e.stopPropagation()}
-                      className="rounded-lg border border-[#1e2d4a] p-1.5 text-slate-500 hover:text-slate-300 transition-colors"
+                      className="rounded-lg border border-[#c9beab] p-1.5 text-stone-500 hover:text-stone-700 transition-colors"
                       title="Ver curso"
                     >
                       <Eye className="h-4 w-4" />
                     </Link>
                     {open ? (
-                      <ChevronDown className="h-5 w-5 text-slate-500" />
+                      <ChevronDown className="h-5 w-5 text-stone-500" />
                     ) : (
-                      <ChevronRight className="h-5 w-5 text-slate-500" />
+                      <ChevronRight className="h-5 w-5 text-stone-500" />
                     )}
                   </div>
                 </button>
 
                 {/* Enrollments */}
                 {open && (
-                  <div className="border-t border-[#1e2d4a]">
+                  <div className="border-t border-[#c9beab]">
                     {filtered.length === 0 ? (
-                      <div className="px-5 py-6 text-center text-sm text-slate-600">
+                      <div className="px-5 py-6 text-center text-sm text-stone-500">
                         No hay solicitudes{filterStatus !== 'ALL' ? ` con estado "${filterStatus.toLowerCase()}"` : ''}
                       </div>
                     ) : (
-                      <div className="divide-y divide-[#1e2d4a]">
+                      <div className="divide-y divide-[#c9beab]">
                         {filtered.map((enrollment) => (
                           <div
                             key={enrollment.id}
-                            className="flex items-center justify-between px-5 py-3 hover:bg-blue-600/5 transition-colors"
+                            className="flex items-center justify-between px-5 py-3 hover:bg-stone-900/5 transition-colors"
                           >
                             <div className="flex items-center gap-3 min-w-0">
-                              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#162038] text-sm font-bold text-slate-400">
+                              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#e4ddd0] text-sm font-bold text-stone-600">
                                 {enrollment.user?.firstName?.[0] ?? '?'}
                               </div>
                               <div className="min-w-0">
-                                <p className="text-sm font-medium text-slate-200 truncate">
+                                <p className="text-sm font-medium text-stone-800 truncate">
                                   {enrollment.user
                                     ? `${enrollment.user.firstName} ${enrollment.user.lastName}`
                                     : 'Usuario'}
                                 </p>
-                                <p className="text-xs text-slate-500 truncate">{enrollment.user?.email}</p>
-                                <p className="text-[10px] text-slate-600">
+                                <p className="text-xs text-stone-500 truncate">{enrollment.user?.email}</p>
+                                <p className="text-[10px] text-stone-400">
                                   {new Date(enrollment.enrolledAt).toLocaleDateString('es-ES', {
                                     day: '2-digit',
                                     month: 'short',
@@ -288,17 +288,17 @@ export function InstructorPanel() {
 
                             <div className="flex items-center gap-2 shrink-0">
                               {enrollment.status === 'PENDING' && (
-                                <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-400">
+                                <span className="inline-flex items-center gap-1 rounded-full border border-amber-600/30 bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700">
                                   <Clock3 className="h-3 w-3" /> Pendiente
                                 </span>
                               )}
                               {enrollment.status === 'APPROVED' && (
-                                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-medium text-emerald-400">
+                                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-600/30 bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-700">
                                   <CheckCircle className="h-3 w-3" /> Aprobado · {enrollment.progressPercentage}%
                                 </span>
                               )}
                               {enrollment.status === 'REJECTED' && (
-                                <span className="inline-flex items-center gap-1 rounded-full border border-red-500/30 bg-red-500/10 px-2 py-0.5 text-[10px] font-medium text-red-400">
+                                <span className="inline-flex items-center gap-1 rounded-full border border-red-600/30 bg-red-50 px-2 py-0.5 text-[10px] font-medium text-red-700">
                                   <XCircle className="h-3 w-3" /> Rechazado
                                 </span>
                               )}
@@ -307,7 +307,7 @@ export function InstructorPanel() {
                                 <>
                                   <Button
                                     size="sm"
-                                    className="bg-emerald-600 hover:bg-emerald-700 h-7 px-2.5 text-xs"
+                                    className="bg-emerald-700 hover:bg-emerald-800 h-7 px-2.5 text-xs"
                                     disabled={actionLoading === enrollment.id}
                                     onClick={() => handleApprove(enrollment.id, course.id)}
                                   >
@@ -317,7 +317,7 @@ export function InstructorPanel() {
                                   <Button
                                     size="sm"
                                     variant="outline"
-                                    className="border-red-500/30 text-red-400 hover:bg-red-500/10 h-7 px-2.5 text-xs"
+                                    className="border-red-500/30 text-red-700 hover:bg-red-50 h-7 px-2.5 text-xs"
                                     disabled={actionLoading === enrollment.id}
                                     onClick={() => handleReject(enrollment.id, course.id)}
                                   >

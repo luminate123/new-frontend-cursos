@@ -28,8 +28,8 @@ export function RoleGuard({ children, allowedRoles, redirectTo = "/dashboard" }:
   // While loading, show spinner
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#080c14]">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
+      <div className="flex min-h-screen items-center justify-center bg-[#f5f0e6]">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-stone-700 border-t-transparent" />
       </div>
     );
   }

@@ -71,9 +71,9 @@ export default function LoginPage() {
           {errors.password && <p className="text-xs text-red-400">{errors.password.message}</p>}
         </div>
         <SubmitButton isLoading={loginMutation.isPending}>Iniciar sesion</SubmitButton>
-        <p className="text-center text-sm text-slate-400">
+        <p className="text-center text-sm text-stone-600">
           No tienes cuenta?{" "}
-          <a href="/registro" className="text-blue-400 hover:text-blue-300 transition-colors">
+          <a href="/registro" className="text-stone-700 hover:text-stone-900 transition-colors">
             Registrate
           </a>
         </p>

@@ -223,18 +223,18 @@ export const CATEGORY_LABELS: Record<string, string> = {
 };
 
 export const LEVEL_COLORS: Record<string, string> = {
-  BEGINNER: 'text-emerald-400 bg-emerald-400/10 border-emerald-400/20',
-  INTERMEDIATE: 'text-amber-400 bg-amber-400/10 border-amber-400/20',
-  ADVANCED: 'text-red-400 bg-red-400/10 border-red-400/20',
+  BEGINNER: 'text-emerald-700 bg-emerald-50 border-emerald-600/20',
+  INTERMEDIATE: 'text-amber-700 bg-amber-50 border-amber-600/20',
+  ADVANCED: 'text-red-700 bg-red-50 border-red-600/20',
 };
 
 export const CATEGORY_COLORS: Record<string, string> = {
-  PROGRAMMING: 'text-blue-400 bg-blue-400/10 border-blue-400/20',
-  DESIGN: 'text-purple-400 bg-purple-400/10 border-purple-400/20',
-  BUSINESS: 'text-orange-400 bg-orange-400/10 border-orange-400/20',
-  MARKETING: 'text-pink-400 bg-pink-400/10 border-pink-400/20',
-  PHOTOGRAPHY: 'text-cyan-400 bg-cyan-400/10 border-cyan-400/20',
-  MUSIC: 'text-violet-400 bg-violet-400/10 border-violet-400/20',
-  HEALTH: 'text-green-400 bg-green-400/10 border-green-400/20',
-  OTHER: 'text-slate-400 bg-slate-400/10 border-slate-400/20',
+  PROGRAMMING: 'text-stone-700 bg-stone-900/8 border-stone-700/20',
+  DESIGN: 'text-purple-700 bg-purple-50 border-purple-600/20',
+  BUSINESS: 'text-orange-700 bg-orange-50 border-orange-600/20',
+  MARKETING: 'text-pink-700 bg-pink-50 border-pink-600/20',
+  PHOTOGRAPHY: 'text-cyan-700 bg-cyan-50 border-cyan-600/20',
+  MUSIC: 'text-violet-700 bg-violet-50 border-violet-600/20',
+  HEALTH: 'text-green-700 bg-green-50 border-green-600/20',
+  OTHER: 'text-stone-600 bg-stone-900/5 border-stone-500/20',
 };
