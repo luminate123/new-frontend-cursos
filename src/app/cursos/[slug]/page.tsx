@@ -376,9 +376,18 @@ export default function CourseDetailPage() {
 
                 {/* CTA */}
                 {isOwnCourse ? (
-                  <div className="flex items-center justify-center gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 px-4 py-3">
-                    <BookOpen className="h-4 w-4 text-blue-400" />
-                    <p className="text-sm font-medium text-blue-400">Eres el instructor</p>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-center gap-2 rounded-xl border border-blue-500/20 bg-blue-500/10 px-4 py-3">
+                      <BookOpen className="h-4 w-4 text-blue-400" />
+                      <p className="text-sm font-medium text-blue-400">Eres el instructor</p>
+                    </div>
+                    <Button
+                      className="w-full bg-blue-600 hover:bg-blue-700 font-semibold shadow-lg shadow-blue-600/20"
+                      onClick={() => router.push(`/cursos/${slug}/classroom`)}
+                    >
+                      <Play className="mr-2 h-4 w-4" />
+                      Ver curso
+                    </Button>
                   </div>
                 ) : isApproved ? (
                   <Button
