@@ -556,7 +556,6 @@ export default function ClassroomPage() {
         <aside
           ref={sidebarRef}
           className="hidden w-80 shrink-0 flex-col overflow-y-auto border-l border-border bg-card lg:flex xl:w-96"
-          style={{ height: 'calc(100vh - 112px)', position: 'sticky', top: '112px' }}
         >
           {/* Sidebar header */}
           <div className="border-b border-border px-4 py-3">
