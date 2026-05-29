@@ -203,7 +203,8 @@ export default function ClassroomPage() {
 
   const sidebarRef = useRef<HTMLDivElement>(null);
 
-  const isApproved = enrollment?.status === 'APPROVED';
+  const isInstructor = !!course && !!user && course.instructorId === user.id;
+  const isApproved = enrollment?.status === 'APPROVED' || isInstructor;
 
   useEffect(() => {
     if (authLoading) return;
@@ -220,30 +221,34 @@ export default function ClassroomPage() {
 
         setOpenSections(new Set(c.sections.map((s: Section) => s.id)));
 
-        try {
-          const [enr, ids] = await Promise.all([getEnrollment(c.id), getProgress(c.id)]);
-          setEnrollment(enr);
-          setCompletedIds(ids);
+        const isOwner = !!user && c.instructorId === user.id;
 
-          if (enr.status !== 'APPROVED') {
+        if (!isOwner) {
+          try {
+            const [enr, ids] = await Promise.all([getEnrollment(c.id), getProgress(c.id)]);
+            setEnrollment(enr);
+            setCompletedIds(ids);
+
+            if (enr.status !== 'APPROVED') {
+              router.push(`/cursos/${slug}`);
+              return;
+            }
+          } catch {
             router.push(`/cursos/${slug}`);
             return;
           }
+        }
 
-          const lessonId = searchParams.get('lesson');
-          let target: Lesson | null = null;
-          for (const section of c.sections) {
-            for (const lesson of section.lessons) {
-              if (lessonId ? lesson.id === lessonId : !target) {
-                target = lesson;
-              }
+        const lessonId = searchParams.get('lesson');
+        let target: Lesson | null = null;
+        for (const section of c.sections) {
+          for (const lesson of section.lessons) {
+            if (lessonId ? lesson.id === lessonId : !target) {
+              target = lesson;
             }
           }
-          setActiveLesson(target);
-        } catch {
-          router.push(`/cursos/${slug}`);
-          return;
         }
+        setActiveLesson(target);
 
         setLoadingComments(true);
         try {
