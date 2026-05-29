@@ -185,10 +185,10 @@ export async function getComments(courseId: string): Promise<Comment[]> {
   return apiFetch<Comment[]>(`/courses/${courseId}/comments`);
 }
 
-export async function postComment(courseId: string, content: string): Promise<Comment> {
+export async function postComment(courseId: string, content: string, parentId?: string): Promise<Comment> {
   return apiFetch<Comment>(`/courses/${courseId}/comments`, {
     method: 'POST',
-    body: JSON.stringify({ content }),
+    body: JSON.stringify({ content, ...(parentId ? { parentId } : {}) }),
   });
 }
 

@@ -157,12 +157,14 @@ export interface Comment {
   content: string;
   userId: string;
   courseId: string;
+  parentId: string | null;
   user: {
     id: string;
     firstName: string;
     lastName: string;
     avatar: string | null;
   };
+  replies?: Comment[];
   createdAt: string;
   updatedAt: string;
 }

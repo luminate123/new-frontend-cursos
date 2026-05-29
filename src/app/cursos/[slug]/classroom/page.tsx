@@ -51,6 +51,136 @@ function timeAgo(dateStr: string): string {
   return `hace ${Math.floor(diff / 2592000)} meses`;
 }
 
+function CommentItem({
+  comment,
+  user,
+  isApproved,
+  replyingTo,
+  replyText,
+  submitting,
+  onReplyOpen,
+  onReplyClose,
+  onReplyTextChange,
+  onReplySubmit,
+  isReply = false,
+}: {
+  comment: Comment;
+  user: any;
+  isApproved: boolean;
+  replyingTo: string | null;
+  replyText: string;
+  submitting: boolean;
+  onReplyOpen: (id: string) => void;
+  onReplyClose: () => void;
+  onReplyTextChange: (v: string) => void;
+  onReplySubmit: (parentId: string) => void;
+  isReply?: boolean;
+}) {
+  const firstName = comment.user?.firstName ?? '';
+  const lastName = comment.user?.lastName ?? '';
+  const initial = firstName?.[0]?.toUpperCase() ?? '?';
+  const color = avatarColor(firstName || comment.userId);
+  const isOpen = replyingTo === comment.id;
+
+  return (
+    <div className={`flex gap-4 ${isReply ? 'pl-14' : ''}`}>
+      <div className={`relative flex shrink-0 items-center justify-center rounded-full font-bold text-white ${isReply ? 'h-8 w-8 text-xs' : 'h-10 w-10 text-sm'} ${color}`}>
+        {initial}
+        {!isReply && (
+          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#080c14] bg-emerald-500" />
+        )}
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <div className="flex flex-wrap items-center gap-2 mb-1">
+          <span className={`font-semibold text-slate-100 ${isReply ? 'text-xs' : 'text-sm'}`}>
+            {firstName} {lastName}
+          </span>
+          <span className="rounded-full bg-blue-500/15 border border-blue-500/25 px-2 py-0.5 text-[10px] font-medium text-blue-300">
+            Estudiante
+          </span>
+          <span className="text-xs text-slate-500">{timeAgo(comment.createdAt)}</span>
+        </div>
+
+        <p className={`leading-relaxed text-slate-300 ${isReply ? 'text-xs' : 'text-sm'}`}>
+          {comment.content}
+        </p>
+
+        <div className="mt-2 flex items-center gap-4">
+          <button className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-blue-400 transition-colors">
+            <ThumbsUp className="h-3.5 w-3.5" />
+          </button>
+          {isApproved && !isReply && (
+            <button
+              onClick={() => isOpen ? onReplyClose() : onReplyOpen(comment.id)}
+              className="flex items-center gap-1 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              <CornerDownRight className="h-3 w-3" />
+              {isOpen ? 'CANCELAR' : 'RESPONDER'}
+            </button>
+          )}
+        </div>
+
+        {/* Inline reply form */}
+        {isOpen && (
+          <div className="mt-3 flex gap-3">
+            <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${avatarColor(user?.firstName ?? 'U')}`}>
+              {user?.firstName?.[0]?.toUpperCase() ?? '?'}
+            </div>
+            <div className="flex flex-1 flex-col gap-2">
+              <textarea
+                value={replyText}
+                onChange={(e) => onReplyTextChange(e.target.value)}
+                placeholder={`Responder a ${firstName}...`}
+                rows={2}
+                maxLength={1000}
+                autoFocus
+                className="w-full resize-none rounded-xl border border-[#253554] bg-[#0e1a2e] px-4 py-2.5 text-sm text-slate-200 placeholder:text-slate-500 focus:border-blue-500/60 focus:outline-none focus:ring-1 focus:ring-blue-500/30 transition-colors"
+              />
+              <div className="flex justify-end gap-2">
+                <Button size="sm" variant="outline" onClick={onReplyClose} className="border-[#253554] text-xs text-slate-400">
+                  Cancelar
+                </Button>
+                <Button
+                  size="sm"
+                  disabled={submitting || !replyText.trim()}
+                  onClick={() => onReplySubmit(comment.id)}
+                  className="bg-blue-600 hover:bg-blue-700 text-xs px-4"
+                >
+                  {submitting ? <Loader2 className="mr-1.5 h-3 w-3 animate-spin" /> : null}
+                  Responder
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Replies */}
+        {comment.replies && comment.replies.length > 0 && (
+          <div className="mt-4 space-y-4 border-l-2 border-[#1e2d4a] pl-4">
+            {comment.replies.map((reply) => (
+              <CommentItem
+                key={reply.id}
+                comment={reply}
+                user={user}
+                isApproved={isApproved}
+                replyingTo={replyingTo}
+                replyText={replyText}
+                submitting={submitting}
+                onReplyOpen={onReplyOpen}
+                onReplyClose={onReplyClose}
+                onReplyTextChange={onReplyTextChange}
+                onReplySubmit={onReplySubmit}
+                isReply
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function ClassroomPage() {
   const { slug } = useParams<{ slug: string }>();
   const searchParams = useSearchParams();
@@ -68,6 +198,8 @@ export default function ClassroomPage() {
   const [commentText, setCommentText] = useState('');
   const [submittingComment, setSubmittingComment] = useState(false);
   const [loadingComments, setLoadingComments] = useState(false);
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [replyText, setReplyText] = useState('');
 
   const sidebarRef = useRef<HTMLDivElement>(null);
 
@@ -174,6 +306,27 @@ export default function ClassroomPage() {
       setCommentText('');
     } catch (err: any) {
       toast.error(err?.message || 'Error al publicar comentario');
+    } finally {
+      setSubmittingComment(false);
+    }
+  };
+
+  const handleSubmitReply = async (parentId: string) => {
+    if (!replyText.trim() || !course) return;
+    setSubmittingComment(true);
+    try {
+      const reply = await postComment(course.id, replyText.trim(), parentId);
+      setComments((prev) =>
+        prev.map((c) =>
+          c.id === parentId
+            ? { ...c, replies: [...(c.replies ?? []), reply] }
+            : c,
+        ),
+      );
+      setReplyText('');
+      setReplyingTo(null);
+    } catch (err: any) {
+      toast.error(err?.message || 'Error al responder');
     } finally {
       setSubmittingComment(false);
     }
@@ -373,53 +526,21 @@ export default function ClassroomPage() {
                 </p>
               ) : (
                 <div className="space-y-7">
-                  {comments.map((comment) => {
-                    const firstName = comment.user?.firstName ?? '';
-                    const lastName = comment.user?.lastName ?? '';
-                    const initial = firstName?.[0]?.toUpperCase() ?? '?';
-                    const color = avatarColor(firstName || comment.userId);
-
-                    return (
-                      <div key={comment.id} className="flex gap-4">
-                        {/* Avatar */}
-                        <div className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold text-white ${color}`}>
-                          {initial}
-                          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#080c14] bg-emerald-500" />
-                        </div>
-
-                        <div className="flex-1 min-w-0">
-                          {/* Name + role + time */}
-                          <div className="flex flex-wrap items-center gap-2 mb-1">
-                            <span className="text-sm font-semibold text-slate-100">
-                              {firstName} {lastName}
-                            </span>
-                            <span className="rounded-full bg-blue-500/15 border border-blue-500/25 px-2 py-0.5 text-[10px] font-medium text-blue-300">
-                              Estudiante
-                            </span>
-                            <span className="text-xs text-slate-500">
-                              {timeAgo(comment.createdAt)}
-                            </span>
-                          </div>
-
-                          {/* Content */}
-                          <p className="text-sm leading-relaxed text-slate-300">
-                            {comment.content}
-                          </p>
-
-                          {/* Actions */}
-                          <div className="mt-2 flex items-center gap-4">
-                            <button className="flex items-center gap-1.5 text-xs text-slate-500 hover:text-blue-400 transition-colors">
-                              <ThumbsUp className="h-3.5 w-3.5" />
-                            </button>
-                            <button className="flex items-center gap-1 text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors">
-                              <CornerDownRight className="h-3 w-3" />
-                              RESPONDER
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                  {comments.map((comment) => (
+                    <CommentItem
+                      key={comment.id}
+                      comment={comment}
+                      user={user}
+                      isApproved={isApproved}
+                      replyingTo={replyingTo}
+                      replyText={replyText}
+                      submitting={submittingComment}
+                      onReplyOpen={(id) => { setReplyingTo(id); setReplyText(''); }}
+                      onReplyClose={() => setReplyingTo(null)}
+                      onReplyTextChange={setReplyText}
+                      onReplySubmit={handleSubmitReply}
+                    />
+                  ))}
                 </div>
               )}
             </div>
