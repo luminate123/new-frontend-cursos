@@ -391,31 +391,32 @@ export default function ClassroomPage() {
               ).length;
 
               return (
-                <div key={section.id} className="border-b border-[#1e2d4a]">
+                <div key={section.id} className="border-b border-[#253554]">
+                  {/* Section header — distinct bg so it stands out from lesson rows */}
                   <button
                     onClick={() => toggleSection(section.id)}
-                    className="flex w-full items-center justify-between px-4 py-3 text-left hover:bg-white/[0.02] transition-colors"
+                    className="flex w-full items-center justify-between bg-[#111c30] px-4 py-3 text-left transition-colors hover:bg-[#172240]"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-600/15 border border-blue-500/20 text-[11px] font-bold text-blue-400">
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-500/25 border border-blue-400/40 text-[11px] font-bold text-blue-300">
                         {si + 1}
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-medium text-slate-200">
+                        <p className="truncate text-sm font-semibold text-slate-100">
                           {section.title}
                         </p>
-                        <p className="text-[11px] text-slate-600">
+                        <p className="text-[11px] text-slate-400">
                           {completedInSection}/{section.lessons.length} clases
                         </p>
                       </div>
                     </div>
                     <ChevronDown
-                      className={`ml-2 h-4 w-4 shrink-0 text-slate-600 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                      className={`ml-2 h-4 w-4 shrink-0 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
                     />
                   </button>
 
                   {isOpen && (
-                    <div className="bg-[#080c14]">
+                    <div className="bg-[#07101e]">
                       {section.lessons.map((lesson) => {
                         const done = completedIds.includes(lesson.id);
                         const isActive = activeLesson?.id === lesson.id;
@@ -426,36 +427,36 @@ export default function ClassroomPage() {
                             key={lesson.id}
                             onClick={() => handleLessonClick(lesson)}
                             disabled={!canAccess}
-                            className={`flex w-full items-center gap-2.5 border-b border-[#1e2d4a]/40 px-4 py-2.5 text-left transition-colors last:border-0
-                              ${isActive ? 'bg-blue-600/10 border-l-2 border-l-blue-500' : ''}
-                              ${canAccess && !isActive ? 'hover:bg-white/[0.02] cursor-pointer' : ''}
+                            className={`flex w-full items-center gap-2.5 border-b border-[#1a2a42] px-4 py-3 text-left transition-colors last:border-0
+                              ${isActive ? 'bg-blue-600/20 border-l-2 border-l-blue-400' : ''}
+                              ${canAccess && !isActive ? 'hover:bg-[#0e1a2e] cursor-pointer' : ''}
                               ${!canAccess ? 'cursor-not-allowed opacity-40' : ''}
                             `}
                           >
                             <div className="shrink-0">
                               {done ? (
-                                <CheckCircle className="h-3.5 w-3.5 text-emerald-400" />
+                                <CheckCircle className="h-4 w-4 text-emerald-400" />
                               ) : canAccess ? (
-                                <div className={`flex h-3.5 w-3.5 items-center justify-center rounded-full border ${isActive ? 'border-blue-500 bg-blue-500/20' : 'border-[#2a3a5a]'}`}>
-                                  <Play className={`h-2 w-2 translate-x-px ${isActive ? 'text-blue-400' : 'text-slate-600'}`} />
+                                <div className={`flex h-4 w-4 items-center justify-center rounded-full border ${isActive ? 'border-blue-400 bg-blue-500/30' : 'border-slate-500 bg-slate-700/50'}`}>
+                                  <Play className={`h-2 w-2 translate-x-px ${isActive ? 'text-blue-300' : 'text-slate-300'}`} />
                                 </div>
                               ) : (
-                                <Lock className="h-3.5 w-3.5 text-slate-700" />
+                                <Lock className="h-4 w-4 text-slate-500" />
                               )}
                             </div>
                             <span
                               className={`flex-1 truncate text-xs leading-snug ${
                                 isActive
-                                  ? 'font-semibold text-blue-300'
+                                  ? 'font-semibold text-blue-200'
                                   : done
-                                  ? 'text-slate-600 line-through'
-                                  : 'text-slate-400'
+                                  ? 'text-slate-500 line-through'
+                                  : 'text-slate-300'
                               }`}
                             >
                               {lesson.title}
                             </span>
                             {lesson.durationSeconds && (
-                              <span className="shrink-0 text-[10px] text-slate-700 tabular-nums">
+                              <span className="shrink-0 text-[10px] text-slate-500 tabular-nums">
                                 {formatDuration(lesson.durationSeconds)}
                               </span>
                             )}
