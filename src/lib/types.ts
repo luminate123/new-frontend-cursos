@@ -152,6 +152,21 @@ export interface Enrollment {
   updatedAt: string;
 }
 
+export interface Comment {
+  id: string;
+  content: string;
+  userId: string;
+  courseId: string;
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    avatar: string | null;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface CourseFilters {
   page?: string;
   limit?: string;

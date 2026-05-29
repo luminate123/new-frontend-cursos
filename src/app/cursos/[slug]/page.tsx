@@ -94,6 +94,10 @@ export default function CourseDetailPage() {
   };
 
   const handleLessonClick = (lesson: Lesson) => {
+    if (isApproved) {
+      router.push(`/cursos/${slug}/classroom?lesson=${lesson.id}`);
+      return;
+    }
     setActiveLesson(lesson);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -379,10 +383,7 @@ export default function CourseDetailPage() {
                 ) : isApproved ? (
                   <Button
                     className="w-full bg-blue-600 hover:bg-blue-700 font-semibold shadow-lg shadow-blue-600/20"
-                    onClick={() => {
-                      const firstLesson = course.sections?.[0]?.lessons?.[0];
-                      if (firstLesson) handleLessonClick(firstLesson);
-                    }}
+                    onClick={() => router.push(`/cursos/${slug}/classroom`)}
                   >
                     <Play className="mr-2 h-4 w-4" />
                     {completedIds.length > 0 ? 'Continuar' : 'Empezar'}

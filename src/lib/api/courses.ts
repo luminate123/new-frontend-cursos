@@ -1,5 +1,5 @@
 import { apiFetch } from '../api';
-import type { Course, CoursesResponse, CourseFilters, Enrollment } from '../types';
+import type { Course, CoursesResponse, CourseFilters, Enrollment, Comment } from '../types';
 
 export async function getCourses(filters: CourseFilters = {}): Promise<CoursesResponse> {
   const params = new URLSearchParams();
@@ -177,6 +177,19 @@ export async function updateLesson(sectionId: string, lessonId: string, data: Pa
 
 export async function deleteLesson(sectionId: string, lessonId: string): Promise<void> {
   return apiFetch<void>(`/sections/${sectionId}/lessons/${lessonId}`, { method: 'DELETE' });
+}
+
+// ─── Comments ────────────────────────────────────────────────────────────────
+
+export async function getComments(courseId: string): Promise<Comment[]> {
+  return apiFetch<Comment[]>(`/courses/${courseId}/comments`);
+}
+
+export async function postComment(courseId: string, content: string): Promise<Comment> {
+  return apiFetch<Comment>(`/courses/${courseId}/comments`, {
+    method: 'POST',
+    body: JSON.stringify({ content }),
+  });
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
