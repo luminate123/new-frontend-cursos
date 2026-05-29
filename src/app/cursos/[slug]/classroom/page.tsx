@@ -33,7 +33,7 @@ export default function ClassroomPage() {
   const { slug } = useParams<{ slug: string }>();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { user, isAuthenticated } = useAuthStore();
+  const { user, isAuthenticated, isLoading: authLoading } = useAuthStore();
 
   const [course, setCourse] = useState<Course | null>(null);
   const [enrollment, setEnrollment] = useState<Enrollment | null>(null);
@@ -52,46 +52,45 @@ export default function ClassroomPage() {
   const isApproved = enrollment?.status === 'APPROVED';
 
   useEffect(() => {
+    if (authLoading) return;
+
     async function load() {
+      if (!isAuthenticated) {
+        router.push('/login');
+        return;
+      }
+
       try {
         const c = await getCourse(slug);
         setCourse(c);
 
-        // Open all sections by default in classroom
         setOpenSections(new Set(c.sections.map((s: Section) => s.id)));
 
-        if (isAuthenticated) {
-          try {
-            const [enr, ids] = await Promise.all([getEnrollment(c.id), getProgress(c.id)]);
-            setEnrollment(enr);
-            setCompletedIds(ids);
+        try {
+          const [enr, ids] = await Promise.all([getEnrollment(c.id), getProgress(c.id)]);
+          setEnrollment(enr);
+          setCompletedIds(ids);
 
-            if (enr.status !== 'APPROVED') {
-              router.push(`/cursos/${slug}`);
-              return;
-            }
-
-            // Pick lesson from query param or first lesson
-            const lessonId = searchParams.get('lesson');
-            let target: Lesson | null = null;
-            for (const section of c.sections) {
-              for (const lesson of section.lessons) {
-                if (lessonId ? lesson.id === lessonId : !target) {
-                  target = lesson;
-                }
-              }
-            }
-            setActiveLesson(target);
-          } catch {
+          if (enr.status !== 'APPROVED') {
             router.push(`/cursos/${slug}`);
             return;
           }
-        } else {
-          router.push('/login');
+
+          const lessonId = searchParams.get('lesson');
+          let target: Lesson | null = null;
+          for (const section of c.sections) {
+            for (const lesson of section.lessons) {
+              if (lessonId ? lesson.id === lessonId : !target) {
+                target = lesson;
+              }
+            }
+          }
+          setActiveLesson(target);
+        } catch {
+          router.push(`/cursos/${slug}`);
           return;
         }
 
-        // Load comments (public)
         setLoadingComments(true);
         try {
           const cms = await getComments(c.id);
@@ -108,7 +107,7 @@ export default function ClassroomPage() {
       }
     }
     load();
-  }, [slug, isAuthenticated]);
+  }, [slug, isAuthenticated, authLoading]);
 
   const handleLessonClick = (lesson: Lesson) => {
     if (!isApproved && !lesson.isFree) return;
@@ -166,7 +165,7 @@ export default function ClassroomPage() {
     });
   };
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#080c14]">
         <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
