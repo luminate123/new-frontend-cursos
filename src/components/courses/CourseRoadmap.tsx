@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState } from 'react';
 import { ChevronDown, Play, Lock, CheckCircle } from 'lucide-react';
@@ -41,7 +41,7 @@ export function CourseRoadmap({
         return (
           <div
             key={section.id}
-            className="rounded-xl border border-[#c9beab] bg-[#ede7d9] overflow-hidden"
+            className="rounded-xl border border-border bg-card overflow-hidden"
           >
             {/* Section header */}
             <button
@@ -69,7 +69,7 @@ export function CourseRoadmap({
 
             {/* Lessons */}
             {isOpen && section.lessons && section.lessons.length > 0 && (
-              <div className="border-t border-[#c9beab]">
+              <div className="border-t border-border">
                 {section.lessons.map((lesson) => {
                   const isCompleted = completedLessonIds.includes(lesson.id);
                   const canAccess = isEnrolled || lesson.isFree;
@@ -79,7 +79,7 @@ export function CourseRoadmap({
                       key={lesson.id}
                       onClick={() => canAccess && onLessonClick?.(lesson)}
                       disabled={!canAccess}
-                      className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors border-b border-[#c9beab]/60 last:border-0
+                      className={`flex w-full items-center gap-3 px-4 py-3 text-left transition-colors border-b border-border/60 last:border-0
                         ${canAccess ? 'hover:bg-stone-900/5 cursor-pointer' : 'cursor-not-allowed opacity-50'}
                       `}
                     >
@@ -88,7 +88,7 @@ export function CourseRoadmap({
                         {isCompleted ? (
                           <CheckCircle className="h-4 w-4 text-emerald-700" />
                         ) : canAccess ? (
-                          <div className="flex h-4 w-4 items-center justify-center rounded-full border border-[#c9beab]">
+                          <div className="flex h-4 w-4 items-center justify-center rounded-full border border-border">
                             <Play className="h-2 w-2 text-stone-600 translate-x-px" />
                           </div>
                         ) : (

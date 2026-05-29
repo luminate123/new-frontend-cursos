@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -28,7 +28,7 @@ export function RoleGuard({ children, allowedRoles, redirectTo = "/dashboard" }:
   // While loading, show spinner
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#f5f0e6]">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-stone-700 border-t-transparent" />
       </div>
     );

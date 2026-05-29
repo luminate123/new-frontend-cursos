@@ -87,7 +87,7 @@ function CommentItem({
       <div className={`relative flex shrink-0 items-center justify-center rounded-full font-bold text-white ${isReply ? 'h-8 w-8 text-xs' : 'h-10 w-10 text-sm'} ${color}`}>
         {initial}
         {!isReply && (
-          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#f5f0e6] bg-emerald-500" />
+          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background bg-emerald-500" />
         )}
       </div>
 
@@ -135,10 +135,10 @@ function CommentItem({
                 rows={2}
                 maxLength={1000}
                 autoFocus
-                className="w-full resize-none rounded-xl border border-[#253554] bg-[#0e1a2e] px-4 py-2.5 text-sm text-stone-800 placeholder:text-stone-500 focus:border-stone-700/60 focus:outline-none focus:ring-1 focus:ring-stone-700/30 transition-colors"
+                className="w-full resize-none rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-stone-800 placeholder:text-stone-500 focus:border-stone-700/60 focus:outline-none focus:ring-1 focus:ring-stone-700/30 transition-colors"
               />
               <div className="flex justify-end gap-2">
-                <Button size="sm" variant="outline" onClick={onReplyClose} className="border-[#253554] text-xs text-stone-600">
+                <Button size="sm" variant="outline" onClick={onReplyClose} className="border-border text-xs text-stone-600">
                   Cancelar
                 </Button>
                 <Button
@@ -157,7 +157,7 @@ function CommentItem({
 
         {/* Replies */}
         {comment.replies && comment.replies.length > 0 && (
-          <div className="mt-4 space-y-4 border-l-2 border-[#c9beab] pl-4">
+          <div className="mt-4 space-y-4 border-l-2 border-border pl-4">
             {comment.replies.map((reply) => (
               <CommentItem
                 key={reply.id}
@@ -347,7 +347,7 @@ export default function ClassroomPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#f5f0e6]">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-stone-700" />
       </div>
     );
@@ -360,11 +360,11 @@ export default function ClassroomPage() {
   const isCompleted = completedIds.includes(activeLesson.id);
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f5f0e6] text-stone-900">
+    <div className="flex min-h-screen flex-col bg-background text-stone-900">
       <Navbar />
 
       {/* ── Top bar: progress + back ───────────────────────────── */}
-      <div className="border-b border-[#c9beab] bg-[#0a1020] px-4 py-2">
+      <div className="border-b border-border bg-card px-4 py-2">
         <div className="mx-auto flex max-w-screen-2xl items-center gap-4">
           <Link
             href={`/cursos/${slug}`}
@@ -416,7 +416,7 @@ export default function ClassroomPage() {
           </div>
 
           {/* Lesson meta + actions */}
-          <div className="border-b border-[#c9beab] bg-[#ede7d9] px-6 py-4">
+          <div className="border-b border-border bg-card px-6 py-4">
             <div className="mx-auto max-w-screen-xl">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
@@ -445,7 +445,7 @@ export default function ClassroomPage() {
                     size="sm"
                     variant="outline"
                     onClick={handleNextLesson}
-                    className="border-[#c9beab] text-xs text-stone-600 hover:text-stone-800"
+                    className="border-border text-xs text-stone-600 hover:text-stone-800"
                   >
                     Siguiente →
                   </Button>
@@ -484,7 +484,7 @@ export default function ClassroomPage() {
                         placeholder="Escribe su comentario o pregunta..."
                         rows={3}
                         maxLength={1000}
-                        className="w-full resize-none rounded-xl border border-[#253554] bg-[#0e1a2e] px-4 py-3 text-sm text-stone-800 placeholder:text-stone-500 focus:border-stone-700/60 focus:outline-none focus:ring-1 focus:ring-stone-700/30 transition-colors"
+                        className="w-full resize-none rounded-xl border border-border bg-card px-4 py-3 text-sm text-stone-800 placeholder:text-stone-500 focus:border-stone-700/60 focus:outline-none focus:ring-1 focus:ring-stone-700/30 transition-colors"
                       />
                       <div className="flex items-center justify-between">
                         <span className="text-xs text-stone-400">{commentText.length}/1000</span>
@@ -494,7 +494,7 @@ export default function ClassroomPage() {
                             size="sm"
                             variant="outline"
                             onClick={() => setCommentText('')}
-                            className="border-[#253554] text-xs text-stone-600 hover:text-stone-800"
+                            className="border-border text-xs text-stone-600 hover:text-stone-800"
                           >
                             Cancelar
                           </Button>
@@ -517,7 +517,7 @@ export default function ClassroomPage() {
               )}
 
               {/* Divider */}
-              {comments.length > 0 && <div className="mb-6 border-t border-[#c9beab]" />}
+              {comments.length > 0 && <div className="mb-6 border-t border-border" />}
 
               {/* Comments list */}
               {loadingComments ? (
@@ -555,11 +555,11 @@ export default function ClassroomPage() {
         {/* ── Sidebar: sections + lessons ───────────────────────── */}
         <aside
           ref={sidebarRef}
-          className="hidden w-80 shrink-0 flex-col overflow-y-auto border-l border-[#c9beab] bg-[#0a1020] lg:flex xl:w-96"
+          className="hidden w-80 shrink-0 flex-col overflow-y-auto border-l border-border bg-card lg:flex xl:w-96"
           style={{ height: 'calc(100vh - 112px)', position: 'sticky', top: '112px' }}
         >
           {/* Sidebar header */}
-          <div className="border-b border-[#c9beab] px-4 py-3">
+          <div className="border-b border-border px-4 py-3">
             <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
               Contenido del curso
             </p>
@@ -577,11 +577,11 @@ export default function ClassroomPage() {
               ).length;
 
               return (
-                <div key={section.id} className="border-b border-[#253554]">
+                <div key={section.id} className="border-b border-border">
                   {/* Section header — distinct bg so it stands out from lesson rows */}
                   <button
                     onClick={() => toggleSection(section.id)}
-                    className="flex w-full items-center justify-between bg-[#111c30] px-4 py-3 text-left transition-colors hover:bg-[#172240]"
+                    className="flex w-full items-center justify-between bg-secondary px-4 py-3 text-left transition-colors hover:bg-muted"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
                       <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-stone-700/25 border border-stone-700/40 text-[11px] font-bold text-stone-600">
@@ -602,7 +602,7 @@ export default function ClassroomPage() {
                   </button>
 
                   {isOpen && (
-                    <div className="bg-[#07101e]">
+                    <div className="bg-background">
                       {section.lessons.map((lesson) => {
                         const done = completedIds.includes(lesson.id);
                         const isActive = activeLesson?.id === lesson.id;
@@ -613,9 +613,9 @@ export default function ClassroomPage() {
                             key={lesson.id}
                             onClick={() => handleLessonClick(lesson)}
                             disabled={!canAccess}
-                            className={`flex w-full items-center gap-2.5 border-b border-[#1a2a42] px-4 py-3 text-left transition-colors last:border-0
+                            className={`flex w-full items-center gap-2.5 border-b border-border px-4 py-3 text-left transition-colors last:border-0
                               ${isActive ? 'bg-stone-900/20 border-l-2 border-l-stone-700' : ''}
-                              ${canAccess && !isActive ? 'hover:bg-[#0e1a2e] cursor-pointer' : ''}
+                              ${canAccess && !isActive ? 'hover:bg-card cursor-pointer' : ''}
                               ${!canAccess ? 'cursor-not-allowed opacity-40' : ''}
                             `}
                           >

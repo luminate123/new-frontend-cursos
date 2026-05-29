@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import Image from 'next/image';
 import { Code2, Zap, Shield, Globe, BookOpen, ArrowRight, Play, Star, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -62,7 +62,7 @@ const CATEGORIES = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#f5f0e6] text-stone-900">
+    <div className="min-h-screen bg-background text-stone-900">
       <HomeRedirect />
       <Navbar />
 
@@ -116,13 +116,13 @@ export default function HomePage() {
           {/* CTAs */}
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link href="/cursos">
-              <Button size="lg" className="bg-stone-900 hover:bg-stone-800 text-[#f5f0e6] font-semibold px-8 shadow-lg shadow-stone-900/20">
+              <Button size="lg" className="bg-stone-900 hover:bg-stone-800 text-background font-semibold px-8 shadow-lg shadow-stone-900/20">
                 Explorar cursos
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Link href="/registro">
-              <Button size="lg" variant="outline" className="border-[#c9beab] text-stone-700 hover:border-stone-700/50 hover:text-stone-900 hover:bg-stone-900/5">
+              <Button size="lg" variant="outline" className="border-border text-stone-700 hover:border-stone-700/50 hover:text-stone-900 hover:bg-stone-900/5">
                 <Play className="mr-2 h-4 w-4" />
                 Crear cuenta gratis
               </Button>
@@ -133,7 +133,7 @@ export default function HomePage() {
           <div className="mt-10 flex items-center justify-center gap-2 text-sm text-stone-500">
             <div className="flex -space-x-1.5">
               {['A', 'B', 'C', 'D'].map((l) => (
-                <div key={l} className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-[#f5f0e6] bg-stone-900/15 text-[10px] font-bold text-stone-700">
+                <div key={l} className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-background bg-stone-900/15 text-[10px] font-bold text-stone-700">
                   {l}
                 </div>
               ))}
@@ -142,7 +142,7 @@ export default function HomePage() {
           </div>
 
           {/* Code card */}
-          <div className="mx-auto mt-16 max-w-lg rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-5 text-left font-mono text-sm shadow-2xl shadow-stone-900/10">
+          <div className="mx-auto mt-16 max-w-lg rounded-2xl border border-border bg-card p-5 text-left font-mono text-sm shadow-2xl shadow-stone-900/10">
             <div className="flex items-center gap-1.5 mb-4">
               <div className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
               <div className="h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
@@ -162,7 +162,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Stats ────────────────────────────────────────────────────────── */}
-      <section className="border-y border-[#c9beab] bg-[#ede7d9]/60">
+      <section className="border-y border-border bg-card/60">
         <div className="mx-auto max-w-6xl px-4 py-10">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {STATS.map((stat) => (
@@ -186,7 +186,7 @@ export default function HomePage() {
             <Link
               key={cat.label}
               href={cat.href}
-              className="group flex flex-col items-center gap-2.5 rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-5 text-center transition-all duration-200 hover:border-stone-700/30 hover:bg-stone-900/5 hover:-translate-y-1"
+              className="group flex flex-col items-center gap-2.5 rounded-2xl border border-border bg-card p-5 text-center transition-all duration-200 hover:border-stone-700/30 hover:bg-stone-900/5 hover:-translate-y-1"
             >
               <span className="text-3xl">{cat.emoji}</span>
               <span className="text-xs font-medium text-stone-600 group-hover:text-stone-900 transition-colors">
@@ -198,7 +198,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Features ─────────────────────────────────────────────────────── */}
-      <section className="border-t border-[#c9beab]">
+      <section className="border-t border-border">
         <div className="mx-auto max-w-6xl px-4 py-20">
           <div className="mb-14 text-center">
             <h2 className="text-3xl font-bold text-stone-900">¿Por qué Kore Training?</h2>
@@ -222,12 +222,12 @@ export default function HomePage() {
       </section>
 
       {/* ── Trusted section ──────────────────────────────────────────────── */}
-      <section className="border-t border-[#c9beab] bg-[#ede7d9]/40">
+      <section className="border-t border-border bg-card/40">
         <div className="mx-auto max-w-6xl px-4 py-14 text-center">
           <p className="text-sm font-medium uppercase tracking-widest text-stone-500">Tecnologías que enseñamos</p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             {['React', 'Node.js', 'TypeScript', 'NestJS', 'Python', 'Docker', 'AWS', 'PostgreSQL'].map((tech) => (
-              <span key={tech} className="rounded-full border border-[#c9beab] bg-[#ede7d9] px-4 py-1.5 text-sm font-medium text-stone-600">
+              <span key={tech} className="rounded-full border border-border bg-card px-4 py-1.5 text-sm font-medium text-stone-600">
                 {tech}
               </span>
             ))}
@@ -237,7 +237,7 @@ export default function HomePage() {
 
       {/* ── CTA Final ────────────────────────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-4 py-20">
-        <div className="relative overflow-hidden rounded-3xl border border-stone-700/20 bg-gradient-to-br from-stone-800/8 via-[#ede7d9] to-stone-700/5 p-14 text-center">
+        <div className="relative overflow-hidden rounded-3xl border border-stone-700/20 bg-gradient-to-br from-stone-800/8 via-card to-stone-700/5 p-14 text-center">
           {/* Glow effects */}
           <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-stone-800/8 blur-3xl" />
           <div className="pointer-events-none absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-stone-700/8 blur-3xl" />
@@ -259,13 +259,13 @@ export default function HomePage() {
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <Link href="/registro">
-                <Button size="lg" className="bg-stone-900 hover:bg-stone-800 text-[#f5f0e6] font-semibold px-8 shadow-lg shadow-stone-900/20">
+                <Button size="lg" className="bg-stone-900 hover:bg-stone-800 text-background font-semibold px-8 shadow-lg shadow-stone-900/20">
                   Comenzar gratis
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
               <Link href="/cursos">
-                <Button size="lg" variant="outline" className="border-[#c9beab] text-stone-700 hover:border-stone-700/50 hover:text-stone-900">
+                <Button size="lg" variant="outline" className="border-border text-stone-700 hover:border-stone-700/50 hover:text-stone-900">
                   Ver todos los cursos
                 </Button>
               </Link>
@@ -275,7 +275,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Footer ───────────────────────────────────────────────────────── */}
-      <footer className="border-t border-[#c9beab] py-10">
+      <footer className="border-t border-border py-10">
         <div className="mx-auto max-w-6xl px-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
           <Image src="/image 2.svg" alt="Kore Training & Consulting" width={120} height={38} className="h-8 w-auto" />
           <p className="text-sm text-stone-500">© 2026 Kore Training & Consulting. Todos los derechos reservados.</p>

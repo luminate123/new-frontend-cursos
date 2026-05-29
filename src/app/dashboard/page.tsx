@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -41,7 +41,7 @@ function StatCard({
   color: string; bg: string;
 }) {
   return (
-    <div className={`flex items-center gap-4 rounded-xl border bg-[#ede7d9] p-5 ${bg}`}>
+    <div className={`flex items-center gap-4 rounded-xl border bg-card p-5 ${bg}`}>
       <div className={`rounded-xl p-3 ${bg}`}>
         <Icon className={`h-5 w-5 ${color}`} />
       </div>
@@ -93,9 +93,9 @@ function StudentView() {
           </div>
           <div className="grid gap-3">
             {pending.map((enrollment) => (
-              <div key={enrollment.id} className="flex items-center justify-between rounded-xl border border-[#c9beab] bg-[#ede7d9] px-5 py-4">
+              <div key={enrollment.id} className="flex items-center justify-between rounded-xl border border-border bg-card px-5 py-4">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden bg-[#e4ddd0]">
+                  <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden bg-secondary">
                     {enrollment.course?.thumbnail
                       ? <img src={enrollment.course.thumbnail} alt="" className="h-full w-full object-cover" />
                       : <div className="h-full w-full flex items-center justify-center text-stone-400"><BookOpen className="h-5 w-5" /></div>
@@ -124,9 +124,9 @@ function StudentView() {
           </div>
           <div className="grid gap-3">
             {rejected.map((enrollment) => (
-              <div key={enrollment.id} className="flex items-center justify-between rounded-xl border border-red-500/20 bg-[#ede7d9] px-5 py-4">
+              <div key={enrollment.id} className="flex items-center justify-between rounded-xl border border-red-500/20 bg-card px-5 py-4">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden bg-[#e4ddd0]">
+                  <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden bg-secondary">
                     {enrollment.course?.thumbnail
                       ? <img src={enrollment.course.thumbnail} alt="" className="h-full w-full object-cover" />
                       : <div className="h-full w-full flex items-center justify-center text-stone-400"><BookOpen className="h-5 w-5" /></div>
@@ -142,7 +142,7 @@ function StudentView() {
                 <div className="flex items-center gap-2 shrink-0">
                   <StatusBadge status={enrollment.status} />
                   <Link href={`/cursos/${enrollment.course?.slug}`}>
-                    <Button size="sm" variant="outline" className="border-[#c9beab] text-xs text-stone-600 hover:text-stone-900">
+                    <Button size="sm" variant="outline" className="border-border text-xs text-stone-600 hover:text-stone-900">
                       Volver a solicitar
                     </Button>
                   </Link>
@@ -188,7 +188,7 @@ function StudentView() {
           {loading ? (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="h-72 rounded-xl border border-[#c9beab] bg-[#ede7d9] animate-pulse" />
+                <div key={i} className="h-72 rounded-xl border border-border bg-card animate-pulse" />
               ))}
             </div>
           ) : (
@@ -206,7 +206,7 @@ function StudentView() {
         </section>
       ) : (
         !loading && pending.length === 0 && rejected.length === 0 && (
-          <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-12 text-center mb-10">
+          <div className="rounded-2xl border border-border bg-card p-12 text-center mb-10">
             <div className="mb-4 text-5xl">🎓</div>
             <h3 className="text-lg font-semibold text-stone-700">Aún no tienes cursos</h3>
             <p className="mt-1 text-sm text-stone-500">Explora nuestro catálogo y solicita inscripción</p>
@@ -219,12 +219,12 @@ function StudentView() {
 
       {/* Quick actions */}
       <div className="grid gap-4 sm:grid-cols-2">
-        <Link href="/cursos" className="group rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-5 transition-all hover:border-stone-700/30 hover:bg-stone-900/5 hover:-translate-y-0.5">
+        <Link href="/cursos" className="group rounded-2xl border border-border bg-card p-5 transition-all hover:border-stone-700/30 hover:bg-stone-900/5 hover:-translate-y-0.5">
           <BookOpen className="mb-3 h-6 w-6 text-stone-700" />
           <h3 className="font-semibold text-stone-800 group-hover:text-stone-900 transition-colors">Explorar catálogo</h3>
           <p className="mt-1 text-xs text-stone-500">Descubre nuevos cursos</p>
         </Link>
-        <div className="group rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-5 transition-all hover:border-stone-700/30 hover:bg-stone-900/5">
+        <div className="group rounded-2xl border border-border bg-card p-5 transition-all hover:border-stone-700/30 hover:bg-stone-900/5">
           <TrendingUp className="mb-3 h-6 w-6 text-stone-600" />
           <h3 className="font-semibold text-stone-800 group-hover:text-stone-900 transition-colors">Mi progreso</h3>
           <p className="mt-1 text-xs text-stone-500">{approved.length} curso{approved.length !== 1 ? 's' : ''} activo{approved.length !== 1 ? 's' : ''}</p>
@@ -242,7 +242,7 @@ export default function DashboardPage() {
   if (!isAuthenticated || !user) return null;
 
   return (
-    <div className="min-h-screen bg-[#f5f0e6] text-stone-900">
+    <div className="min-h-screen bg-background text-stone-900">
       <Navbar />
 
       <div className="mx-auto max-w-7xl px-4 py-10">
@@ -267,7 +267,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Profile card */}
-          <div className="flex items-center gap-3 rounded-xl border border-[#c9beab] bg-[#ede7d9] px-4 py-3">
+          <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-900/10 text-stone-700 font-bold">
               {user.firstName[0]}{user.lastName[0]}
             </div>

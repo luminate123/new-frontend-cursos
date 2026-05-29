@@ -1,4 +1,4 @@
-import Link from 'next/link';
+﻿import Link from 'next/link';
 import { BookOpen, Clock, Users, Clock3, CheckCircle, XCircle, Lock, Play } from 'lucide-react';
 import type { Course, EnrollmentStatus } from '@/lib/types';
 import { formatDuration, getYoutubeThumbnail } from '@/lib/api/courses';
@@ -38,9 +38,9 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
 
   return (
     <Link href={`/cursos/${course.slug}`} className="group block">
-      <div className="h-full rounded-2xl border border-[#c9beab] bg-[#ede7d9] overflow-hidden transition-all duration-300 hover:border-stone-700/40 hover:shadow-xl hover:shadow-stone-900/8 hover:-translate-y-1">
+      <div className="h-full rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:border-stone-700/40 hover:shadow-xl hover:shadow-stone-900/8 hover:-translate-y-1">
         {/* Thumbnail */}
-        <div className="relative aspect-video bg-[#e4ddd0] overflow-hidden">
+        <div className="relative aspect-video bg-secondary overflow-hidden">
           {thumbnail ? (
             <img
               src={thumbnail}
@@ -48,7 +48,7 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
               className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            <div className="flex h-full items-center justify-center bg-gradient-to-br from-[#e4ddd0] to-[#ede7d9]">
+            <div className="flex h-full items-center justify-center bg-gradient-to-br from-secondary to-card">
               <BookOpen className="h-12 w-12 text-stone-400" />
             </div>
           )}
@@ -60,7 +60,7 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
           {enrollmentStatus === 'APPROVED' && (
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-stone-900/90 shadow-lg shadow-stone-900/50 backdrop-blur-sm">
-                <Play className="h-5 w-5 text-[#f5f0e6] ml-0.5" />
+                <Play className="h-5 w-5 text-background ml-0.5" />
               </div>
             </div>
           )}
@@ -72,7 +72,7 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
                 GRATIS
               </span>
             ) : (
-              <span className="rounded-full border border-[#c9beab] bg-[#f5f0e6]/90 px-2.5 py-0.5 text-[11px] font-bold text-stone-800 backdrop-blur-sm">
+              <span className="rounded-full border border-border bg-background/90 px-2.5 py-0.5 text-[11px] font-bold text-stone-800 backdrop-blur-sm">
                 ${Number(course.price).toFixed(2)}
               </span>
             )}
@@ -87,8 +87,8 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
 
           {/* Lock overlay for pending */}
           {enrollmentStatus === 'PENDING' && (
-            <div className="absolute inset-0 bg-[#f5f0e6]/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[2px]">
-              <div className="rounded-full bg-[#ede7d9]/90 p-3 border border-[#c9beab]">
+            <div className="absolute inset-0 bg-background/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-[2px]">
+              <div className="rounded-full bg-card/90 p-3 border border-border">
                 <Lock className="h-5 w-5 text-amber-700" />
               </div>
             </div>
@@ -132,7 +132,7 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
                 <span>Progreso</span>
                 <span className="font-semibold text-stone-700">{progressPercentage}%</span>
               </div>
-              <div className="h-1.5 rounded-full bg-[#c9beab]">
+              <div className="h-1.5 rounded-full bg-border">
                 <div
                   className="h-full rounded-full bg-gradient-to-r from-stone-800 to-stone-600 transition-all duration-500"
                   style={{ width: `${progressPercentage}%` }}
@@ -142,7 +142,7 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
           )}
 
           {/* Stats footer */}
-          <div className="flex items-center gap-3 border-t border-[#c9beab] pt-2.5 text-xs text-stone-500">
+          <div className="flex items-center gap-3 border-t border-border pt-2.5 text-xs text-stone-500">
             {course.totalLessons > 0 && (
               <span className="flex items-center gap-1">
                 <BookOpen className="h-3 w-3" />

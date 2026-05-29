@@ -21,7 +21,7 @@ import type { Course, Section, Lesson } from '@/lib/types';
 
 // ─── Tiny helpers ─────────────────────────────────────────────────────────────
 
-const inputCls = 'w-full rounded-lg border border-[#c9beab] bg-[#e4ddd0] px-3 py-2 text-sm text-stone-900 placeholder-stone-400 focus:border-stone-700/60 focus:outline-none focus:ring-2 focus:ring-stone-700/10 transition-colors';
+const inputCls = 'w-full rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-stone-900 placeholder-stone-400 focus:border-stone-700/60 focus:outline-none focus:ring-2 focus:ring-stone-700/10 transition-colors';
 const selectCls = inputCls + ' cursor-pointer';
 
 function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
@@ -87,7 +87,7 @@ function LessonForm({
   };
 
   return (
-    <div className="rounded-lg border border-[#c9beab] bg-[#ede7d9] p-4 space-y-3">
+    <div className="rounded-lg border border-border bg-card p-4 space-y-3">
       <p className="text-xs font-semibold text-stone-600 uppercase tracking-wide">
         {lesson ? 'Editar clase' : 'Nueva clase'}
       </p>
@@ -128,7 +128,7 @@ function LessonForm({
       </label>
 
       <div className="flex justify-end gap-2 pt-1">
-        <Button size="sm" variant="outline" className="border-[#c9beab] text-stone-600 text-xs" onClick={onCancel}>
+        <Button size="sm" variant="outline" className="border-border text-stone-600 text-xs" onClick={onCancel}>
           Cancelar
         </Button>
         <Button size="sm" className="bg-stone-900 hover:bg-stone-800 text-xs shadow-sm shadow-stone-900/20" onClick={handleSave} disabled={saving}>
@@ -213,9 +213,9 @@ function SectionBlock({
   };
 
   return (
-    <div className="rounded-xl border border-[#c9beab] bg-[#ede7d9] overflow-hidden">
+    <div className="rounded-xl border border-border bg-card overflow-hidden">
       {/* Section header */}
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-[#c9beab]">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
         <GripVertical className="h-4 w-4 text-stone-400 shrink-0" />
 
         {editingTitle ? (
@@ -224,7 +224,7 @@ function SectionBlock({
             value={titleDraft}
             onChange={(e) => setTitleDraft(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter') saveTitle(); if (e.key === 'Escape') setEditingTitle(false); }}
-            className="flex-1 rounded border border-stone-700/60 bg-[#e4ddd0] px-2 py-0.5 text-sm text-stone-900 focus:outline-none"
+            className="flex-1 rounded border border-stone-700/60 bg-secondary px-2 py-0.5 text-sm text-stone-900 focus:outline-none"
           />
         ) : (
           <span className="flex-1 text-sm font-semibold text-stone-800">{section.title}</span>
@@ -235,15 +235,15 @@ function SectionBlock({
 
           {editingTitle ? (
             <>
-              <button onClick={saveTitle} className="rounded p-1 text-emerald-700 hover:bg-[#e4ddd0]">
+              <button onClick={saveTitle} className="rounded p-1 text-emerald-700 hover:bg-secondary">
                 <Check className="h-3.5 w-3.5" />
               </button>
-              <button onClick={() => setEditingTitle(false)} className="rounded p-1 text-stone-500 hover:bg-[#e4ddd0]">
+              <button onClick={() => setEditingTitle(false)} className="rounded p-1 text-stone-500 hover:bg-secondary">
                 <X className="h-3.5 w-3.5" />
               </button>
             </>
           ) : (
-            <button onClick={() => setEditingTitle(true)} className="rounded p-1 text-stone-500 hover:bg-[#e4ddd0] hover:text-stone-700">
+            <button onClick={() => setEditingTitle(true)} className="rounded p-1 text-stone-500 hover:bg-secondary hover:text-stone-700">
               <Pencil className="h-3.5 w-3.5" />
             </button>
           )}
@@ -251,12 +251,12 @@ function SectionBlock({
           <button
             onClick={handleDeleteSection}
             disabled={deletingSection}
-            className="rounded p-1 text-stone-400 hover:bg-[#e4ddd0] hover:text-red-700"
+            className="rounded p-1 text-stone-400 hover:bg-secondary hover:text-red-700"
           >
             {deletingSection ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Trash2 className="h-3.5 w-3.5" />}
           </button>
 
-          <button onClick={() => setOpen((v) => !v)} className="rounded p-1 text-stone-500 hover:bg-[#e4ddd0]">
+          <button onClick={() => setOpen((v) => !v)} className="rounded p-1 text-stone-500 hover:bg-secondary">
             {open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </button>
         </div>
@@ -279,7 +279,7 @@ function SectionBlock({
                   onCancel={() => setEditingLesson(null)}
                 />
               ) : (
-                <div className="flex items-center gap-2 rounded-lg border border-[#c9beab] bg-[#e4ddd0]/40 px-3 py-2 group hover:border-stone-700/30 hover:bg-stone-900/5 transition-colors">
+                <div className="flex items-center gap-2 rounded-lg border border-border bg-secondary/40 px-3 py-2 group hover:border-stone-700/30 hover:bg-stone-900/5 transition-colors">
                   <span className="text-[11px] text-stone-400 w-5 shrink-0 text-right">{idx + 1}</span>
                   {lesson.isFree ? (
                     <Play className="h-3.5 w-3.5 shrink-0 text-emerald-700" />
@@ -329,7 +329,7 @@ function SectionBlock({
           ) : (
             <button
               onClick={() => setAddingLesson(true)}
-              className="flex w-full items-center gap-2 rounded-lg border border-dashed border-[#c9beab] px-3 py-2 text-xs text-stone-500 hover:border-stone-700/40 hover:text-stone-700 transition-colors"
+              className="flex w-full items-center gap-2 rounded-lg border border-dashed border-border px-3 py-2 text-xs text-stone-500 hover:border-stone-700/40 hover:text-stone-700 transition-colors"
             >
               <Plus className="h-3.5 w-3.5" />
               Agregar clase
@@ -358,12 +358,12 @@ function StringListInput({ label, values, onChange, placeholder }: {
       <label className="mb-1 block text-xs font-medium text-stone-500">{label}</label>
       <div className="flex gap-2 mb-2">
         <input value={draft} onChange={(e) => setDraft(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), add())} placeholder={placeholder} className={inputCls} />
-        <Button type="button" size="sm" onClick={add} variant="outline" className="border-[#c9beab] text-stone-600 shrink-0"><Plus className="h-4 w-4" /></Button>
+        <Button type="button" size="sm" onClick={add} variant="outline" className="border-border text-stone-600 shrink-0"><Plus className="h-4 w-4" /></Button>
       </div>
       {values.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {values.map((v, i) => (
-            <span key={i} className="flex items-center gap-1 rounded-full bg-[#e4ddd0] border border-[#c9beab] px-2.5 py-0.5 text-xs text-stone-700">
+            <span key={i} className="flex items-center gap-1 rounded-full bg-secondary border border-border px-2.5 py-0.5 text-xs text-stone-700">
               {v}
               <button type="button" onClick={() => onChange(values.filter((_, j) => j !== i))}><X className="h-3 w-3 text-stone-500 hover:text-red-700" /></button>
             </span>
@@ -497,7 +497,7 @@ export default function CourseEditorPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#f5f0e6]">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-stone-700 border-t-transparent" />
       </div>
     );
@@ -508,7 +508,7 @@ export default function CourseEditorPage() {
   const totalLessons = sections.reduce((acc, s) => acc + s.lessons.length, 0);
 
   return (
-    <div className="min-h-screen bg-[#f5f0e6] text-stone-900">
+    <div className="min-h-screen bg-background text-stone-900">
       <Navbar />
 
       <div className="mx-auto max-w-4xl px-4 py-8">
@@ -527,7 +527,7 @@ export default function CourseEditorPage() {
               <span className={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${
                 course.isPublished
                   ? 'border-emerald-500/40 bg-emerald-50 text-emerald-700'
-                  : 'border-[#c9beab] bg-[#e4ddd0] text-stone-500'
+                  : 'border-border bg-secondary text-stone-500'
               }`}>
                 {course.isPublished ? 'Publicado' : 'Borrador'}
               </span>
@@ -539,7 +539,7 @@ export default function CourseEditorPage() {
 
           <div className="flex items-center gap-2">
             <Link href={`/cursos/${course.slug}`} target="_blank">
-              <Button size="sm" variant="outline" className="border-[#c9beab] text-stone-600 hover:text-stone-800 text-xs gap-1.5">
+              <Button size="sm" variant="outline" className="border-border text-stone-600 hover:text-stone-800 text-xs gap-1.5">
                 <Eye className="h-3.5 w-3.5" /> Preview
               </Button>
             </Link>
@@ -548,7 +548,7 @@ export default function CourseEditorPage() {
               onClick={handleTogglePublish}
               disabled={togglingPublish}
               className={course.isPublished
-                ? 'border border-[#c9beab] bg-transparent hover:bg-[#e4ddd0] text-stone-600 text-xs'
+                ? 'border border-border bg-transparent hover:bg-secondary text-stone-600 text-xs'
                 : 'bg-emerald-600 hover:bg-emerald-700 text-xs'}
             >
               {togglingPublish ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <Globe className="mr-1.5 h-3.5 w-3.5" />}
@@ -558,7 +558,7 @@ export default function CourseEditorPage() {
         </div>
 
         {/* Tabs */}
-        <div className="mb-6 flex border-b border-[#c9beab]">
+        <div className="mb-6 flex border-b border-border">
           {([['content', 'Contenido', BookOpen], ['info', 'Información', Pencil]] as const).map(([t, label, Icon]) => (
             <button
               key={t}
@@ -579,8 +579,8 @@ export default function CourseEditorPage() {
         {tab === 'content' && (
           <div className="space-y-4">
             {sections.length === 0 && (
-              <div className="rounded-2xl border border-dashed border-[#c9beab] p-12 text-center">
-                <BookOpen className="mx-auto mb-3 h-8 w-8 text-slate-700" />
+              <div className="rounded-2xl border border-dashed border-border p-12 text-center">
+                <BookOpen className="mx-auto mb-3 h-8 w-8 text-stone-700" />
                 <p className="text-sm text-stone-500">Sin secciones aún</p>
                 <p className="mt-1 text-xs text-stone-400">Agrega una sección para empezar a organizar las clases</p>
               </div>
@@ -602,7 +602,7 @@ export default function CourseEditorPage() {
 
             {/* Add section */}
             {addingSection ? (
-              <div className="rounded-xl border border-[#c9beab] bg-[#ede7d9] p-4 space-y-3">
+              <div className="rounded-xl border border-border bg-card p-4 space-y-3">
                 <p className="text-xs font-semibold text-stone-600 uppercase tracking-wide">Nueva sección</p>
                 <div className="flex gap-2">
                   <input
@@ -615,7 +615,7 @@ export default function CourseEditorPage() {
                   />
                 </div>
                 <div className="flex justify-end gap-2">
-                  <Button size="sm" variant="outline" className="border-[#c9beab] text-stone-600 text-xs" onClick={() => { setAddingSection(false); setAddingSectionTitle(''); }}>
+                  <Button size="sm" variant="outline" className="border-border text-stone-600 text-xs" onClick={() => { setAddingSection(false); setAddingSectionTitle(''); }}>
                     Cancelar
                   </Button>
                   <Button size="sm" className="bg-stone-900 hover:bg-stone-800 text-xs shadow-sm shadow-stone-900/20" onClick={handleAddSection} disabled={savingSection}>
@@ -627,7 +627,7 @@ export default function CourseEditorPage() {
             ) : (
               <button
                 onClick={() => setAddingSection(true)}
-                className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#c9beab] py-4 text-sm text-stone-500 hover:border-stone-700/40 hover:text-stone-700 transition-colors"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border py-4 text-sm text-stone-500 hover:border-stone-700/40 hover:text-stone-700 transition-colors"
               >
                 <Plus className="h-4 w-4" />
                 Agregar sección
@@ -639,7 +639,7 @@ export default function CourseEditorPage() {
         {/* ── Info tab ───────────────────────────────────────────────── */}
         {tab === 'info' && (
           <form onSubmit={handleSaveInfo} className="space-y-5">
-            <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-5 space-y-4">
+            <div className="rounded-2xl border border-border bg-card p-5 space-y-4">
               <h3 className="text-sm font-semibold text-stone-700">Información básica</h3>
 
               <Field label="Título" required>
@@ -655,7 +655,7 @@ export default function CourseEditorPage() {
               </Field>
             </div>
 
-            <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-5 space-y-4">
+            <div className="rounded-2xl border border-border bg-card p-5 space-y-4">
               <h3 className="text-sm font-semibold text-stone-700">Clasificación</h3>
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label="Nivel">
@@ -677,7 +677,7 @@ export default function CourseEditorPage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-5 space-y-4">
+            <div className="rounded-2xl border border-border bg-card p-5 space-y-4">
               <h3 className="text-sm font-semibold text-stone-700">Multimedia</h3>
               <Field label="URL portada">
                 <input value={info.thumbnail} onChange={setInfoField('thumbnail')} placeholder="https://..." className={inputCls} />
@@ -687,7 +687,7 @@ export default function CourseEditorPage() {
               </Field>
             </div>
 
-            <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-5 space-y-4">
+            <div className="rounded-2xl border border-border bg-card p-5 space-y-4">
               <h3 className="text-sm font-semibold text-stone-700">Contenido del curso</h3>
               <StringListInput label="Qué aprenderán" values={whatYouLearn} onChange={setWhatYouLearn} placeholder="Ej: Crear APIs REST con NestJS" />
               <StringListInput label="Requisitos" values={requirements} onChange={setRequirements} placeholder="Ej: JavaScript básico" />

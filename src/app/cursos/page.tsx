@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useCallback } from 'react';
 import { Search, X, BookOpen } from 'lucide-react';
@@ -71,11 +71,11 @@ export default function CursosPage() {
   const hasFilters = search || category || level;
 
   return (
-    <div className="min-h-screen bg-[#f5f0e6] text-stone-900">
+    <div className="min-h-screen bg-background text-stone-900">
       <Navbar />
 
       {/* ── Hero header ─────────────────────────────────────────────── */}
-      <div className="border-b border-[#c9beab] bg-gradient-to-b from-[#ede7d9] to-[#f5f0e6]">
+      <div className="border-b border-border bg-gradient-to-b from-card to-background">
         <div className="mx-auto max-w-7xl px-4 py-12">
           <div className="max-w-2xl">
             <h1 className="text-4xl font-black tracking-tight">
@@ -106,7 +106,7 @@ export default function CursosPage() {
                 placeholder="Buscar por título, tema o instructor..."
                 value={search}
                 onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                className="h-10 w-full rounded-xl border border-[#c9beab] bg-[#ede7d9] pl-9 pr-4 text-sm text-stone-900 placeholder:text-stone-400 focus:border-stone-700/60 focus:outline-none focus:ring-2 focus:ring-stone-700/10 transition-colors"
+                className="h-10 w-full rounded-xl border border-border bg-card pl-9 pr-4 text-sm text-stone-900 placeholder:text-stone-400 focus:border-stone-700/60 focus:outline-none focus:ring-2 focus:ring-stone-700/10 transition-colors"
               />
               {search && (
                 <button
@@ -122,7 +122,7 @@ export default function CursosPage() {
             <select
               value={category}
               onChange={(e) => { setCategory(e.target.value as CourseCategory | ''); setPage(1); }}
-              className="h-10 rounded-xl border border-[#c9beab] bg-[#ede7d9] px-3 text-sm text-stone-700 focus:border-stone-700/60 focus:outline-none transition-colors"
+              className="h-10 rounded-xl border border-border bg-card px-3 text-sm text-stone-700 focus:border-stone-700/60 focus:outline-none transition-colors"
             >
               <option value="">Todas las categorías</option>
               {CATEGORIES.map(([val, label]) => (
@@ -134,7 +134,7 @@ export default function CursosPage() {
             <select
               value={level}
               onChange={(e) => { setLevel(e.target.value as CourseLevel | ''); setPage(1); }}
-              className="h-10 rounded-xl border border-[#c9beab] bg-[#ede7d9] px-3 text-sm text-stone-700 focus:border-stone-700/60 focus:outline-none transition-colors"
+              className="h-10 rounded-xl border border-border bg-card px-3 text-sm text-stone-700 focus:border-stone-700/60 focus:outline-none transition-colors"
             >
               <option value="">Todos los niveles</option>
               {LEVELS.map(([val, label]) => (
@@ -156,7 +156,7 @@ export default function CursosPage() {
                 <button
                   key={val}
                   onClick={() => { setCategory(val); setPage(1); }}
-                  className="flex items-center gap-1.5 rounded-full border border-[#c9beab] bg-[#ede7d9]/60 px-3 py-1 text-xs text-stone-600 hover:border-stone-700/40 hover:text-stone-900 transition-colors"
+                  className="flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1 text-xs text-stone-600 hover:border-stone-700/40 hover:text-stone-900 transition-colors"
                 >
                   <span>{CATEGORY_ICONS[val]}</span>
                   {label}
@@ -169,23 +169,23 @@ export default function CursosPage() {
 
       {/* ── Active filter chips ──────────────────────────────────────── */}
       {hasFilters && (
-        <div className="border-b border-[#c9beab] bg-[#ede7d9]/30">
+        <div className="border-b border-border bg-card/30">
           <div className="mx-auto max-w-7xl px-4 py-3 flex items-center gap-2 flex-wrap">
             <span className="text-xs text-stone-500">Filtros activos:</span>
             {search && (
-              <span className="flex items-center gap-1 rounded-full border border-[#c9beab] bg-[#ede7d9] px-2.5 py-0.5 text-xs text-stone-700">
+              <span className="flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-0.5 text-xs text-stone-700">
                 "{search}"
                 <button onClick={() => setSearch('')}><X className="h-3 w-3 text-stone-500 hover:text-red-600" /></button>
               </span>
             )}
             {category && (
-              <span className="flex items-center gap-1 rounded-full border border-[#c9beab] bg-[#ede7d9] px-2.5 py-0.5 text-xs text-stone-700">
+              <span className="flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-0.5 text-xs text-stone-700">
                 {CATEGORY_ICONS[category]} {CATEGORY_LABELS[category]}
                 <button onClick={() => setCategory('')}><X className="h-3 w-3 text-stone-500 hover:text-red-600" /></button>
               </span>
             )}
             {level && (
-              <span className="flex items-center gap-1 rounded-full border border-[#c9beab] bg-[#ede7d9] px-2.5 py-0.5 text-xs text-stone-700">
+              <span className="flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-0.5 text-xs text-stone-700">
                 {LEVEL_LABELS[level]}
                 <button onClick={() => setLevel('')}><X className="h-3 w-3 text-stone-500 hover:text-red-600" /></button>
               </span>
@@ -199,13 +199,13 @@ export default function CursosPage() {
         {loading ? (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] animate-pulse">
-                <div className="aspect-video bg-[#e4ddd0] rounded-t-2xl" />
+              <div key={i} className="rounded-2xl border border-border bg-card animate-pulse">
+                <div className="aspect-video bg-secondary rounded-t-2xl" />
                 <div className="p-4 space-y-3">
-                  <div className="h-3 w-20 rounded bg-[#e4ddd0]" />
-                  <div className="h-4 w-3/4 rounded bg-[#e4ddd0]" />
-                  <div className="h-3 w-full rounded bg-[#e4ddd0]" />
-                  <div className="h-3 w-1/2 rounded bg-[#e4ddd0]" />
+                  <div className="h-3 w-20 rounded bg-secondary" />
+                  <div className="h-4 w-3/4 rounded bg-secondary" />
+                  <div className="h-3 w-full rounded bg-secondary" />
+                  <div className="h-3 w-1/2 rounded bg-secondary" />
                 </div>
               </div>
             ))}
@@ -240,7 +240,7 @@ export default function CursosPage() {
                   size="sm"
                   disabled={page === 1}
                   onClick={() => setPage((p) => p - 1)}
-                  className="border-[#c9beab] text-stone-600 hover:text-stone-900"
+                  className="border-border text-stone-600 hover:text-stone-900"
                 >
                   ← Anterior
                 </Button>
@@ -261,8 +261,8 @@ export default function CursosPage() {
                           onClick={() => setPage(p as number)}
                           className={`h-8 w-8 rounded-lg text-sm font-medium transition-colors ${
                             page === p
-                              ? 'bg-stone-900 text-[#f5f0e6] shadow-md shadow-stone-900/20'
-                              : 'border border-[#c9beab] text-stone-600 hover:border-stone-700/40 hover:text-stone-900'
+                              ? 'bg-stone-900 text-background shadow-md shadow-stone-900/20'
+                              : 'border border-border text-stone-600 hover:border-stone-700/40 hover:text-stone-900'
                           }`}
                         >
                           {p}
@@ -275,7 +275,7 @@ export default function CursosPage() {
                   size="sm"
                   disabled={page === data.meta.lastPage}
                   onClick={() => setPage((p) => p + 1)}
-                  className="border-[#c9beab] text-stone-600 hover:text-stone-900"
+                  className="border-border text-stone-600 hover:text-stone-900"
                 >
                   Siguiente →
                 </Button>
@@ -284,7 +284,7 @@ export default function CursosPage() {
           </>
         ) : (
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="mb-4 rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-6">
+            <div className="mb-4 rounded-2xl border border-border bg-card p-6">
               <Search className="h-10 w-10 text-stone-400" />
             </div>
             <h3 className="text-lg font-semibold text-stone-700">No se encontraron cursos</h3>
@@ -294,7 +294,7 @@ export default function CursosPage() {
                 : 'Aún no hay cursos publicados. Vuelve pronto.'}
             </p>
             {hasFilters && (
-              <Button variant="outline" className="mt-5 border-[#c9beab] text-stone-600 gap-2" onClick={clearFilters}>
+              <Button variant="outline" className="mt-5 border-border text-stone-600 gap-2" onClick={clearFilters}>
                 <X className="h-4 w-4" /> Limpiar filtros
               </Button>
             )}

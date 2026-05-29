@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -105,7 +105,7 @@ export function InstructorPanel() {
     return (
       <div className="space-y-3">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-16 rounded-xl border border-[#c9beab] bg-[#ede7d9] animate-pulse" />
+          <div key={i} className="h-16 rounded-xl border border-border bg-card animate-pulse" />
         ))}
       </div>
     );
@@ -127,7 +127,7 @@ export function InstructorPanel() {
           { label: 'Estudiantes activos', value: totalStudents, icon: Users, color: 'text-emerald-700', bg: 'bg-emerald-500/10 border-emerald-500/20' },
           { label: 'Solicitudes pendientes', value: pendingCount, icon: Clock3, color: 'text-amber-700', bg: 'bg-amber-500/10 border-amber-500/20' },
         ].map((stat) => (
-          <div key={stat.label} className={`flex items-center gap-4 rounded-xl border bg-[#ede7d9] p-5 ${stat.bg}`}>
+          <div key={stat.label} className={`flex items-center gap-4 rounded-xl border bg-card p-5 ${stat.bg}`}>
             <div className={`rounded-xl p-3 ${stat.bg}`}>
               <stat.icon className={`h-5 w-5 ${stat.color}`} />
             </div>
@@ -156,7 +156,7 @@ export function InstructorPanel() {
                     : s === 'REJECTED'
                     ? 'border-red-600/50 bg-red-50 text-red-700'
                     : 'border-stone-700/50 bg-stone-900/10 text-stone-700'
-                  : 'border-[#c9beab] text-stone-500 hover:border-stone-500'
+                  : 'border-border text-stone-500 hover:border-stone-500'
               }`}
             >
               {FILTER_LABELS[s]}
@@ -174,7 +174,7 @@ export function InstructorPanel() {
 
       {/* Course list */}
       {courseData.length === 0 ? (
-        <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-12 text-center">
+        <div className="rounded-2xl border border-border bg-card p-12 text-center">
           <BookOpen className="mx-auto mb-4 h-10 w-10 text-stone-400" />
           <h3 className="text-lg font-semibold text-stone-600">Sin cursos aún</h3>
           <p className="mt-1 text-sm text-stone-500">Crea tu primer curso para comenzar</p>
@@ -192,7 +192,7 @@ export function InstructorPanel() {
             const pending = enrollments.filter((e) => e.status === 'PENDING').length;
 
             return (
-              <div key={course.id} className="rounded-xl border border-[#c9beab] bg-[#ede7d9] overflow-hidden">
+              <div key={course.id} className="rounded-xl border border-border bg-card overflow-hidden">
                 {/* Course header */}
                 <button
                   onClick={() => toggleCourse(course.id)}
@@ -202,7 +202,7 @@ export function InstructorPanel() {
                     {course.thumbnail ? (
                       <img src={course.thumbnail} alt="" className="h-10 w-14 shrink-0 rounded-md object-cover" />
                     ) : (
-                      <div className="h-10 w-14 shrink-0 rounded-md bg-[#e4ddd0] flex items-center justify-center">
+                      <div className="h-10 w-14 shrink-0 rounded-md bg-secondary flex items-center justify-center">
                         <BookOpen className="h-5 w-5 text-stone-400" />
                       </div>
                     )}
@@ -210,7 +210,7 @@ export function InstructorPanel() {
                       <div className="flex items-center gap-2">
                         <p className="font-semibold text-stone-800 truncate">{course.title}</p>
                         {!course.isPublished && (
-                          <span className="shrink-0 rounded-full border border-[#c9beab] px-1.5 py-0.5 text-[10px] text-stone-500">
+                          <span className="shrink-0 rounded-full border border-border px-1.5 py-0.5 text-[10px] text-stone-500">
                             Borrador
                           </span>
                         )}
@@ -230,7 +230,7 @@ export function InstructorPanel() {
                     <Link
                       href={`/dashboard/instructor/cursos/${course.id}`}
                       onClick={(e) => e.stopPropagation()}
-                      className="rounded-lg border border-[#c9beab] p-1.5 text-stone-500 hover:text-stone-700 hover:border-stone-700/30 transition-colors"
+                      className="rounded-lg border border-border p-1.5 text-stone-500 hover:text-stone-700 hover:border-stone-700/30 transition-colors"
                       title="Editar"
                     >
                       <Pencil className="h-4 w-4" />
@@ -238,7 +238,7 @@ export function InstructorPanel() {
                     <Link
                       href={`/cursos/${course.slug}`}
                       onClick={(e) => e.stopPropagation()}
-                      className="rounded-lg border border-[#c9beab] p-1.5 text-stone-500 hover:text-stone-700 transition-colors"
+                      className="rounded-lg border border-border p-1.5 text-stone-500 hover:text-stone-700 transition-colors"
                       title="Ver curso"
                     >
                       <Eye className="h-4 w-4" />
@@ -253,20 +253,20 @@ export function InstructorPanel() {
 
                 {/* Enrollments */}
                 {open && (
-                  <div className="border-t border-[#c9beab]">
+                  <div className="border-t border-border">
                     {filtered.length === 0 ? (
                       <div className="px-5 py-6 text-center text-sm text-stone-500">
                         No hay solicitudes{filterStatus !== 'ALL' ? ` con estado "${filterStatus.toLowerCase()}"` : ''}
                       </div>
                     ) : (
-                      <div className="divide-y divide-[#c9beab]">
+                      <div className="divide-y divide-border">
                         {filtered.map((enrollment) => (
                           <div
                             key={enrollment.id}
                             className="flex items-center justify-between px-5 py-3 hover:bg-stone-900/5 transition-colors"
                           >
                             <div className="flex items-center gap-3 min-w-0">
-                              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#e4ddd0] text-sm font-bold text-stone-600">
+                              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-secondary text-sm font-bold text-stone-600">
                                 {enrollment.user?.firstName?.[0] ?? '?'}
                               </div>
                               <div className="min-w-0">

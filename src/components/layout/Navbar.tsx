@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -32,7 +32,7 @@ export function Navbar() {
   const logoutMutation = useLogout();
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-[#c9beab] bg-[#f5f0e6]/90 backdrop-blur-md">
+    <nav className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center">
@@ -57,7 +57,7 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           {isAuthenticated && user ? (
             <>
-              <div className="hidden sm:flex items-center gap-2 rounded-lg border border-[#c9beab] bg-[#ede7d9] px-3 py-1.5">
+              <div className="hidden sm:flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5">
                 <div className="flex h-6 w-6 items-center justify-center rounded-full bg-stone-900/10 text-[10px] font-bold text-stone-700">
                   {user.firstName[0]}{user.lastName[0]}
                 </div>
@@ -77,7 +77,7 @@ export function Navbar() {
                 size="sm"
                 onClick={() => logoutMutation.mutate(undefined, { onSuccess: () => router.push('/login') })}
                 disabled={logoutMutation.isPending}
-                className="border-[#c9beab] text-stone-600 hover:text-stone-900 hover:border-stone-700 text-xs"
+                className="border-border text-stone-600 hover:text-stone-900 hover:border-stone-700 text-xs"
               >
                 Salir
               </Button>
@@ -85,12 +85,12 @@ export function Navbar() {
           ) : (
             <>
               <Link href="/login">
-                <Button variant="outline" size="sm" className="border-[#c9beab] text-stone-600 hover:text-stone-900 text-xs">
+                <Button variant="outline" size="sm" className="border-border text-stone-600 hover:text-stone-900 text-xs">
                   Iniciar sesión
                 </Button>
               </Link>
               <Link href="/registro">
-                <Button size="sm" className="bg-stone-900 hover:bg-stone-800 text-[#f5f0e6] text-xs font-semibold">
+                <Button size="sm" className="bg-stone-900 hover:bg-stone-800 text-background text-xs font-semibold">
                   Registrarse
                 </Button>
               </Link>

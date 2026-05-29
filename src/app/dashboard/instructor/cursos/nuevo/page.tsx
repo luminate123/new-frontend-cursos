@@ -40,16 +40,16 @@ function StringListInput({
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), add())}
           placeholder={placeholder}
-          className="flex-1 rounded-lg border border-[#c9beab] bg-[#e4ddd0] px-3 py-2 text-sm text-stone-900 placeholder-stone-400 focus:border-stone-700/60 focus:outline-none focus:ring-2 focus:ring-stone-700/10 transition-colors"
+          className="flex-1 rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-stone-900 placeholder-stone-400 focus:border-stone-700/60 focus:outline-none focus:ring-2 focus:ring-stone-700/10 transition-colors"
         />
-        <Button type="button" size="sm" onClick={add} variant="outline" className="border-[#c9beab] text-stone-600">
+        <Button type="button" size="sm" onClick={add} variant="outline" className="border-border text-stone-600">
           <Plus className="h-4 w-4" />
         </Button>
       </div>
       {values.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {values.map((v, i) => (
-            <span key={i} className="flex items-center gap-1 rounded-full bg-[#e4ddd0] border border-[#c9beab] px-2.5 py-0.5 text-xs text-stone-700">
+            <span key={i} className="flex items-center gap-1 rounded-full bg-secondary border border-border px-2.5 py-0.5 text-xs text-stone-700">
               {v}
               <button type="button" onClick={() => onChange(values.filter((_, j) => j !== i))}>
                 <X className="h-3 w-3 text-stone-500 hover:text-red-700" />
@@ -75,7 +75,7 @@ function Field({ label, required, children }: { label: string; required?: boolea
   );
 }
 
-const inputCls = 'w-full rounded-lg border border-[#c9beab] bg-[#e4ddd0] px-3 py-2 text-sm text-stone-900 placeholder-stone-400 focus:border-stone-700/60 focus:outline-none focus:ring-2 focus:ring-stone-700/10 transition-colors';
+const inputCls = 'w-full rounded-lg border border-border bg-secondary px-3 py-2 text-sm text-stone-900 placeholder-stone-400 focus:border-stone-700/60 focus:outline-none focus:ring-2 focus:ring-stone-700/10 transition-colors';
 const selectCls = inputCls + ' cursor-pointer';
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
@@ -133,7 +133,7 @@ export default function NuevoCursoPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f0e6] text-stone-900">
+    <div className="min-h-screen bg-background text-stone-900">
       <Navbar />
       <div className="mx-auto max-w-3xl px-4 py-10">
         {/* Breadcrumb */}
@@ -148,7 +148,7 @@ export default function NuevoCursoPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic info */}
-          <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-6 space-y-5">
+          <div className="rounded-2xl border border-border bg-card p-6 space-y-5">
             <h2 className="font-semibold text-stone-800">Información básica</h2>
 
             <Field label="Título del curso" required>
@@ -173,7 +173,7 @@ export default function NuevoCursoPage() {
           </div>
 
           {/* Classification */}
-          <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-6 space-y-5">
+          <div className="rounded-2xl border border-border bg-card p-6 space-y-5">
             <h2 className="font-semibold text-stone-800">Clasificación</h2>
 
             <div className="grid gap-4 sm:grid-cols-2">
@@ -205,7 +205,7 @@ export default function NuevoCursoPage() {
           </div>
 
           {/* Media */}
-          <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-6 space-y-5">
+          <div className="rounded-2xl border border-border bg-card p-6 space-y-5">
             <h2 className="font-semibold text-stone-800">Multimedia (opcional)</h2>
 
             <Field label="URL de portada (imagen)">
@@ -218,7 +218,7 @@ export default function NuevoCursoPage() {
           </div>
 
           {/* Content lists */}
-          <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-6 space-y-5">
+          <div className="rounded-2xl border border-border bg-card p-6 space-y-5">
             <h2 className="font-semibold text-stone-800">Contenido del curso</h2>
 
             <StringListInput
@@ -246,7 +246,7 @@ export default function NuevoCursoPage() {
           {/* Actions */}
           <div className="flex justify-end gap-3">
             <Link href="/dashboard">
-              <Button type="button" variant="outline" className="border-[#c9beab] text-stone-600 hover:text-stone-800">
+              <Button type="button" variant="outline" className="border-border text-stone-600 hover:text-stone-800">
                 Cancelar
               </Button>
             </Link>

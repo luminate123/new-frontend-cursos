@@ -116,17 +116,17 @@ export default function CourseDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f5f0e6]">
+      <div className="min-h-screen bg-background">
         <Navbar />
         <div className="mx-auto max-w-7xl px-4 py-12">
-          <div className="h-10 w-48 rounded bg-[#e4ddd0] animate-pulse mb-6" />
+          <div className="h-10 w-48 rounded bg-secondary animate-pulse mb-6" />
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2 space-y-4">
-              <div className="aspect-video rounded-xl bg-[#e4ddd0] animate-pulse" />
-              <div className="h-8 w-3/4 rounded bg-[#e4ddd0] animate-pulse" />
-              <div className="h-4 w-full rounded bg-[#e4ddd0] animate-pulse" />
+              <div className="aspect-video rounded-xl bg-secondary animate-pulse" />
+              <div className="h-8 w-3/4 rounded bg-secondary animate-pulse" />
+              <div className="h-4 w-full rounded bg-secondary animate-pulse" />
             </div>
-            <div className="h-96 rounded-xl bg-[#e4ddd0] animate-pulse" />
+            <div className="h-96 rounded-xl bg-secondary animate-pulse" />
           </div>
         </div>
       </div>
@@ -149,12 +149,12 @@ export default function CourseDetailPage() {
       : null);
 
   return (
-    <div className="min-h-screen bg-[#f5f0e6] text-stone-900">
+    <div className="min-h-screen bg-background text-stone-900">
       <Navbar />
 
       {/* Video player */}
       {activeLesson && activeLesson.youtubeVideoId && canWatchActive && (
-        <div className="border-b border-[#c9beab] bg-[#ede7d9]">
+        <div className="border-b border-border bg-card">
           <div className="mx-auto max-w-7xl px-4 py-4">
             <div className="flex items-center justify-between mb-3">
               <div>
@@ -173,7 +173,7 @@ export default function CourseDetailPage() {
                     Vista previa gratuita
                   </span>
                 )}
-                <Button size="sm" variant="outline" onClick={() => setActiveLesson(null)} className="border-[#c9beab] text-stone-600 text-xs">
+                <Button size="sm" variant="outline" onClick={() => setActiveLesson(null)} className="border-border text-stone-600 text-xs">
                   Cerrar
                 </Button>
               </div>
@@ -206,7 +206,7 @@ export default function CourseDetailPage() {
             {/* Hero */}
             <div>
               {!activeLesson && thumbnail && (
-                <div className="mb-6 aspect-video overflow-hidden rounded-2xl bg-[#e4ddd0]">
+                <div className="mb-6 aspect-video overflow-hidden rounded-2xl bg-secondary">
                   <img src={thumbnail} alt={course.title} className="h-full w-full object-cover" />
                 </div>
               )}
@@ -215,7 +215,7 @@ export default function CourseDetailPage() {
                 <CategoryBadge category={course.category} />
                 <LevelBadge level={course.level} />
                 {course.language && (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-[#c9beab] px-2 py-0.5 text-xs text-stone-600">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-xs text-stone-600">
                     <Globe className="h-3 w-3" />
                     {course.language.toUpperCase()}
                   </span>
@@ -286,7 +286,7 @@ export default function CourseDetailPage() {
 
             {/* What you'll learn */}
             {course.whatYouLearn?.length > 0 && (
-              <div className="rounded-2xl border border-[#c9beab] bg-[#ede7d9] p-6">
+              <div className="rounded-2xl border border-border bg-card p-6">
                 <h2 className="text-lg font-bold mb-4">Lo que aprenderás</h2>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {course.whatYouLearn.map((item, i) => (
@@ -341,9 +341,9 @@ export default function CourseDetailPage() {
 
           {/* ── Sidebar ──────────────────────────────────────────────── */}
           <div className="lg:col-span-1">
-            <div className="sticky top-20 rounded-2xl border border-[#c9beab] bg-[#ede7d9] overflow-hidden">
+            <div className="sticky top-20 rounded-2xl border border-border bg-card overflow-hidden">
               {thumbnail && (
-                <div className="aspect-video bg-[#e4ddd0]">
+                <div className="aspect-video bg-secondary">
                   <img src={thumbnail} alt={course.title} className="h-full w-full object-cover" />
                 </div>
               )}
@@ -408,7 +408,7 @@ export default function CourseDetailPage() {
                     </div>
                     <Button
                       variant="outline"
-                      className="w-full border-[#c9beab] text-stone-600 hover:text-red-700 hover:border-red-600/30 text-sm"
+                      className="w-full border-border text-stone-600 hover:text-red-700 hover:border-red-600/30 text-sm"
                       onClick={handleCancelRequest}
                       disabled={cancelling}
                     >
@@ -448,7 +448,7 @@ export default function CourseDetailPage() {
                 )}
 
                 {/* Course info */}
-                <div className="space-y-2 border-t border-[#c9beab] pt-4 text-sm">
+                <div className="space-y-2 border-t border-border pt-4 text-sm">
                   {course.totalLessons > 0 && (
                     <div className="flex items-center justify-between text-stone-500">
                       <span className="flex items-center gap-1.5"><BookOpen className="h-4 w-4" />Clases</span>
@@ -475,9 +475,9 @@ export default function CourseDetailPage() {
 
                 {/* Tags */}
                 {course.tags?.length > 0 && (
-                  <div className="flex flex-wrap gap-1.5 border-t border-[#c9beab] pt-4">
+                  <div className="flex flex-wrap gap-1.5 border-t border-border pt-4">
                     {course.tags.map((tag) => (
-                      <span key={tag} className="rounded-full bg-[#e4ddd0] px-2 py-0.5 text-xs text-stone-500 border border-[#c9beab]">
+                      <span key={tag} className="rounded-full bg-secondary px-2 py-0.5 text-xs text-stone-500 border border-border">
                         #{tag}
                       </span>
                     ))}
