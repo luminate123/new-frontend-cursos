@@ -28,6 +28,7 @@ function NavLink({ href, children, icon: Icon }: { href: string; children: React
 
 export function Navbar() {
   const router = useRouter();
+  const pathname = usePathname();
   const { user, isAuthenticated } = useAuthStore();
   const logoutMutation = useLogout();
 
@@ -41,7 +42,7 @@ export function Navbar() {
 
         {/* Nav links */}
         <div className="hidden sm:flex items-center gap-1">
-          <NavLink href="/cursos" icon={BookOpen}>Cursos</NavLink>
+          {pathname !== '/' && <NavLink href="/cursos" icon={BookOpen}>Cursos</NavLink>}
           {isAuthenticated && user?.role === 'STUDENT' && (
             <NavLink href="/dashboard" icon={LayoutDashboard}>Mi aprendizaje</NavLink>
           )}
