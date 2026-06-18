@@ -37,7 +37,7 @@ export function Navbar() {
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <Image src="/image 2.svg" alt="Kore Training & Consulting" width={160} height={48} className="h-10 w-auto brightness-0 invert" />
+          <Image src="/logo.svg" alt="Kore Training & Consulting" width={160} height={48} className="h-10 w-auto brightness-0 invert" />
         </Link>
 
         {/* Nav links */}

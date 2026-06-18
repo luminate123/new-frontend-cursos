@@ -95,7 +95,7 @@ export default function HomePage() {
 
           {/* Logo hero */}
           <div className="mb-8 flex justify-center">
-            <Image src="/image 2.svg" alt="Kore Training & Consulting" width={320} height={100} className="h-20 w-auto" />
+            <Image src="/logo.svg" alt="Kore Training & Consulting" width={320} height={100} className="h-20 w-auto" />
           </div>
 
           {/* Headline */}
@@ -277,7 +277,7 @@ export default function HomePage() {
       {/* ── Footer ───────────────────────────────────────────────────────── */}
       <footer className="bg-[#0F1E3C] py-10">
         <div className="mx-auto max-w-6xl px-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
-          <Image src="/image 2.svg" alt="Kore Training & Consulting" width={120} height={38} className="h-8 w-auto brightness-0 invert" />
+          <Image src="/logo.svg" alt="Kore Training & Consulting" width={120} height={38} className="h-8 w-auto brightness-0 invert" />
           <p className="text-sm text-white/60">© 2026 Kore Training & Consulting. Todos los derechos reservados.</p>
           <div className="flex gap-4 text-sm text-white/60">
             <Link href="/cursos" className="hover:text-white transition-colors">Cursos</Link>

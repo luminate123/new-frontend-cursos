@@ -19,7 +19,7 @@ export function AuthCard({ title, subtitle, children }: AuthCardProps) {
       <div className="relative w-full max-w-sm">
         {/* Logo */}
         <Link href="/" className="mb-8 flex flex-col items-center">
-          <Image src="/image 2.svg" alt="Kore Training & Consulting" width={220} height={70} className="h-16 w-auto" />
+          <Image src="/logo.svg" alt="Kore Training & Consulting" width={220} height={70} className="h-16 w-auto" />
         </Link>
 
         {/* Card */}
