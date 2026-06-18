@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -16,8 +16,8 @@ function NavLink({ href, children, icon: Icon }: { href: string; children: React
       href={href}
       className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
         active
-          ? 'bg-stone-900/10 text-stone-900 border border-stone-900/20'
-          : 'text-stone-600 hover:text-stone-900 hover:bg-stone-900/5'
+          ? 'bg-white/10 text-white border border-white/20'
+          : 'text-white/70 hover:text-white hover:bg-white/10'
       }`}
     >
       {Icon && <Icon className="h-3.5 w-3.5" />}
@@ -33,11 +33,11 @@ export function Navbar() {
   const logoutMutation = useLogout();
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur-md">
+    <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#0F1E3C]">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center">
-          <Image src="/image 2.svg" alt="Kore Training & Consulting" width={160} height={48} className="h-10 w-auto" />
+          <Image src="/image 2.svg" alt="Kore Training & Consulting" width={160} height={48} className="h-10 w-auto brightness-0 invert" />
         </Link>
 
         {/* Nav links */}
@@ -58,17 +58,17 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           {isAuthenticated && user ? (
             <>
-              <div className="hidden sm:flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5">
-                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-stone-900/10 text-[10px] font-bold text-stone-700">
+              <div className="hidden sm:flex items-center gap-2 rounded-lg border border-white/20 bg-white/10 px-3 py-1.5">
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-[10px] font-bold text-white">
                   {user.firstName[0]}{user.lastName[0]}
                 </div>
-                <span className="text-sm text-stone-700">{user.firstName}</span>
+                <span className="text-sm text-white">{user.firstName}</span>
                 <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold ${
                   user.role === 'ADMIN'
-                    ? 'bg-purple-500/20 text-purple-700'
+                    ? 'bg-purple-500/30 text-purple-200'
                     : user.role === 'INSTRUCTOR'
-                    ? 'bg-stone-900/10 text-stone-700'
-                    : 'bg-emerald-500/20 text-emerald-700'
+                    ? 'bg-white/20 text-white'
+                    : 'bg-emerald-500/30 text-emerald-200'
                 }`}>
                   {user.role}
                 </span>
@@ -78,24 +78,17 @@ export function Navbar() {
                 size="sm"
                 onClick={() => logoutMutation.mutate(undefined, { onSuccess: () => router.push('/login') })}
                 disabled={logoutMutation.isPending}
-                className="border-border text-stone-600 hover:text-stone-900 hover:border-stone-700 text-xs"
+                className="border-white/30 text-white hover:text-white hover:border-white/60 hover:bg-white/10 text-xs"
               >
                 Salir
               </Button>
             </>
           ) : (
-            <>
-              <Link href="/login">
-                <Button variant="outline" size="sm" className="border-border text-stone-600 hover:text-stone-900 text-xs">
-                  Iniciar sesión
-                </Button>
-              </Link>
-              <Link href="/registro">
-                <Button size="sm" className="bg-stone-900 hover:bg-stone-800 text-background text-xs font-semibold">
-                  Registrarse
-                </Button>
-              </Link>
-            </>
+            <Link href="/login">
+              <Button size="sm" className="bg-[#F97316] hover:bg-[#EA6D0E] text-white text-xs font-semibold shadow-lg shadow-[#F97316]/30">
+                Ingresar al Aula Virtual
+              </Button>
+            </Link>
           )}
         </div>
       </div>

@@ -38,7 +38,7 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
 
   return (
     <Link href={`/cursos/${course.slug}`} className="group block">
-      <div className="h-full rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:border-stone-700/40 hover:shadow-xl hover:shadow-stone-900/8 hover:-translate-y-1">
+      <div className="h-full rounded-2xl border border-border bg-card overflow-hidden transition-all duration-300 hover:border-[#0F1E3C]/20 hover:shadow-xl hover:shadow-[#0F1E3C]/8 hover:-translate-y-1">
         {/* Thumbnail */}
         <div className="relative aspect-video bg-secondary overflow-hidden">
           {thumbnail ? (
@@ -49,7 +49,7 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
             />
           ) : (
             <div className="flex h-full items-center justify-center bg-gradient-to-br from-secondary to-card">
-              <BookOpen className="h-12 w-12 text-stone-400" />
+              <BookOpen className="h-12 w-12 text-[#CBD5E1]" />
             </div>
           )}
 
@@ -59,8 +59,8 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
           {/* Play button on hover (if enrolled) */}
           {enrollmentStatus === 'APPROVED' && (
             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-stone-900/90 shadow-lg shadow-stone-900/50 backdrop-blur-sm">
-                <Play className="h-5 w-5 text-background ml-0.5" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#F97316]/90 shadow-lg shadow-[#F97316]/50 backdrop-blur-sm">
+                <Play className="h-5 w-5 text-white ml-0.5" />
               </div>
             </div>
           )}
@@ -72,7 +72,7 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
                 GRATIS
               </span>
             ) : (
-              <span className="rounded-full border border-border bg-background/90 px-2.5 py-0.5 text-[11px] font-bold text-stone-800 backdrop-blur-sm">
+              <span className="rounded-full border border-border bg-white/90 px-2.5 py-0.5 text-[11px] font-bold text-[#0F1E3C] backdrop-blur-sm">
                 ${Number(course.price).toFixed(2)}
               </span>
             )}
@@ -104,19 +104,19 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
           </div>
 
           {/* Title */}
-          <h3 className="font-semibold text-stone-900 leading-snug line-clamp-2 group-hover:text-stone-700 transition-colors text-sm">
+          <h3 className="font-semibold text-[#0F1E3C] leading-snug line-clamp-2 group-hover:text-[#1B3461] transition-colors text-sm">
             {course.title}
           </h3>
 
           {/* Short description */}
           {course.shortDescription && (
-            <p className="text-xs text-stone-500 line-clamp-2 leading-relaxed">{course.shortDescription}</p>
+            <p className="text-xs text-[#4B5563] line-clamp-2 leading-relaxed">{course.shortDescription}</p>
           )}
 
           {/* Instructor */}
           {course.instructor && (
-            <p className="text-xs text-stone-500">
-              por <span className="text-stone-700 font-medium">{course.instructor.firstName} {course.instructor.lastName}</span>
+            <p className="text-xs text-[#4B5563]">
+              por <span className="text-[#0F1E3C] font-medium">{course.instructor.firstName} {course.instructor.lastName}</span>
             </p>
           )}
 
@@ -128,13 +128,13 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
           {/* Progress bar */}
           {showProgress && enrollmentStatus === 'APPROVED' && (
             <div className="space-y-1.5">
-              <div className="flex justify-between text-xs text-stone-500">
+              <div className="flex justify-between text-xs text-[#4B5563]">
                 <span>Progreso</span>
-                <span className="font-semibold text-stone-700">{progressPercentage}%</span>
+                <span className="font-semibold text-[#0F1E3C]">{progressPercentage}%</span>
               </div>
               <div className="h-1.5 rounded-full bg-border">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-stone-800 to-stone-600 transition-all duration-500"
+                  className="h-full rounded-full bg-gradient-to-r from-[#F97316] to-[#EA6D0E] transition-all duration-500"
                   style={{ width: `${progressPercentage}%` }}
                 />
               </div>
@@ -142,7 +142,7 @@ export function CourseCard({ course, showProgress, progressPercentage = 0, enrol
           )}
 
           {/* Stats footer */}
-          <div className="flex items-center gap-3 border-t border-border pt-2.5 text-xs text-stone-500">
+          <div className="flex items-center gap-3 border-t border-border pt-2.5 text-xs text-[#4B5563]">
             {course.totalLessons > 0 && (
               <span className="flex items-center gap-1">
                 <BookOpen className="h-3 w-3" />

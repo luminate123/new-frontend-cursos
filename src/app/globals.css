@@ -31,32 +31,37 @@
 :root {
   --radius: 0.625rem;
 
-  /* Kore Training & Consulting — cream/warm palette */
-  --background: #f5f0e6;
-  --foreground: #1a1208;
-  --card: #ede7d9;
-  --card-foreground: #1a1208;
-  --popover: #ede7d9;
-  --popover-foreground: #1a1208;
+  /* Kore Training & Consulting — navy/orange palette */
+  --background: #F3F6FA;
+  --foreground: #0F1E3C;
+  --card: #FFFFFF;
+  --card-foreground: #0F1E3C;
+  --popover: #FFFFFF;
+  --popover-foreground: #0F1E3C;
 
-  /* Dark as primary */
-  --primary: #1a1208;
-  --primary-foreground: #f5f0e6;
+  /* Orange as primary */
+  --primary: #F97316;
+  --primary-foreground: #FFFFFF;
 
   /* Surfaces */
-  --secondary: #e4ddd0;
-  --secondary-foreground: #1a1208;
-  --muted: #e4ddd0;
-  --muted-foreground: #6b5e4a;
-  --accent: #e4ddd0;
-  --accent-foreground: #1a1208;
+  --secondary: #E2E8F2;
+  --secondary-foreground: #0F1E3C;
+  --muted: #E2E8F2;
+  --muted-foreground: #4B5563;
+  --accent: #E2E8F2;
+  --accent-foreground: #0F1E3C;
 
   /* Functional */
   --destructive: #dc2626;
-  --destructive-foreground: #f5f0e6;
-  --border: #c9beab;
-  --input: #c9beab;
-  --ring: #1a1208;
+  --destructive-foreground: #FFFFFF;
+  --border: #CBD5E1;
+  --input: #CBD5E1;
+  --ring: #F97316;
+
+  /* Semantic aliases */
+  --navy: #0F1E3C;
+  --navy-foreground: #FFFFFF;
+  --orange: #F97316;
 }
 
 body {
@@ -67,6 +72,6 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #f5f0e6; }
-::-webkit-scrollbar-thumb { background: #c9beab; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #1a1208; }
+::-webkit-scrollbar-track { background: #F3F6FA; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #0F1E3C; }
