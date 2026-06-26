@@ -141,23 +141,6 @@ export default function HomePage() {
             <span>+10,000 estudiantes ya aprendiendo</span>
           </div>
 
-          {/* Code card */}
-          <div className="mx-auto mt-16 max-w-lg rounded-2xl border border-border bg-card p-5 text-left font-mono text-sm shadow-2xl shadow-stone-900/10">
-            <div className="flex items-center gap-1.5 mb-4">
-              <div className="h-2.5 w-2.5 rounded-full bg-red-500/70" />
-              <div className="h-2.5 w-2.5 rounded-full bg-yellow-500/70" />
-              <div className="h-2.5 w-2.5 rounded-full bg-green-500/70" />
-              <span className="ml-2 text-xs text-stone-500">main.ts</span>
-            </div>
-            <div className="space-y-1 text-xs leading-relaxed">
-              <p><span className="text-purple-600">const</span> <span className="text-stone-700">skills</span> <span className="text-stone-500">=</span> <span className="text-stone-700">await</span> KoreTraining.<span className="text-amber-700">learn</span>{'({'}</p>
-              <p className="pl-4"><span className="text-emerald-700">courses</span>: [<span className="text-orange-700">&apos;React&apos;</span>, <span className="text-orange-700">&apos;NestJS&apos;</span>, <span className="text-orange-700">&apos;DevOps&apos;</span>],</p>
-              <p className="pl-4"><span className="text-emerald-700">instructor</span>: <span className="text-orange-700">&apos;expert&apos;</span>,</p>
-              <p className="pl-4"><span className="text-emerald-700">practice</span>: <span className="text-stone-700">true</span>,</p>
-              <p>{'}'});</p>
-              <p className="mt-2 text-stone-400">{'// ✓ Career unlocked 🚀'}</p>
-            </div>
-          </div>
         </div>
       </section>
 
