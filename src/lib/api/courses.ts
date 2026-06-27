@@ -160,8 +160,14 @@ export interface CreateLessonData {
   resources?: LessonResource[];
 }
 
+// Max upload size for downloadable material (server bucket is shared/billed).
+export const MAX_UPLOAD_BYTES = 100 * 1024 * 1024; // 100 MB
+
 // Uploads a file to Cloudflare R2 via a presigned URL and returns its public URL.
 export async function uploadResource(file: File): Promise<string> {
+  if (file.size > MAX_UPLOAD_BYTES) {
+    throw new Error('El archivo supera el límite de 100 MB');
+  }
   const { uploadUrl, publicUrl } = await apiFetch<{ uploadUrl: string; publicUrl: string }>(
     '/uploads/presign',
     {

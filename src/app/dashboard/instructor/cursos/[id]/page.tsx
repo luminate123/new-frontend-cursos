@@ -177,7 +177,13 @@ function LessonForm({
           <label className="flex w-full cursor-pointer items-center gap-2 rounded-lg border border-dashed border-border px-3 py-2 text-xs text-stone-500 hover:border-stone-700/40 hover:text-stone-700 transition-colors">
             {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
             {uploading ? 'Subiendo...' : 'Subir archivo (PDF, ZIP, etc.)'}
-            <input type="file" className="hidden" disabled={uploading} onChange={handleFileUpload} />
+            <input
+              type="file"
+              className="hidden"
+              disabled={uploading}
+              accept=".pdf,.zip,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.png,.jpg,.jpeg,.gif,.webp"
+              onChange={handleFileUpload}
+            />
           </label>
         </div>
       </div>
