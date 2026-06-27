@@ -13,6 +13,7 @@ import {
   Send,
   ThumbsUp,
   CornerDownRight,
+  FileDown,
 } from 'lucide-react';
 import Link from 'next/link';
 import { Progress } from '@/components/ui/progress';
@@ -453,6 +454,30 @@ export default function ClassroomPage() {
               </div>
             </div>
           </div>
+
+          {/* ── Downloadable resources ─────────────────────────── */}
+          {activeLesson.resources && activeLesson.resources.length > 0 && (
+            <div className="border-b border-border bg-card px-6 py-4">
+              <div className="mx-auto max-w-screen-xl">
+                <h2 className="mb-3 text-sm font-semibold text-stone-700">Material descargable</h2>
+                <div className="flex flex-wrap gap-2">
+                  {activeLesson.resources.map((r, i) => (
+                    <a
+                      key={i}
+                      href={r.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      download
+                      className="flex items-center gap-2 rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-stone-700 hover:border-stone-700/30 hover:bg-stone-900/5 transition-colors"
+                    >
+                      <FileDown className="h-4 w-4 shrink-0 text-stone-500" />
+                      {r.title}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* ── Comments section ───────────────────────────────── */}
           <div className="flex-1 px-6 py-8">

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import {
   ChevronRight, Eye, Globe, Loader2, Plus, Save, Trash2, X,
   ChevronDown, ChevronUp, GripVertical, BookOpen, Play, Lock, Pencil, Check,
+  Upload, FileDown,
 } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/button';
@@ -13,6 +14,7 @@ import {
   getCourse, updateCourse, publishCourse,
   createSection, updateSection, deleteSection,
   createLesson, updateLesson, deleteLesson,
+  uploadResource,
   LEVEL_LABELS, CATEGORY_LABELS,
   type CreateLessonData,
 } from '@/lib/api/courses';
@@ -49,6 +51,7 @@ function LessonForm({
   onCancel: () => void;
 }) {
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [form, setForm] = useState<CreateLessonData>({
     title: lesson?.title ?? '',
     description: lesson?.description ?? '',
@@ -56,7 +59,29 @@ function LessonForm({
     durationSeconds: lesson?.durationSeconds ?? undefined,
     isFree: lesson?.isFree ?? false,
     notes: lesson?.notes ?? '',
+    resources: lesson?.resources ?? [],
   });
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    e.target.value = ''; // allow re-selecting same file
+    if (!file) return;
+    setUploading(true);
+    try {
+      const url = await uploadResource(file);
+      setForm((p) => ({ ...p, resources: [...(p.resources ?? []), { title: file.name, url }] }));
+    } catch (err: any) {
+      toast.error(err?.message || 'Error al subir');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const setResourceTitle = (i: number, title: string) =>
+    setForm((p) => ({ ...p, resources: (p.resources ?? []).map((r, j) => j === i ? { ...r, title } : r) }));
+
+  const removeResource = (i: number) =>
+    setForm((p) => ({ ...p, resources: (p.resources ?? []).filter((_, j) => j !== i) }));
 
   const set = (k: keyof CreateLessonData) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -126,6 +151,32 @@ function LessonForm({
         />
         <span className="text-sm text-stone-600">Clase gratuita (previa del curso)</span>
       </label>
+
+      {/* Downloadable resources (uploaded to Cloudflare R2) */}
+      <div>
+        <label className="mb-1 block text-xs font-medium text-stone-500">Material descargable</label>
+        <div className="space-y-2">
+          {(form.resources ?? []).map((r, i) => (
+            <div key={i} className="flex items-center gap-2">
+              <FileDown className="h-4 w-4 shrink-0 text-stone-400" />
+              <input
+                value={r.title}
+                onChange={(e) => setResourceTitle(i, e.target.value)}
+                placeholder="Nombre del archivo"
+                className={inputCls}
+              />
+              <button type="button" onClick={() => removeResource(i)} className="rounded p-1 text-stone-400 hover:text-red-700 shrink-0">
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          ))}
+          <label className="flex w-full cursor-pointer items-center gap-2 rounded-lg border border-dashed border-border px-3 py-2 text-xs text-stone-500 hover:border-stone-700/40 hover:text-stone-700 transition-colors">
+            {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Upload className="h-3.5 w-3.5" />}
+            {uploading ? 'Subiendo...' : 'Subir archivo (PDF, ZIP, etc.)'}
+            <input type="file" className="hidden" disabled={uploading} onChange={handleFileUpload} />
+          </label>
+        </div>
+      </div>
 
       <div className="flex justify-end gap-2 pt-1">
         <Button size="sm" variant="outline" className="border-border text-stone-600 text-xs" onClick={onCancel}>

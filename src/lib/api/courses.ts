@@ -1,5 +1,5 @@
 import { apiFetch } from '../api';
-import type { Course, CoursesResponse, CourseFilters, Enrollment, Comment } from '../types';
+import type { Course, CoursesResponse, CourseFilters, Enrollment, Comment, LessonResource } from '../types';
 
 export async function getCourses(filters: CourseFilters = {}): Promise<CoursesResponse> {
   const params = new URLSearchParams();
@@ -157,6 +157,25 @@ export interface CreateLessonData {
   durationSeconds?: number;
   isFree?: boolean;
   notes?: string;
+  resources?: LessonResource[];
+}
+
+// Uploads a file to Cloudflare R2 via a presigned URL and returns its public URL.
+export async function uploadResource(file: File): Promise<string> {
+  const { uploadUrl, publicUrl } = await apiFetch<{ uploadUrl: string; publicUrl: string }>(
+    '/uploads/presign',
+    {
+      method: 'POST',
+      body: JSON.stringify({ filename: file.name, contentType: file.type || 'application/octet-stream' }),
+    },
+  );
+  const res = await fetch(uploadUrl, {
+    method: 'PUT',
+    headers: { 'Content-Type': file.type || 'application/octet-stream' },
+    body: file,
+  });
+  if (!res.ok) throw new Error('Error al subir el archivo');
+  return publicUrl;
 }
 
 export async function createLesson(sectionId: string, data: CreateLessonData): Promise<import('../types').Lesson> {
