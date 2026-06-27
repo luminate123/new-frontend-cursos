@@ -224,30 +224,28 @@ export default function ClassroomPage() {
 
         const isOwner = !!user && c.instructorId === user.id;
 
+        // Non-owners: load enrollment/progress if any. No enrollment or not
+        // approved is fine — they enter in free-preview mode (only isFree
+        // lessons are watchable, gated below).
+        let approved = isOwner;
         if (!isOwner) {
           try {
             const [enr, ids] = await Promise.all([getEnrollment(c.id), getProgress(c.id)]);
             setEnrollment(enr);
             setCompletedIds(ids);
-
-            if (enr.status !== 'APPROVED') {
-              router.push(`/cursos/${slug}`);
-              return;
-            }
+            approved = enr.status === 'APPROVED';
           } catch {
-            router.push(`/cursos/${slug}`);
-            return;
+            // no enrollment → preview mode
           }
         }
 
         const lessonId = searchParams.get('lesson');
-        let target: Lesson | null = null;
-        for (const section of c.sections) {
-          for (const lesson of section.lessons) {
-            if (lessonId ? lesson.id === lessonId : !target) {
-              target = lesson;
-            }
-          }
+        const allLessons = c.sections.flatMap((s: Section) => s.lessons);
+        let target: Lesson | null =
+          (lessonId ? allLessons.find((l) => l.id === lessonId) : allLessons[0]) ?? allLessons[0] ?? null;
+        // Preview mode: if the target is locked, jump to the first free lesson.
+        if (!approved && target && !target.isFree) {
+          target = allLessons.find((l) => l.isFree) ?? target;
         }
         setActiveLesson(target);
 
@@ -359,6 +357,7 @@ export default function ClassroomPage() {
   const totalLessons = course.sections.reduce((acc, s) => acc + s.lessons.length, 0);
   const progressPct = enrollment?.progressPercentage ?? 0;
   const isCompleted = completedIds.includes(activeLesson.id);
+  const canAccess = isApproved || activeLesson.isFree;
 
   return (
     <div className="flex min-h-screen flex-col bg-background text-stone-900">
@@ -399,7 +398,17 @@ export default function ClassroomPage() {
           <div className="bg-black">
             <div className="mx-auto w-full max-w-screen-xl">
               <div className="aspect-video">
-                {activeLesson.youtubeVideoId ? (
+                {!canAccess ? (
+                  <div className="flex h-full flex-col items-center justify-center gap-3 px-4 text-center text-stone-300">
+                    <Lock className="h-8 w-8" />
+                    <p className="text-sm">Esta clase es solo para estudiantes inscritos.</p>
+                    <Link href={`/cursos/${slug}`}>
+                      <Button size="sm" className="bg-stone-100 text-stone-900 hover:bg-white text-xs">
+                        Inscríbete para verla
+                      </Button>
+                    </Link>
+                  </div>
+                ) : activeLesson.youtubeVideoId ? (
                   <iframe
                     key={activeLesson.id}
                     src={`https://www.youtube.com/embed/${activeLesson.youtubeVideoId}?autoplay=1`}
@@ -455,8 +464,8 @@ export default function ClassroomPage() {
             </div>
           </div>
 
-          {/* ── Downloadable resources ─────────────────────────── */}
-          {activeLesson.resources && activeLesson.resources.length > 0 && (
+          {/* ── Downloadable resources (enrolled students only) ── */}
+          {isApproved && activeLesson.resources && activeLesson.resources.length > 0 && (
             <div className="border-b border-border bg-card px-6 py-4">
               <div className="mx-auto max-w-screen-xl">
                 <h2 className="mb-3 text-sm font-semibold text-stone-700">Material descargable</h2>

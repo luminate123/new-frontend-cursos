@@ -15,7 +15,6 @@ import {
   cancelEnrollment,
   getEnrollment,
   getProgress,
-  completeLesson,
   formatDuration,
   getYoutubeThumbnail,
 } from '@/lib/api/courses';
@@ -31,7 +30,6 @@ export default function CourseDetailPage() {
   const [course, setCourse] = useState<Course | null>(null);
   const [enrollment, setEnrollment] = useState<Enrollment | null>(null);
   const [completedIds, setCompletedIds] = useState<string[]>([]);
-  const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(true);
   const [enrolling, setEnrolling] = useState(false);
   const [cancelling, setCancelling] = useState(false);
@@ -94,23 +92,11 @@ export default function CourseDetailPage() {
   };
 
   const handleLessonClick = (lesson: Lesson) => {
-    if (isApproved || isOwnCourse) {
+    // Approved students, owners, and free-preview lessons all watch in the
+    // classroom (which enforces access per-lesson). Locked lessons do nothing.
+    if (isApproved || isOwnCourse || lesson.isFree) {
       router.push(`/cursos/${slug}/classroom?lesson=${lesson.id}`);
       return;
-    }
-    setActiveLesson(lesson);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleComplete = async () => {
-    if (!activeLesson) return;
-    try {
-      const { progressPercentage } = await completeLesson(activeLesson.id);
-      setCompletedIds((prev) => [...new Set([...prev, activeLesson.id])]);
-      setEnrollment((prev) => prev ? { ...prev, progressPercentage } : prev);
-      toast.success('Clase marcada como completada');
-    } catch (err: any) {
-      toast.error(err?.message || 'Error');
     }
   };
 
@@ -141,7 +127,6 @@ export default function CourseDetailPage() {
   const isRejected = enrollmentStatus === 'REJECTED';
 
   const isOwnCourse = isAuthenticated && !!user && course.instructorId === user.id;
-  const canWatchActive = isApproved || (activeLesson?.isFree ?? false);
 
   const thumbnail = course.thumbnail ||
     (course.sections?.[0]?.lessons?.[0]?.youtubeVideoId
@@ -151,47 +136,6 @@ export default function CourseDetailPage() {
   return (
     <div className="min-h-screen bg-background text-stone-900">
       <Navbar />
-
-      {/* Video player */}
-      {activeLesson && activeLesson.youtubeVideoId && canWatchActive && (
-        <div className="border-b border-border bg-card">
-          <div className="mx-auto max-w-7xl px-4 py-4">
-            <div className="flex items-center justify-between mb-3">
-              <div>
-                <p className="text-xs text-stone-500 uppercase tracking-wide">Reproduciendo</p>
-                <h3 className="font-semibold text-stone-900">{activeLesson.title}</h3>
-              </div>
-              <div className="flex gap-2">
-                {isApproved && !completedIds.includes(activeLesson.id) && (
-                  <Button size="sm" onClick={handleComplete} className="bg-emerald-700 hover:bg-emerald-800 text-xs">
-                    <CheckCircle className="mr-1 h-3.5 w-3.5" />
-                    Marcar completada
-                  </Button>
-                )}
-                {!isApproved && activeLesson.isFree && (
-                  <span className="rounded-full border border-emerald-600/30 bg-emerald-50 px-2.5 py-1 text-[11px] text-emerald-700">
-                    Vista previa gratuita
-                  </span>
-                )}
-                <Button size="sm" variant="outline" onClick={() => setActiveLesson(null)} className="border-border text-stone-600 text-xs">
-                  Cerrar
-                </Button>
-              </div>
-            </div>
-            <div className="aspect-video overflow-hidden rounded-xl bg-black">
-              <iframe
-                src={`https://www.youtube.com/embed/${activeLesson.youtubeVideoId}?autoplay=1`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="h-full w-full"
-              />
-            </div>
-            {activeLesson.description && (
-              <p className="mt-3 text-sm text-stone-600">{activeLesson.description}</p>
-            )}
-          </div>
-        </div>
-      )}
 
       <div className="mx-auto max-w-7xl px-4 py-8">
         {/* Back */}
@@ -205,7 +149,7 @@ export default function CourseDetailPage() {
           <div className="lg:col-span-2 space-y-8">
             {/* Hero */}
             <div>
-              {!activeLesson && thumbnail && (
+              {thumbnail && (
                 <div className="mb-6 aspect-video overflow-hidden rounded-2xl bg-secondary">
                   <img src={thumbnail} alt={course.title} className="h-full w-full object-cover" />
                 </div>
