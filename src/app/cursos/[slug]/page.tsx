@@ -94,7 +94,7 @@ export default function CourseDetailPage() {
   };
 
   const handleLessonClick = (lesson: Lesson) => {
-    if (isApproved) {
+    if (isApproved || isOwnCourse) {
       router.push(`/cursos/${slug}/classroom?lesson=${lesson.id}`);
       return;
     }
