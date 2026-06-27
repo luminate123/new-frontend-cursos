@@ -178,6 +178,11 @@ export async function uploadResource(file: File): Promise<string> {
   return publicUrl;
 }
 
+// Deletes a previously uploaded resource from Cloudflare R2.
+export async function deleteResource(url: string): Promise<void> {
+  await apiFetch<void>('/uploads', { method: 'DELETE', body: JSON.stringify({ url }) });
+}
+
 export async function createLesson(sectionId: string, data: CreateLessonData): Promise<import('../types').Lesson> {
   return apiFetch<import('../types').Lesson>(`/sections/${sectionId}/lessons`, {
     method: 'POST',

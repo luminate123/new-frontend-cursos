@@ -14,7 +14,7 @@ import {
   getCourse, updateCourse, publishCourse,
   createSection, updateSection, deleteSection,
   createLesson, updateLesson, deleteLesson,
-  uploadResource,
+  uploadResource, deleteResource,
   LEVEL_LABELS, CATEGORY_LABELS,
   type CreateLessonData,
 } from '@/lib/api/courses';
@@ -80,8 +80,12 @@ function LessonForm({
   const setResourceTitle = (i: number, title: string) =>
     setForm((p) => ({ ...p, resources: (p.resources ?? []).map((r, j) => j === i ? { ...r, title } : r) }));
 
-  const removeResource = (i: number) =>
+  const removeResource = (i: number) => {
+    const r = (form.resources ?? [])[i];
     setForm((p) => ({ ...p, resources: (p.resources ?? []).filter((_, j) => j !== i) }));
+    // Best-effort delete from R2; no-op for external links on the backend
+    if (r?.url) deleteResource(r.url).catch(() => undefined);
+  };
 
   const set = (k: keyof CreateLessonData) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
