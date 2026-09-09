@@ -9,7 +9,7 @@ export function useLogin() {
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       apiLogin(email, password),
     onSuccess: (data) => {
-      setAuth(data.user, data.accessToken);
+      setAuth(data.user, data.accessToken); 
     },
   });
 }
