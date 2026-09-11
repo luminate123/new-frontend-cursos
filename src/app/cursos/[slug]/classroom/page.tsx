@@ -32,9 +32,11 @@ import { useAuthStore } from '@/lib/store/auth.store';
 import { toast } from 'sonner';
 import type { Course, Enrollment, Lesson, Section, Comment } from '@/lib/types';
 
+// Identidad, no estado: los tokens success/warning/destructive están
+// reservados para estados y no se reusan como color de avatar.
 const AVATAR_COLORS = [
-  'bg-stone-900', 'bg-violet-700', 'bg-emerald-700', 'bg-rose-700',
-  'bg-amber-700', 'bg-cyan-700', 'bg-pink-700', 'bg-teal-700',
+  'bg-navy', 'bg-violet-700', 'bg-teal-700', 'bg-rose-700',
+  'bg-indigo-700', 'bg-cyan-700', 'bg-pink-700', 'bg-fuchsia-700',
 ];
 
 function avatarColor(name: string): string {
@@ -88,33 +90,33 @@ function CommentItem({
       <div className={`relative flex shrink-0 items-center justify-center rounded-full font-bold text-white ${isReply ? 'h-8 w-8 text-xs' : 'h-10 w-10 text-sm'} ${color}`}>
         {initial}
         {!isReply && (
-          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background bg-emerald-500" />
+          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background bg-success/100" />
         )}
       </div>
 
       <div className="flex-1 min-w-0">
         <div className="flex flex-wrap items-center gap-2 mb-1">
-          <span className={`font-semibold text-stone-900 ${isReply ? 'text-xs' : 'text-sm'}`}>
+          <span className={`font-semibold text-foreground ${isReply ? 'text-xs' : 'text-sm'}`}>
             {firstName} {lastName}
           </span>
-          <span className="rounded-full bg-stone-700/15 border border-stone-700/25 px-2 py-0.5 text-[10px] font-medium text-stone-600">
+          <span className="rounded-full bg-muted border border-border px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
             Estudiante
           </span>
-          <span className="text-xs text-stone-500">{timeAgo(comment.createdAt)}</span>
+          <span className="text-xs text-muted-foreground">{timeAgo(comment.createdAt)}</span>
         </div>
 
-        <p className={`leading-relaxed text-stone-700 ${isReply ? 'text-xs' : 'text-sm'}`}>
+        <p className={`leading-relaxed text-foreground ${isReply ? 'text-xs' : 'text-sm'}`}>
           {comment.content}
         </p>
 
         <div className="mt-2 flex items-center gap-4">
-          <button className="flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-700 transition-colors">
+          <button className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
             <ThumbsUp className="h-3.5 w-3.5" />
           </button>
           {isApproved && !isReply && (
             <button
               onClick={() => isOpen ? onReplyClose() : onReplyOpen(comment.id)}
-              className="flex items-center gap-1 text-xs font-semibold text-stone-700 hover:text-stone-600 transition-colors"
+              className="flex items-center gap-1 text-xs font-semibold text-foreground hover:text-muted-foreground transition-colors"
             >
               <CornerDownRight className="h-3 w-3" />
               {isOpen ? 'CANCELAR' : 'RESPONDER'}
@@ -136,17 +138,17 @@ function CommentItem({
                 rows={2}
                 maxLength={1000}
                 autoFocus
-                className="w-full resize-none rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-stone-800 placeholder:text-stone-500 focus:border-stone-700/60 focus:outline-none focus:ring-1 focus:ring-stone-700/30 transition-colors"
+                className="w-full resize-none rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-border focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
               />
               <div className="flex justify-end gap-2">
-                <Button size="sm" variant="outline" onClick={onReplyClose} className="border-border text-xs text-stone-600">
+                <Button size="sm" variant="outline" onClick={onReplyClose} className="border-border text-xs text-muted-foreground">
                   Cancelar
                 </Button>
                 <Button
                   size="sm"
                   disabled={submitting || !replyText.trim()}
                   onClick={() => onReplySubmit(comment.id)}
-                  className="bg-stone-900 hover:bg-stone-800 text-xs px-4"
+                  className="bg-navy hover:bg-navy-800 text-xs px-4"
                 >
                   {submitting ? <Loader2 className="mr-1.5 h-3 w-3 animate-spin" /> : null}
                   Responder
@@ -347,7 +349,7 @@ export default function ClassroomPage() {
   if (authLoading || loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <Loader2 className="h-8 w-8 animate-spin text-stone-700" />
+        <Loader2 className="h-8 w-8 animate-spin text-foreground" />
       </div>
     );
   }
@@ -360,7 +362,7 @@ export default function ClassroomPage() {
   const canAccess = isApproved || activeLesson.isFree;
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-stone-900">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Navbar />
 
       {/* ── Top bar: progress + back ───────────────────────────── */}
@@ -368,21 +370,21 @@ export default function ClassroomPage() {
         <div className="mx-auto flex max-w-screen-2xl items-center gap-4">
           <Link
             href={`/cursos/${slug}`}
-            className="flex shrink-0 items-center gap-1.5 text-xs text-stone-500 hover:text-stone-700 transition-colors"
+            className="flex shrink-0 items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             Volver
           </Link>
 
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold text-stone-800">{course.title}</p>
+            <p className="truncate text-sm font-semibold text-foreground">{course.title}</p>
           </div>
 
           {isApproved && (
             <div className="flex shrink-0 items-center gap-2">
               <Progress value={progressPct} className="w-28" />
-              <span className="text-xs font-semibold text-stone-700">{progressPct}%</span>
-              <span className="text-xs text-stone-400">
+              <span className="text-xs font-semibold text-foreground">{progressPct}%</span>
+              <span className="text-xs text-muted-foreground">
                 {completedIds.length}/{totalLessons}
               </span>
             </div>
@@ -399,11 +401,11 @@ export default function ClassroomPage() {
             <div className="mx-auto w-full max-w-screen-xl">
               <div className="aspect-video">
                 {!canAccess ? (
-                  <div className="flex h-full flex-col items-center justify-center gap-3 px-4 text-center text-stone-300">
+                  <div className="flex h-full flex-col items-center justify-center gap-3 px-4 text-center text-muted-foreground">
                     <Lock className="h-8 w-8" />
                     <p className="text-sm">Esta clase es solo para estudiantes inscritos.</p>
                     <Link href={`/cursos/${slug}`}>
-                      <Button size="sm" className="bg-stone-100 text-stone-900 hover:bg-white text-xs">
+                      <Button size="sm" className="bg-muted text-foreground hover:bg-white text-xs">
                         Inscríbete para verla
                       </Button>
                     </Link>
@@ -417,7 +419,7 @@ export default function ClassroomPage() {
                     className="h-full w-full"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center text-stone-500">
+                  <div className="flex h-full items-center justify-center text-muted-foreground">
                     No hay video disponible
                   </div>
                 )}
@@ -430,9 +432,9 @@ export default function ClassroomPage() {
             <div className="mx-auto max-w-screen-xl">
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
-                  <h1 className="text-xl font-bold text-stone-900">{activeLesson.title}</h1>
+                  <h1 className="text-xl font-bold text-foreground">{activeLesson.title}</h1>
                   {activeLesson.description && (
-                    <p className="mt-1 text-sm text-stone-600">{activeLesson.description}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">{activeLesson.description}</p>
                   )}
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
@@ -440,14 +442,14 @@ export default function ClassroomPage() {
                     <Button
                       size="sm"
                       onClick={handleComplete}
-                      className="bg-emerald-700 hover:bg-emerald-800 text-xs"
+                      className="bg-success hover:bg-success text-xs"
                     >
                       <CheckCircle className="mr-1.5 h-3.5 w-3.5" />
                       Marcar completada
                     </Button>
                   )}
                   {isCompleted && (
-                    <span className="flex items-center gap-1.5 text-xs text-emerald-700">
+                    <span className="flex items-center gap-1.5 text-xs text-success">
                       <CheckCircle className="h-4 w-4" /> Completada
                     </span>
                   )}
@@ -455,7 +457,7 @@ export default function ClassroomPage() {
                     size="sm"
                     variant="outline"
                     onClick={handleNextLesson}
-                    className="border-border text-xs text-stone-600 hover:text-stone-800"
+                    className="border-border text-xs text-muted-foreground hover:text-foreground"
                   >
                     Siguiente →
                   </Button>
@@ -468,7 +470,7 @@ export default function ClassroomPage() {
           {isApproved && activeLesson.resources && activeLesson.resources.length > 0 && (
             <div className="border-b border-border bg-card px-6 py-4">
               <div className="mx-auto max-w-screen-xl">
-                <h2 className="mb-3 text-sm font-semibold text-stone-700">Material descargable</h2>
+                <h2 className="mb-3 text-sm font-semibold text-foreground">Material descargable</h2>
                 <div className="flex flex-wrap gap-2">
                   {activeLesson.resources.map((r, i) => (
                     <a
@@ -477,9 +479,9 @@ export default function ClassroomPage() {
                       target="_blank"
                       rel="noopener noreferrer"
                       download
-                      className="flex items-center gap-2 rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-stone-700 hover:border-stone-700/30 hover:bg-stone-900/5 transition-colors"
+                      className="flex items-center gap-2 rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground hover:border-border hover:bg-muted transition-colors"
                     >
-                      <FileDown className="h-4 w-4 shrink-0 text-stone-500" />
+                      <FileDown className="h-4 w-4 shrink-0 text-muted-foreground" />
                       {r.title}
                     </a>
                   ))}
@@ -494,11 +496,11 @@ export default function ClassroomPage() {
 
               {/* Header */}
               <div className="mb-6 flex items-center justify-between">
-                <h2 className="flex items-center gap-2 text-lg font-bold text-stone-900">
-                  <MessageSquare className="h-5 w-5 text-stone-700" />
+                <h2 className="flex items-center gap-2 text-lg font-bold text-foreground">
+                  <MessageSquare className="h-5 w-5 text-foreground" />
                   Comentarios
                   {comments.length > 0 && (
-                    <span className="text-sm font-normal text-stone-600">({comments.length})</span>
+                    <span className="text-sm font-normal text-muted-foreground">({comments.length})</span>
                   )}
                 </h2>
               </div>
@@ -518,17 +520,17 @@ export default function ClassroomPage() {
                         placeholder="Escribe su comentario o pregunta..."
                         rows={3}
                         maxLength={1000}
-                        className="w-full resize-none rounded-xl border border-border bg-card px-4 py-3 text-sm text-stone-800 placeholder:text-stone-500 focus:border-stone-700/60 focus:outline-none focus:ring-1 focus:ring-stone-700/30 transition-colors"
+                        className="w-full resize-none rounded-xl border border-border bg-card px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-border focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
                       />
                       <div className="flex items-center justify-between">
-                        <span className="text-xs text-stone-400">{commentText.length}/1000</span>
+                        <span className="text-xs text-muted-foreground">{commentText.length}/1000</span>
                         <div className="flex gap-2">
                           <Button
                             type="button"
                             size="sm"
                             variant="outline"
                             onClick={() => setCommentText('')}
-                            className="border-border text-xs text-stone-600 hover:text-stone-800"
+                            className="border-border text-xs text-muted-foreground hover:text-foreground"
                           >
                             Cancelar
                           </Button>
@@ -536,7 +538,7 @@ export default function ClassroomPage() {
                             type="submit"
                             size="sm"
                             disabled={submittingComment || !commentText.trim()}
-                            className="bg-stone-900 hover:bg-stone-800 text-xs px-5"
+                            className="bg-navy hover:bg-navy-800 text-xs px-5"
                           >
                             {submittingComment ? (
                               <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
@@ -555,12 +557,12 @@ export default function ClassroomPage() {
 
               {/* Comments list */}
               {loadingComments ? (
-                <div className="flex items-center gap-2 text-stone-500">
+                <div className="flex items-center gap-2 text-muted-foreground">
                   <Loader2 className="h-4 w-4 animate-spin" />
                   <span className="text-sm">Cargando comentarios...</span>
                 </div>
               ) : comments.length === 0 ? (
-                <p className="text-sm text-stone-500">
+                <p className="text-sm text-muted-foreground">
                   {isApproved ? 'Sé el primero en comentar.' : 'No hay comentarios aún.'}
                 </p>
               ) : (
@@ -593,10 +595,10 @@ export default function ClassroomPage() {
         >
           {/* Sidebar header */}
           <div className="border-b border-border px-4 py-3">
-            <p className="text-xs font-semibold uppercase tracking-wider text-stone-500">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
               Contenido del curso
             </p>
-            <p className="mt-0.5 text-xs text-stone-400">
+            <p className="mt-0.5 text-xs text-muted-foreground">
               {course.sections.length} secciones · {totalLessons} clases
             </p>
           </div>
@@ -617,20 +619,20 @@ export default function ClassroomPage() {
                     className="flex w-full items-center justify-between bg-secondary px-4 py-3 text-left transition-colors hover:bg-muted"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-stone-700/25 border border-stone-700/40 text-[11px] font-bold text-stone-600">
+                      <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-muted border border-border text-[11px] font-bold text-muted-foreground">
                         {si + 1}
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-semibold text-stone-900">
+                        <p className="truncate text-sm font-semibold text-foreground">
                           {section.title}
                         </p>
-                        <p className="text-[11px] text-stone-600">
+                        <p className="text-[11px] text-muted-foreground">
                           {completedInSection}/{section.lessons.length} clases
                         </p>
                       </div>
                     </div>
                     <ChevronDown
-                      className={`ml-2 h-4 w-4 shrink-0 text-stone-600 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                      className={`ml-2 h-4 w-4 shrink-0 text-muted-foreground transition-transform ${isOpen ? 'rotate-180' : ''}`}
                     />
                   </button>
 
@@ -647,35 +649,35 @@ export default function ClassroomPage() {
                             onClick={() => handleLessonClick(lesson)}
                             disabled={!canAccess}
                             className={`flex w-full items-center gap-2.5 border-b border-border px-4 py-3 text-left transition-colors last:border-0
-                              ${isActive ? 'bg-stone-900/20 border-l-2 border-l-stone-700' : ''}
+                              ${isActive ? 'bg-muted border-l-2 border-l-brand' : ''}
                               ${canAccess && !isActive ? 'hover:bg-card cursor-pointer' : ''}
                               ${!canAccess ? 'cursor-not-allowed opacity-40' : ''}
                             `}
                           >
                             <div className="shrink-0">
                               {done ? (
-                                <CheckCircle className="h-4 w-4 text-emerald-700" />
+                                <CheckCircle className="h-4 w-4 text-success" />
                               ) : canAccess ? (
-                                <div className={`flex h-4 w-4 items-center justify-center rounded-full border ${isActive ? 'border-stone-700 bg-stone-700/30' : 'border-stone-500 bg-stone-700/20'}`}>
-                                  <Play className={`h-2 w-2 translate-x-px ${isActive ? 'text-stone-600' : 'text-stone-700'}`} />
+                                <div className={`flex h-4 w-4 items-center justify-center rounded-full border ${isActive ? 'border-border bg-muted' : 'border-border bg-muted'}`}>
+                                  <Play className={`h-2 w-2 translate-x-px ${isActive ? 'text-muted-foreground' : 'text-foreground'}`} />
                                 </div>
                               ) : (
-                                <Lock className="h-4 w-4 text-stone-500" />
+                                <Lock className="h-4 w-4 text-muted-foreground" />
                               )}
                             </div>
                             <span
                               className={`flex-1 truncate text-xs leading-snug ${
                                 isActive
-                                  ? 'font-semibold text-stone-900'
+                                  ? 'font-semibold text-foreground'
                                   : done
-                                  ? 'text-stone-500 line-through'
-                                  : 'text-stone-700'
+                                  ? 'text-muted-foreground line-through'
+                                  : 'text-foreground'
                               }`}
                             >
                               {lesson.title}
                             </span>
                             {lesson.durationSeconds && (
-                              <span className="shrink-0 text-[10px] text-stone-500 tabular-nums">
+                              <span className="shrink-0 text-[10px] text-muted-foreground tabular-nums">
                                 {formatDuration(lesson.durationSeconds)}
                               </span>
                             )}

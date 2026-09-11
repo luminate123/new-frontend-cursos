@@ -42,10 +42,15 @@ export interface ApiError {
 
 // ─── Courses ────────────────────────────────────────────────────────────────
 
-export type CourseLevel = 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
-export type CourseCategory =
-  | 'PROGRAMMING' | 'DESIGN' | 'BUSINESS' | 'MARKETING'
-  | 'PHOTOGRAPHY' | 'MUSIC' | 'HEALTH' | 'OTHER';
+// Arquitectura académica KORE (plan estrategico, KORE ACADEMY)
+export type CourseLevel = 'ESSENTIALS' | 'PROFESSIONAL' | 'ADVANCED' | 'EXECUTIVE';
+export type CourseLine = 'KORE_AI' | 'KORE_PROFESSIONAL';
+export type Discipline =
+  | 'TRANSVERSAL' | 'INGENIERIA' | 'ADMINISTRACION' | 'CONTABILIDAD' | 'ECONOMIA'
+  | 'DERECHO' | 'EDUCACION' | 'SALUD' | 'MARKETING' | 'RRHH' | 'FINANZAS'
+  | 'TECNOLOGIA' | 'GESTION_PUBLICA' | 'ARQUITECTURA' | 'COMUNICACION';
+// Modelo de formación: COMPRENDER -> APLICAR -> CREAR
+export type LearningPhase = 'LEARN' | 'APPLY' | 'CREATE';
 
 export interface LessonResource {
   title: string;
@@ -72,6 +77,7 @@ export interface Section {
   id: string;
   title: string;
   description: string | null;
+  phase: LearningPhase | null;
   order: number;
   totalLessons: number;
   totalDurationSeconds: number;
@@ -97,7 +103,11 @@ export interface Course {
   thumbnail: string | null;
   promoVideoUrl: string | null;
   level: CourseLevel;
-  category: CourseCategory;
+  line: CourseLine;
+  discipline: Discipline;
+  academicHours: number;
+  competencies: string[];
+  hasFormalEvaluation: boolean;
   language: string;
   price: number;
   isPublished: boolean;
@@ -173,7 +183,8 @@ export interface CourseFilters {
   page?: string;
   limit?: string;
   search?: string;
-  category?: CourseCategory;
+  line?: CourseLine;
+  discipline?: Discipline;
   level?: CourseLevel;
   language?: string;
 }

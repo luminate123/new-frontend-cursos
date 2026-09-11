@@ -10,12 +10,12 @@ export function Progress({ value, className = '', showLabel = false }: ProgressP
     <div className={`flex items-center gap-2 ${className}`}>
       <div className="h-1.5 flex-1 rounded-full bg-border">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-stone-800 to-stone-600 transition-all duration-500"
+          className="h-full rounded-full bg-gradient-to-r from-navy-800 to-navy-600 transition-all duration-500"
           style={{ width: `${clamped}%` }}
         />
       </div>
       {showLabel && (
-        <span className="text-xs text-stone-600 tabular-nums">{clamped}%</span>
+        <span className="text-xs text-muted-foreground tabular-nums">{clamped}%</span>
       )}
     </div>
   );

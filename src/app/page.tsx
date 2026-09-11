@@ -1,255 +1,325 @@
-﻿import Link from 'next/link';
+import Link from 'next/link';
 import Image from 'next/image';
-import { Code2, Zap, Shield, Globe, BookOpen, ArrowRight, Play, Star, Users } from 'lucide-react';
+import {
+  ArrowRight,
+  BadgeCheck,
+  BrainCircuit,
+  Compass,
+  GraduationCap,
+  Layers,
+  Lightbulb,
+  RefreshCw,
+  ScaleIcon,
+  Target,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Navbar } from '@/components/layout/Navbar';
 import { HomeRedirect } from '@/components/auth/HomeRedirect';
 
-const STATS = [
-  { label: 'Estudiantes', value: '10,000+', color: 'text-[#0F1E3C]' },
-  { label: 'Cursos', value: '100+', color: 'text-[#0F1E3C]' },
-  { label: 'Instructores', value: '50+', color: 'text-[#0F1E3C]' },
-  { label: 'Horas de contenido', value: '500+', color: 'text-[#0F1E3C]' },
-];
-
-const FEATURES = [
+// Líneas educativas del plan estratégico (KORE AI y KORE Professional).
+// KORE Consulting no aparece: esta plataforma es la academia.
+const LINES = [
   {
-    icon: Code2,
-    title: 'Cursos técnicos de calidad',
-    description: 'Contenido creado por profesionales activos en la industria.',
-    gradient: 'from-[#0F1E3C]/8 to-[#0F1E3C]/4',
-    border: 'border-[#0F1E3C]/15',
-    iconBg: 'bg-[#0F1E3C]/10',
-    iconColor: 'text-[#0F1E3C]',
+    name: 'KORE AI',
+    tagline: 'Inteligencia Artificial aplicada',
+    description:
+      'Programas de IA generativa, prompt engineering, análisis de datos, automatización y agentes, con uso ético y responsable.',
+    href: '/cursos?line=KORE_AI',
+    icon: BrainCircuit,
+    accent: 'text-ai-700',
+    ring: 'border-ai-500/25 bg-ai-50',
   },
   {
-    icon: Zap,
-    title: 'Aprende a tu ritmo',
-    description: 'Accede desde cualquier dispositivo. Sin fechas límite.',
-    gradient: 'from-[#0F1E3C]/6 to-[#0F1E3C]/3',
-    border: 'border-[#0F1E3C]/15',
-    iconBg: 'bg-[#0F1E3C]/10',
-    iconColor: 'text-[#0F1E3C]',
-  },
-  {
-    icon: Shield,
-    title: 'Certificados verificables',
-    description: 'Demuestra tus habilidades con certificados de finalización.',
-    gradient: 'from-[#0F1E3C]/8 to-[#0F1E3C]/4',
-    border: 'border-[#0F1E3C]/15',
-    iconBg: 'bg-[#0F1E3C]/10',
-    iconColor: 'text-[#0F1E3C]',
-  },
-  {
-    icon: Globe,
-    title: 'Comunidad global',
-    description: 'Conecta con miles de estudiantes y mentores.',
-    gradient: 'from-[#0F1E3C]/6 to-[#0F1E3C]/3',
-    border: 'border-[#0F1E3C]/15',
-    iconBg: 'bg-[#0F1E3C]/10',
-    iconColor: 'text-[#0F1E3C]',
+    name: 'KORE Professional',
+    tagline: 'Especialización por profesión',
+    description:
+      'Programas de especialización para ingeniería, administración, derecho, salud, RRHH, finanzas y otras disciplinas, con la IA como componente transversal.',
+    href: '/cursos?line=KORE_PROFESSIONAL',
+    icon: GraduationCap,
+    accent: 'text-brand-700',
+    ring: 'border-brand-500/25 bg-brand-50',
   },
 ];
 
-const CATEGORIES = [
-  { label: 'Programación', emoji: '💻', href: '/cursos?category=PROGRAMMING' },
-  { label: 'Diseño', emoji: '🎨', href: '/cursos?category=DESIGN' },
-  { label: 'Negocios', emoji: '📈', href: '/cursos?category=BUSINESS' },
-  { label: 'Marketing', emoji: '📣', href: '/cursos?category=MARKETING' },
-  { label: 'Fotografía', emoji: '📷', href: '/cursos?category=PHOTOGRAPHY' },
-  { label: 'Música', emoji: '🎵', href: '/cursos?category=MUSIC' },
+// Arquitectura académica: 4 niveles, no una lista plana de cursos.
+const LEVELS = [
+  { n: '01', name: 'Essentials', description: 'Cursos cortos de entrada', href: '/cursos?level=ESSENTIALS' },
+  { n: '02', name: 'Professional', description: 'Programas de especialización', href: '/cursos?level=PROFESSIONAL' },
+  { n: '03', name: 'Advanced', description: 'Programas avanzados', href: '/cursos?level=ADVANCED' },
+  { n: '04', name: 'Executive', description: 'Gerentes, directivos y líderes', href: '/cursos?level=EXECUTIVE' },
+];
+
+// Modelo de formación KORE.
+const MODEL = [
+  {
+    tag: 'KORE LEARN',
+    title: 'Comprender',
+    description: 'El marco conceptual y los límites de lo que vas a usar.',
+    icon: Compass,
+  },
+  {
+    tag: 'KORE APPLY',
+    title: 'Aplicar',
+    description: 'El conocimiento puesto a trabajar en situaciones profesionales reales.',
+    icon: Target,
+  },
+  {
+    tag: 'KORE CREATE',
+    title: 'Crear',
+    description: 'Un proyecto propio: la evidencia de la competencia desarrollada.',
+    icon: Lightbulb,
+  },
+];
+
+// Diferenciales del plan estratégico (sección 11).
+const DIFFERENTIALS = [
+  {
+    icon: Target,
+    title: 'Formación aplicada',
+    description: 'Cada programa termina en un entregable, no en un examen de teoría.',
+  },
+  {
+    icon: Layers,
+    title: 'IA transversal',
+    description: 'La IA se aplica a tu profesión, no se estudia como una carrera aparte.',
+  },
+  {
+    icon: BadgeCheck,
+    title: 'Certificado verificable',
+    description: 'Código único y verificación pública en línea de cada certificado emitido.',
+  },
+  {
+    icon: RefreshCw,
+    title: 'Actualización permanente',
+    description: 'Los programas se revisan conforme evolucionan las tecnologías.',
+  },
+  {
+    icon: ScaleIcon,
+    title: 'Formación ética',
+    description: 'Uso responsable, seguro y centrado en las personas.',
+  },
+  {
+    icon: GraduationCap,
+    title: 'Especialización real',
+    description: 'Programas de 40 a 120 horas académicas, no solo cursos introductorios.',
+  },
 ];
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background text-[#0F1E3C]">
+    <div className="min-h-screen bg-background text-foreground">
       <HomeRedirect />
       <Navbar />
 
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-white">
-        {/* Background effects */}
+      <section className="relative overflow-hidden bg-card">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[700px] w-[1000px] rounded-full bg-[#0F1E3C]/5 blur-3xl" />
-          <div className="absolute top-20 left-1/4 h-[400px] w-[400px] rounded-full bg-[#0F1E3C]/3 blur-3xl" />
-          <div className="absolute top-20 right-1/4 h-[400px] w-[400px] rounded-full bg-[#0F1E3C]/3 blur-3xl" />
+          <div className="absolute -top-40 left-1/2 h-[620px] w-[900px] -translate-x-1/2 rounded-full bg-navy/5 blur-3xl" />
+          <div className="absolute top-24 right-1/4 h-[360px] w-[360px] rounded-full bg-brand-200/25 blur-3xl" />
         </div>
 
-        {/* Subtle grid */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(15,30,60,0.8) 1px, transparent 1px), linear-gradient(90deg, rgba(15,30,60,0.8) 1px, transparent 1px)',
-            backgroundSize: '48px 48px',
-          }}
-        />
-
-        <div className="relative mx-auto max-w-6xl px-4 py-28 text-center">
-          {/* Badge */}
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-[#0F1E3C]/20 bg-[#0F1E3C]/8 px-5 py-2 text-sm text-[#0F1E3C]">
-            <Zap className="h-3.5 w-3.5 text-[#0F1E3C]" />
-            <span>La plataforma de aprendizaje tech #1</span>
-            <Star className="h-3 w-3 text-[#0F1E3C] fill-[#0F1E3C]" />
+        <div className="relative mx-auto max-w-6xl px-4 py-24 text-center sm:py-28">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-border bg-muted px-4 py-1.5 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+            Consultoría · Asesoría · Educación Profesional
           </div>
 
-          {/* Logo hero */}
-          <div className="mb-8 flex justify-center">
-            <Image src="/logo.svg" alt="Kore Training & Consulting" width={320} height={100} className="h-20 w-auto" />
+          <div className="mb-9 flex justify-center">
+            <Image
+              src="/logo.svg"
+              alt="KORE Group"
+              width={320}
+              height={100}
+              className="h-16 w-auto sm:h-20"
+              priority
+            />
           </div>
 
-          {/* Headline */}
-          <h1 className="text-5xl font-black leading-[1.1] tracking-tight md:text-7xl">
-            Domina las{' '}
-            <span className="bg-gradient-to-r from-[#0F1E3C] via-[#1B3461] to-[#0F1E3C] bg-clip-text text-transparent">
-              tecnologías
-            </span>
+          <h1 className="text-4xl font-black leading-[1.08] tracking-tight sm:text-6xl">
+            Transformamos conocimiento
             <br />
-            del futuro
+            en{' '}
+            <span className="bg-gradient-to-r from-brand-400 to-brand-600 bg-clip-text text-transparent">
+              capacidades
+            </span>
           </h1>
 
-          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-[#4B5563]">
-            Aprende programación, diseño y negocios con instructores expertos.
-            Cursos prácticos, proyectos reales, comunidad activa.
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            Programas de especialización y formación en inteligencia artificial aplicada
+            para profesionales que necesitan resolver problemas reales en su campo.
           </p>
 
-          {/* CTAs */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <Link href="/cursos">
-              <Button size="lg" className="bg-[#F97316] hover:bg-[#EA6D0E] text-white font-semibold px-8 shadow-lg shadow-[#F97316]/30">
-                Ver Catálogo de Cursos
+              <Button size="lg" className="bg-brand px-8 font-semibold text-white shadow-lg shadow-brand/25 hover:bg-brand-600">
+                Ver programas
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Link href="/registro">
-              <Button size="lg" variant="outline" className="border-[#0F1E3C]/30 text-[#0F1E3C] hover:border-[#0F1E3C]/60 hover:text-[#0F1E3C] hover:bg-[#0F1E3C]/5">
-                <Play className="mr-2 h-4 w-4" />
-                Crear cuenta gratis
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-navy/25 text-navy hover:border-navy/50 hover:bg-navy/5"
+              >
+                Crear cuenta
               </Button>
             </Link>
           </div>
-
-          {/* Social proof */}
-          <div className="mt-10 flex items-center justify-center gap-2 text-sm text-[#4B5563]">
-            <div className="flex -space-x-1.5">
-              {['A', 'B', 'C', 'D'].map((l) => (
-                <div key={l} className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-white bg-[#0F1E3C]/15 text-[10px] font-bold text-[#0F1E3C]">
-                  {l}
-                </div>
-              ))}
-            </div>
-            <span>+10,000 estudiantes ya aprendiendo</span>
-          </div>
-
         </div>
       </section>
 
-      {/* ── Stats ────────────────────────────────────────────────────────── */}
-      <section className="border-y border-border bg-card/60">
-        <div className="mx-auto max-w-6xl px-4 py-10">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            {STATS.map((stat) => (
-              <div key={stat.label} className="text-center">
-                <div className={`text-3xl font-black ${stat.color}`}>{stat.value}</div>
-                <div className="mt-1 text-sm text-[#4B5563]">{stat.label}</div>
-              </div>
+      {/* ── Líneas educativas ────────────────────────────────────────────── */}
+      <section className="border-y border-border bg-background">
+        <div className="mx-auto max-w-6xl px-4 py-20">
+          <div className="mb-12 text-center">
+            <h2 className="text-3xl font-bold">Dos líneas de formación</h2>
+            <p className="mt-2 text-muted-foreground">
+              La inteligencia artificial atraviesa ambas; ninguna se agota en ella.
+            </p>
+          </div>
+
+          <div className="grid gap-5 md:grid-cols-2">
+            {LINES.map((line) => (
+              <Link
+                key={line.name}
+                href={line.href}
+                className="group rounded-2xl border border-border bg-card p-7 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover"
+              >
+                <div className={`mb-5 inline-flex rounded-xl border p-2.5 ${line.ring}`}>
+                  <line.icon className={`h-5 w-5 ${line.accent}`} />
+                </div>
+                <h3 className="text-xl font-bold">{line.name}</h3>
+                <p className={`mt-1 text-sm font-medium ${line.accent}`}>{line.tagline}</p>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{line.description}</p>
+                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-brand-600">
+                  Ver programas
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                </span>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Categories ───────────────────────────────────────────────────── */}
+      {/* ── Arquitectura académica ───────────────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-4 py-20">
-        <div className="mb-10 text-center">
-          <h2 className="text-3xl font-bold text-[#0F1E3C]">Explora por categoría</h2>
-          <p className="mt-2 text-[#4B5563]">Encuentra el área que te apasiona</p>
+        <div className="mb-12 text-center">
+          <h2 className="text-3xl font-bold">Cuatro niveles de progresión</h2>
+          <p className="mt-2 text-muted-foreground">
+            Desde un curso corto hasta un programa para dirección.
+          </p>
         </div>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
-          {CATEGORIES.map((cat) => (
+
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {LEVELS.map((level) => (
             <Link
-              key={cat.label}
-              href={cat.href}
-              className="group flex flex-col items-center gap-2.5 rounded-2xl border border-border bg-card p-5 text-center transition-all duration-200 hover:border-[#0F1E3C]/20 hover:bg-[#0F1E3C]/5 hover:-translate-y-1"
+              key={level.name}
+              href={level.href}
+              className="group rounded-2xl border border-border bg-card p-6 transition-all duration-200 hover:-translate-y-1 hover:border-navy/25 hover:shadow-card"
             >
-              <span className="text-3xl">{cat.emoji}</span>
-              <span className="text-xs font-medium text-[#4B5563] group-hover:text-[#0F1E3C] transition-colors">
-                {cat.label}
-              </span>
+              <span className="font-mono text-xs font-semibold text-brand-600">{level.n}</span>
+              <h3 className="mt-2 text-lg font-bold">{level.name}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">{level.description}</p>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* ── Features ─────────────────────────────────────────────────────── */}
-      <section className="border-t border-border">
+      {/* ── Modelo de formación ──────────────────────────────────────────── */}
+      <section className="border-y border-border bg-navy">
         <div className="mx-auto max-w-6xl px-4 py-20">
-          <div className="mb-14 text-center">
-            <h2 className="text-3xl font-bold text-[#0F1E3C]">¿Por qué Kore Training?</h2>
-            <p className="mt-2 text-[#4B5563]">Todo lo que necesitas para crecer profesionalmente</p>
+          <div className="mb-12 text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-white/50">
+              Modelo de formación KORE
+            </p>
+            <h2 className="mt-3 text-3xl font-bold text-white">
+              Comprender <span className="text-white/30">→</span> Aplicar{' '}
+              <span className="text-white/30">→</span> Crear
+            </h2>
           </div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {FEATURES.map((f) => (
+
+          <div className="grid gap-5 md:grid-cols-3">
+            {MODEL.map((step, i) => (
               <div
-                key={f.title}
-                className={`group rounded-2xl border ${f.border} bg-gradient-to-br ${f.gradient} p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#0F1E3C]/10`}
+                key={step.tag}
+                className="relative rounded-2xl border border-white/12 bg-white/5 p-7"
               >
-                <div className={`mb-4 inline-flex rounded-xl p-2.5 ${f.iconBg}`}>
-                  <f.icon className={`h-5 w-5 ${f.iconColor}`} />
+                <div className="mb-5 inline-flex rounded-xl bg-brand/15 p-2.5">
+                  <step.icon className="h-5 w-5 text-brand-400" />
                 </div>
-                <h3 className="font-semibold text-[#0F1E3C]">{f.title}</h3>
-                <p className="mt-2 text-sm text-[#4B5563] leading-relaxed">{f.description}</p>
+                <p className="font-mono text-xs font-semibold tracking-wide text-brand-400">
+                  {step.tag}
+                </p>
+                <h3 className="mt-2 text-xl font-bold text-white">{step.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/60">{step.description}</p>
+                <span className="absolute right-6 top-6 font-mono text-4xl font-black text-white/8">
+                  {i + 1}
+                </span>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── Trusted section ──────────────────────────────────────────────── */}
-      <section className="border-t border-border bg-card/40">
-        <div className="mx-auto max-w-6xl px-4 py-14 text-center">
-          <p className="text-sm font-medium uppercase tracking-widest text-[#4B5563]">Tecnologías que enseñamos</p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            {['React', 'Node.js', 'TypeScript', 'NestJS', 'Python', 'Docker', 'AWS', 'PostgreSQL'].map((tech) => (
-              <span key={tech} className="rounded-full border border-border bg-card px-4 py-1.5 text-sm font-medium text-[#0F1E3C]">
-                {tech}
-              </span>
-            ))}
-          </div>
+      {/* ── Diferenciales ────────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-4 py-20">
+        <div className="mb-12 text-center">
+          <h2 className="text-3xl font-bold">Qué hace distinto un programa KORE</h2>
+          <p className="mt-2 text-muted-foreground">
+            No es un catálogo de cursos: es una ruta de desarrollo profesional.
+          </p>
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {DIFFERENTIALS.map((d) => (
+            <div key={d.title} className="rounded-2xl border border-border bg-card p-6 shadow-card">
+              <div className="mb-4 inline-flex rounded-xl bg-muted p-2.5">
+                <d.icon className="h-5 w-5 text-navy" />
+              </div>
+              <h3 className="font-semibold">{d.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{d.description}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* ── CTA Final ────────────────────────────────────────────────────── */}
-      <section className="mx-auto max-w-6xl px-4 py-20">
-        <div className="relative overflow-hidden rounded-3xl border border-[#0F1E3C]/15 bg-gradient-to-br from-[#0F1E3C]/8 via-card to-[#0F1E3C]/4 p-14 text-center">
-          {/* Glow effects */}
-          <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-[#0F1E3C]/8 blur-3xl" />
-          <div className="pointer-events-none absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-[#0F1E3C]/6 blur-3xl" />
+      {/* ── Verificación de certificados ─────────────────────────────────── */}
+      <section className="border-t border-border bg-card/50">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-14 text-center sm:flex-row sm:justify-between sm:text-left">
+          <div>
+            <h2 className="text-xl font-bold">¿Recibiste un certificado KORE?</h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Cada certificado lleva un código único verificable en línea.
+            </p>
+          </div>
+          <Link href="/verificar">
+            <Button variant="outline" className="border-navy/25 text-navy hover:bg-navy/5">
+              <BadgeCheck className="mr-2 h-4 w-4" />
+              Verificar certificado
+            </Button>
+          </Link>
+        </div>
+      </section>
 
+      {/* ── CTA final ────────────────────────────────────────────────────── */}
+      <section className="mx-auto max-w-6xl px-4 py-20">
+        <div className="relative overflow-hidden rounded-3xl border border-navy/12 bg-gradient-to-br from-navy/6 via-card to-brand-50 p-12 text-center sm:p-14">
+          <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-brand-200/30 blur-3xl" />
           <div className="relative">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#0F1E3C]/20 bg-[#0F1E3C]/8 px-4 py-1.5 text-sm text-[#0F1E3C]">
-              <Users className="h-3.5 w-3.5" />
-              <span>Únete a la comunidad</span>
-            </div>
-            <h2 className="text-4xl font-black text-[#0F1E3C]">
-              Empieza a aprender{' '}
-              <span className="bg-gradient-to-r from-[#0F1E3C] to-[#1B3461] bg-clip-text text-transparent">
-                hoy mismo
+            <h2 className="text-3xl font-black sm:text-4xl">
+              Da el siguiente paso en tu{' '}
+              <span className="bg-gradient-to-r from-brand-400 to-brand-600 bg-clip-text text-transparent">
+                especialización
               </span>
             </h2>
-            <p className="mx-auto mt-4 max-w-md text-[#4B5563] leading-relaxed">
-              Únete a miles de estudiantes que ya están construyendo su futuro.
-              Registro gratuito, sin tarjeta de crédito.
+            <p className="mx-auto mt-4 max-w-lg leading-relaxed text-muted-foreground">
+              Revisa el catálogo, elige tu nivel y solicita tu inscripción.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <Link href="/registro">
-                <Button size="lg" className="bg-[#F97316] hover:bg-[#EA6D0E] text-white font-semibold px-8 shadow-lg shadow-[#F97316]/30">
-                  Comenzar gratis
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link href="/cursos">
-                <Button size="lg" variant="outline" className="border-[#0F1E3C]/30 text-[#0F1E3C] hover:border-[#0F1E3C]/60 hover:text-[#0F1E3C]">
-                  Ver todos los cursos
+                <Button size="lg" className="bg-brand px-8 font-semibold text-white hover:bg-brand-600">
+                  Ver catálogo
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             </div>
@@ -258,14 +328,20 @@ export default function HomePage() {
       </section>
 
       {/* ── Footer ───────────────────────────────────────────────────────── */}
-      <footer className="bg-[#0F1E3C] py-10">
-        <div className="mx-auto max-w-6xl px-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
-          <Image src="/logo.svg" alt="Kore Training & Consulting" width={120} height={38} className="h-8 w-auto brightness-0 invert" />
-          <p className="text-sm text-white/60">© 2026 Kore Training & Consulting. Todos los derechos reservados.</p>
-          <div className="flex gap-4 text-sm text-white/60">
-            <Link href="/cursos" className="hover:text-white transition-colors">Cursos</Link>
-            <Link href="/login" className="hover:text-white transition-colors">Iniciar sesión</Link>
-            <Link href="/registro" className="hover:text-white transition-colors">Registro</Link>
+      <footer className="border-t border-border bg-navy">
+        <div className="mx-auto max-w-6xl px-4 py-10">
+          <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
+            <div>
+              <p className="font-bold text-white">KORE Group</p>
+              <p className="mt-0.5 text-xs text-white/50">
+                Transformamos conocimiento en capacidades.
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-5 text-sm text-white/60">
+              <Link href="/cursos" className="hover:text-white">Programas</Link>
+              <Link href="/verificar" className="hover:text-white">Verificar certificado</Link>
+              <Link href="/login" className="hover:text-white">Iniciar sesión</Link>
+            </div>
           </div>
         </div>
       </footer>

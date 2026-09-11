@@ -1,5 +1,47 @@
 @import "tailwindcss";
 
+/* ───────────────────────────────────────────────────────────────────────────
+   KORE Group — sistema de color
+   Se mantiene la identidad navy + naranja; se moderniza el tratamiento:
+   OKLCH (mezclas y opacidades sin ensuciarse), escala completa en vez de dos
+   hex sueltos, cian como acento exclusivo de la línea KORE AI, y modo oscuro.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Navy institucional */
+  --color-navy-50: oklch(0.97 0.008 258);
+  --color-navy-100: oklch(0.93 0.015 258);
+  --color-navy-200: oklch(0.87 0.022 258);
+  --color-navy-300: oklch(0.75 0.035 258);
+  --color-navy-400: oklch(0.62 0.045 258);
+  --color-navy-500: oklch(0.52 0.05 258);
+  --color-navy-600: oklch(0.43 0.055 258);
+  --color-navy-700: oklch(0.35 0.055 258);
+  --color-navy-800: oklch(0.27 0.05 258);
+  --color-navy-900: oklch(0.22 0.045 258);
+  --color-navy-950: oklch(0.17 0.038 258);
+  --color-navy: var(--color-navy-950);
+
+  /* Naranja KORE — acción. Más luminoso y saturado que el #F97316 anterior. */
+  --color-brand-50: oklch(0.97 0.018 60);
+  --color-brand-100: oklch(0.94 0.04 58);
+  --color-brand-200: oklch(0.89 0.075 55);
+  --color-brand-300: oklch(0.82 0.12 50);
+  --color-brand-400: oklch(0.76 0.155 47);
+  --color-brand-500: oklch(0.70 0.18 45);
+  --color-brand-600: oklch(0.62 0.19 42);
+  --color-brand-700: oklch(0.53 0.17 40);
+  --color-brand: var(--color-brand-500);
+
+  /* Cian — solo identifica la línea KORE AI. Nunca como color de acción. */
+  --color-ai-50: oklch(0.97 0.02 205);
+  --color-ai-100: oklch(0.93 0.045 205);
+  --color-ai-500: oklch(0.72 0.13 205);
+  --color-ai-600: oklch(0.63 0.13 205);
+  --color-ai-700: oklch(0.52 0.11 205);
+  --color-ai: var(--color-ai-500);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -17,6 +59,13 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-grid: var(--chart-grid);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -26,52 +75,125 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  --shadow-card: 0 1px 2px oklch(0.17 0.038 258 / 0.04), 0 4px 12px oklch(0.17 0.038 258 / 0.05);
+  --shadow-card-hover: 0 2px 4px oklch(0.17 0.038 258 / 0.06), 0 12px 28px oklch(0.17 0.038 258 / 0.09);
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.75rem;
 
-  /* Kore Training & Consulting — navy/orange palette */
-  --background: #F3F6FA;
-  --foreground: #0F1E3C;
-  --card: #FFFFFF;
-  --card-foreground: #0F1E3C;
-  --popover: #FFFFFF;
-  --popover-foreground: #0F1E3C;
+  /* Fondo casi blanco con una pizca de navy, en vez del azul lavado anterior */
+  --background: oklch(0.985 0.004 258);
+  --foreground: var(--color-navy-950);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--color-navy-950);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--color-navy-950);
 
-  /* Orange as primary */
-  --primary: #F97316;
-  --primary-foreground: #FFFFFF;
+  --primary: var(--color-brand-500);
+  --primary-foreground: oklch(1 0 0);
 
-  /* Surfaces */
-  --secondary: #E2E8F2;
-  --secondary-foreground: #0F1E3C;
-  --muted: #E2E8F2;
-  --muted-foreground: #4B5563;
-  --accent: #E2E8F2;
-  --accent-foreground: #0F1E3C;
+  --secondary: var(--color-navy-50);
+  --secondary-foreground: var(--color-navy-900);
+  --muted: var(--color-navy-50);
+  --muted-foreground: var(--color-navy-500);
+  --accent: var(--color-navy-100);
+  --accent-foreground: var(--color-navy-900);
 
-  /* Functional */
-  --destructive: #dc2626;
-  --destructive-foreground: #FFFFFF;
-  --border: #CBD5E1;
-  --input: #CBD5E1;
-  --ring: #F97316;
+  --destructive: oklch(0.58 0.21 27);
+  --destructive-foreground: oklch(1 0 0);
+  --success: oklch(0.62 0.15 155);
+  --success-foreground: oklch(1 0 0);
+  --warning: oklch(0.76 0.15 78);
+  --warning-foreground: var(--color-navy-950);
 
-  /* Semantic aliases */
-  --navy: #0F1E3C;
-  --navy-foreground: #FFFFFF;
-  --orange: #F97316;
+  /* Gráficos. Pasos validados contra la superficie de cada modo (banda OKLCH
+     L 0.43–0.77 en claro, 0.48–0.67 en oscuro); no es un flip automático. */
+  --chart-1: oklch(0.70 0.18 45);
+  --chart-2: oklch(0.72 0.13 205);
+  --chart-grid: oklch(0.93 0.008 258);
+
+  --border: oklch(0.91 0.01 258);
+  --input: oklch(0.89 0.012 258);
+  --ring: var(--color-brand-500);
+}
+
+/* Modo oscuro. `data-theme` gana en ambos sentidos sobre la preferencia del SO. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --background: var(--color-navy-950);
+    --foreground: oklch(0.96 0.005 258);
+    --card: var(--color-navy-900);
+    --card-foreground: oklch(0.96 0.005 258);
+    --popover: var(--color-navy-900);
+    --popover-foreground: oklch(0.96 0.005 258);
+    --secondary: var(--color-navy-800);
+    --secondary-foreground: oklch(0.96 0.005 258);
+    --muted: var(--color-navy-800);
+    --muted-foreground: var(--color-navy-300);
+    --accent: var(--color-navy-800);
+    --accent-foreground: oklch(0.96 0.005 258);
+    --chart-1: oklch(0.62 0.19 42);
+    --chart-2: oklch(0.63 0.13 205);
+    --chart-grid: oklch(0.30 0.025 258);
+    --border: oklch(0.32 0.03 258);
+    --input: oklch(0.36 0.032 258);
+  }
+}
+
+:root[data-theme="dark"] {
+  --chart-1: oklch(0.62 0.19 42);
+  --chart-2: oklch(0.63 0.13 205);
+  --chart-grid: oklch(0.30 0.025 258);
+
+  --background: var(--color-navy-950);
+  --foreground: oklch(0.96 0.005 258);
+  --card: var(--color-navy-900);
+  --card-foreground: oklch(0.96 0.005 258);
+  --popover: var(--color-navy-900);
+  --popover-foreground: oklch(0.96 0.005 258);
+  --secondary: var(--color-navy-800);
+  --secondary-foreground: oklch(0.96 0.005 258);
+  --muted: var(--color-navy-800);
+  --muted-foreground: var(--color-navy-300);
+  --accent: var(--color-navy-800);
+  --accent-foreground: oklch(0.96 0.005 258);
+  --border: oklch(0.32 0.03 258);
+  --input: oklch(0.36 0.032 258);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #F3F6FA; }
-::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #0F1E3C; }
+::selection {
+  background: var(--color-brand-200);
+  color: var(--color-navy-950);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border: 3px solid transparent;
+  border-radius: 9999px;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--color-navy-300); background-clip: content-box; }
+
+/* El certificado se imprime desde el navegador.
+   ponytail: sin librería de PDF; si hace falta un PDF firmado o enviarlo por
+   correo, ahí entra pdf-lib del lado del backend. */
+@media print {
+  .no-print { display: none !important; }
+  body { background: #fff; }
+  @page { margin: 1.5cm; }
+}

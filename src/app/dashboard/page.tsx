@@ -18,17 +18,17 @@ import type { Enrollment } from '@/lib/types';
 
 function StatusBadge({ status }: { status: Enrollment['status'] }) {
   if (status === 'APPROVED') return (
-    <span className="inline-flex items-center gap-1 rounded-full border border-emerald-600/30 bg-emerald-50 px-2 py-0.5 text-[10px] font-medium text-emerald-700">
+    <span className="inline-flex items-center gap-1 rounded-full border border-success/30 bg-success/10 px-2 py-0.5 text-[10px] font-medium text-success">
       <CheckCircle className="h-3 w-3" /> Aprobado
     </span>
   );
   if (status === 'PENDING') return (
-    <span className="inline-flex items-center gap-1 rounded-full border border-amber-600/30 bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-700">
+    <span className="inline-flex items-center gap-1 rounded-full border border-warning/30 bg-warning/10 px-2 py-0.5 text-[10px] font-medium text-warning-foreground">
       <Clock3 className="h-3 w-3" /> Pendiente
     </span>
   );
   return (
-    <span className="inline-flex items-center gap-1 rounded-full border border-red-600/30 bg-red-50 px-2 py-0.5 text-[10px] font-medium text-red-700">
+    <span className="inline-flex items-center gap-1 rounded-full border border-destructive/30 bg-destructive/10 px-2 py-0.5 text-[10px] font-medium text-destructive">
       <XCircle className="h-3 w-3" /> Rechazado
     </span>
   );
@@ -47,7 +47,7 @@ function StatCard({
       </div>
       <div>
         <p className={`text-2xl font-black ${color}`}>{value}</p>
-        <p className="text-xs text-stone-500">{label}</p>
+        <p className="text-xs text-muted-foreground">{label}</p>
       </div>
     </div>
   );
@@ -76,18 +76,18 @@ function StudentView() {
     <div>
       {/* Stats */}
       <div className="mb-10 grid gap-4 sm:grid-cols-3">
-        <StatCard label="Cursos aprobados" value={approved.length} icon={BookOpen} color="text-stone-700" bg="bg-stone-900/10 border-stone-700/20" />
-        <StatCard label="En progreso" value={inProgress.length} icon={TrendingUp} color="text-stone-700" bg="bg-stone-800/8 border-stone-700/20" />
-        <StatCard label="Completados" value={completed.length} icon={Trophy} color="text-emerald-700" bg="bg-emerald-500/10 border-emerald-500/20" />
+        <StatCard label="Cursos aprobados" value={approved.length} icon={BookOpen} color="text-foreground" bg="bg-muted border-border" />
+        <StatCard label="En progreso" value={inProgress.length} icon={TrendingUp} color="text-foreground" bg="bg-muted border-border" />
+        <StatCard label="Completados" value={completed.length} icon={Trophy} color="text-success" bg="bg-success/100/10 border-success/20" />
       </div>
 
       {/* Pending requests */}
       {pending.length > 0 && (
         <section className="mb-10">
           <div className="mb-4 flex items-center gap-2">
-            <Clock3 className="h-5 w-5 text-amber-700" />
+            <Clock3 className="h-5 w-5 text-warning-foreground" />
             <h2 className="text-lg font-bold">Solicitudes pendientes</h2>
-            <span className="rounded-full bg-amber-50 border border-amber-600/20 px-2 py-0.5 text-xs text-amber-700">
+            <span className="rounded-full bg-warning/10 border border-warning/20 px-2 py-0.5 text-xs text-warning-foreground">
               {pending.length}
             </span>
           </div>
@@ -98,13 +98,13 @@ function StudentView() {
                   <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden bg-secondary">
                     {enrollment.course?.thumbnail
                       ? <img src={enrollment.course.thumbnail} alt="" className="h-full w-full object-cover" />
-                      : <div className="h-full w-full flex items-center justify-center text-stone-400"><BookOpen className="h-5 w-5" /></div>
+                      : <div className="h-full w-full flex items-center justify-center text-muted-foreground"><BookOpen className="h-5 w-5" /></div>
                     }
                   </div>
                   <div className="min-w-0">
-                    <p className="font-medium text-stone-800 truncate">{enrollment.course?.title}</p>
-                    <p className="text-xs text-stone-500">
-                      Solicitado el {new Date(enrollment.enrolledAt).toLocaleDateString('es-ES')}
+                    <p className="font-medium text-foreground truncate">{enrollment.course?.title}</p>
+                    <p className="text-xs text-muted-foreground">
+                      Solicitado el {new Date(enrollment.enrolledAt).toLocaleDateString('es-ES', { timeZone: 'America/Lima' })}
                     </p>
                   </div>
                 </div>
@@ -119,30 +119,30 @@ function StudentView() {
       {rejected.length > 0 && (
         <section className="mb-10">
           <div className="mb-4 flex items-center gap-2">
-            <XCircle className="h-5 w-5 text-red-700" />
+            <XCircle className="h-5 w-5 text-destructive" />
             <h2 className="text-lg font-bold">Solicitudes rechazadas</h2>
           </div>
           <div className="grid gap-3">
             {rejected.map((enrollment) => (
-              <div key={enrollment.id} className="flex items-center justify-between rounded-xl border border-red-500/20 bg-card px-5 py-4">
+              <div key={enrollment.id} className="flex items-center justify-between rounded-xl border border-destructive/20 bg-card px-5 py-4">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="h-10 w-10 shrink-0 rounded-lg overflow-hidden bg-secondary">
                     {enrollment.course?.thumbnail
                       ? <img src={enrollment.course.thumbnail} alt="" className="h-full w-full object-cover" />
-                      : <div className="h-full w-full flex items-center justify-center text-stone-400"><BookOpen className="h-5 w-5" /></div>
+                      : <div className="h-full w-full flex items-center justify-center text-muted-foreground"><BookOpen className="h-5 w-5" /></div>
                     }
                   </div>
                   <div className="min-w-0">
-                    <p className="font-medium text-stone-800 truncate">{enrollment.course?.title}</p>
+                    <p className="font-medium text-foreground truncate">{enrollment.course?.title}</p>
                     {enrollment.rejectionReason && (
-                      <p className="text-xs text-red-700/70">{enrollment.rejectionReason}</p>
+                      <p className="text-xs text-destructive/70">{enrollment.rejectionReason}</p>
                     )}
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
                   <StatusBadge status={enrollment.status} />
                   <Link href={`/cursos/${enrollment.course?.slug}`}>
-                    <Button size="sm" variant="outline" className="border-border text-xs text-stone-600 hover:text-stone-900">
+                    <Button size="sm" variant="outline" className="border-border text-xs text-muted-foreground hover:text-foreground">
                       Volver a solicitar
                     </Button>
                   </Link>
@@ -157,7 +157,7 @@ function StudentView() {
       {inProgress.length > 0 && (
         <section className="mb-10">
           <h2 className="mb-4 flex items-center gap-2 text-lg font-bold">
-            <Play className="h-5 w-5 text-stone-700" />
+            <Play className="h-5 w-5 text-foreground" />
             Continúa aprendiendo
           </h2>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -178,10 +178,10 @@ function StudentView() {
         <section className="mb-10">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="flex items-center gap-2 text-lg font-bold">
-              <BookOpen className="h-5 w-5 text-stone-600" />
+              <BookOpen className="h-5 w-5 text-muted-foreground" />
               Mis cursos
             </h2>
-            <Link href="/cursos" className="text-sm text-stone-700 hover:text-stone-900 transition-colors">
+            <Link href="/cursos" className="text-sm text-foreground hover:text-foreground transition-colors">
               Explorar más →
             </Link>
           </div>
@@ -208,10 +208,10 @@ function StudentView() {
         !loading && pending.length === 0 && rejected.length === 0 && (
           <div className="rounded-2xl border border-border bg-card p-12 text-center mb-10">
             <div className="mb-4 text-5xl">🎓</div>
-            <h3 className="text-lg font-semibold text-stone-700">Aún no tienes cursos</h3>
-            <p className="mt-1 text-sm text-stone-500">Explora nuestro catálogo y solicita inscripción</p>
+            <h3 className="text-lg font-semibold text-foreground">Aún no tienes cursos</h3>
+            <p className="mt-1 text-sm text-muted-foreground">Explora nuestro catálogo y solicita inscripción</p>
             <Link href="/cursos">
-              <Button className="mt-6 bg-stone-900 hover:bg-stone-800 font-semibold shadow-lg shadow-stone-900/20">Explorar cursos</Button>
+              <Button className="mt-6 bg-navy hover:bg-navy-800 font-semibold shadow-lg shadow-navy/20">Explorar cursos</Button>
             </Link>
           </div>
         )
@@ -219,15 +219,15 @@ function StudentView() {
 
       {/* Quick actions */}
       <div className="grid gap-4 sm:grid-cols-2">
-        <Link href="/cursos" className="group rounded-2xl border border-border bg-card p-5 transition-all hover:border-stone-700/30 hover:bg-stone-900/5 hover:-translate-y-0.5">
-          <BookOpen className="mb-3 h-6 w-6 text-stone-700" />
-          <h3 className="font-semibold text-stone-800 group-hover:text-stone-900 transition-colors">Explorar catálogo</h3>
-          <p className="mt-1 text-xs text-stone-500">Descubre nuevos cursos</p>
+        <Link href="/cursos" className="group rounded-2xl border border-border bg-card p-5 transition-all hover:border-border hover:bg-muted hover:-translate-y-0.5">
+          <BookOpen className="mb-3 h-6 w-6 text-foreground" />
+          <h3 className="font-semibold text-foreground group-hover:text-foreground transition-colors">Explorar catálogo</h3>
+          <p className="mt-1 text-xs text-muted-foreground">Descubre nuevos cursos</p>
         </Link>
-        <div className="group rounded-2xl border border-border bg-card p-5 transition-all hover:border-stone-700/30 hover:bg-stone-900/5">
-          <TrendingUp className="mb-3 h-6 w-6 text-stone-600" />
-          <h3 className="font-semibold text-stone-800 group-hover:text-stone-900 transition-colors">Mi progreso</h3>
-          <p className="mt-1 text-xs text-stone-500">{approved.length} curso{approved.length !== 1 ? 's' : ''} activo{approved.length !== 1 ? 's' : ''}</p>
+        <div className="group rounded-2xl border border-border bg-card p-5 transition-all hover:border-border hover:bg-muted">
+          <TrendingUp className="mb-3 h-6 w-6 text-muted-foreground" />
+          <h3 className="font-semibold text-foreground group-hover:text-foreground transition-colors">Mi progreso</h3>
+          <p className="mt-1 text-xs text-muted-foreground">{approved.length} curso{approved.length !== 1 ? 's' : ''} activo{approved.length !== 1 ? 's' : ''}</p>
         </div>
       </div>
     </div>
@@ -242,24 +242,24 @@ export default function DashboardPage() {
   if (!isAuthenticated || !user) return null;
 
   return (
-    <div className="min-h-screen bg-background text-stone-900">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
 
       <div className="mx-auto max-w-7xl px-4 py-10">
         {/* Header */}
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm text-stone-500 font-mono">
-              {new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+            <p className="text-sm text-muted-foreground font-mono">
+              {new Date().toLocaleDateString('es-ES', { timeZone: 'America/Lima', weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </p>
             <h1 className="mt-1 text-3xl font-black">
               Hola,{' '}
-              <span className="bg-gradient-to-r from-stone-800 to-stone-700 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-navy-800 to-navy-600 bg-clip-text text-transparent">
                 {user.firstName}
               </span>{' '}
               👋
             </h1>
-            <p className="mt-1 text-sm text-stone-500">
+            <p className="mt-1 text-sm text-muted-foreground">
               {user.role === 'STUDENT' && 'Continúa aprendiendo donde lo dejaste'}
               {user.role === 'INSTRUCTOR' && 'Gestiona tus cursos y estudiantes'}
               {user.role === 'ADMIN' && 'Vista general del sistema'}
@@ -268,19 +268,19 @@ export default function DashboardPage() {
 
           {/* Profile card */}
           <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-900/10 text-stone-700 font-bold">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-foreground font-bold">
               {user.firstName[0]}{user.lastName[0]}
             </div>
             <div>
-              <p className="text-sm font-medium text-stone-800">{user.firstName} {user.lastName}</p>
-              <p className="text-xs text-stone-500">{user.email}</p>
+              <p className="text-sm font-medium text-foreground">{user.firstName} {user.lastName}</p>
+              <p className="text-xs text-muted-foreground">{user.email}</p>
             </div>
             <span className={`ml-2 rounded-full border px-2 py-0.5 text-[10px] font-medium ${
               user.role === 'ADMIN'
-                ? 'border-purple-500/30 bg-purple-50 text-purple-700'
+                ? 'border-ai-500/30 bg-ai-50 text-ai-700'
                 : user.role === 'INSTRUCTOR'
-                ? 'border-stone-700/30 bg-stone-900/10 text-stone-700'
-                : 'border-emerald-500/30 bg-emerald-50 text-emerald-700'
+                ? 'border-border bg-muted text-foreground'
+                : 'border-success/30 bg-success/10 text-success'
             }`}>
               {user.role}
             </span>

@@ -6,7 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useAuthStore } from "@/lib/store/auth.store";
 import { useLogout } from "@/lib/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { BookOpen, LayoutDashboard } from "lucide-react";
+import { BookOpen, LayoutDashboard, Receipt, Award } from "lucide-react";
 
 function NavLink({ href, children, icon: Icon }: { href: string; children: React.ReactNode; icon?: React.ElementType }) {
   const pathname = usePathname();
@@ -33,7 +33,7 @@ export function Navbar() {
   const logoutMutation = useLogout();
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-white/10 bg-[#0F1E3C]">
+    <nav className="sticky top-0 z-50 border-b border-white/10 bg-navy">
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center">
@@ -42,15 +42,22 @@ export function Navbar() {
 
         {/* Nav links */}
         <div className="hidden sm:flex items-center gap-1">
-          {pathname !== '/' && <NavLink href="/cursos" icon={BookOpen}>Cursos</NavLink>}
+          {pathname !== '/' && <NavLink href="/cursos" icon={BookOpen}>Programas</NavLink>}
           {isAuthenticated && user?.role === 'STUDENT' && (
-            <NavLink href="/dashboard" icon={LayoutDashboard}>Mi aprendizaje</NavLink>
+            <>
+              <NavLink href="/dashboard" icon={LayoutDashboard}>Mi aprendizaje</NavLink>
+              <NavLink href="/dashboard/mis-pagos" icon={Receipt}>Mis pagos</NavLink>
+              <NavLink href="/dashboard/certificados" icon={Award}>Certificados</NavLink>
+            </>
           )}
           {isAuthenticated && user?.role === 'INSTRUCTOR' && (
             <NavLink href="/dashboard" icon={LayoutDashboard}>Mi panel</NavLink>
           )}
           {isAuthenticated && user?.role === 'ADMIN' && (
-            <NavLink href="/dashboard" icon={LayoutDashboard}>Admin</NavLink>
+            <>
+              <NavLink href="/dashboard" icon={LayoutDashboard}>Admin</NavLink>
+              <NavLink href="/dashboard/admin/pagos" icon={Receipt}>Pagos</NavLink>
+            </>
           )}
         </div>
 
@@ -65,10 +72,10 @@ export function Navbar() {
                 <span className="text-sm text-white">{user.firstName}</span>
                 <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold ${
                   user.role === 'ADMIN'
-                    ? 'bg-purple-500/30 text-purple-200'
+                    ? 'bg-ai-500/30 text-ai-500/30'
                     : user.role === 'INSTRUCTOR'
                     ? 'bg-white/20 text-white'
-                    : 'bg-emerald-500/30 text-emerald-200'
+                    : 'bg-success/100/30 text-success/30'
                 }`}>
                   {user.role}
                 </span>
@@ -85,7 +92,7 @@ export function Navbar() {
             </>
           ) : (
             <Link href="/login">
-              <Button size="sm" className="bg-[#F97316] hover:bg-[#EA6D0E] text-white text-xs font-semibold shadow-lg shadow-[#F97316]/30">
+              <Button size="sm" className="bg-brand hover:bg-brand-600 text-white text-xs font-semibold shadow-lg shadow-brand/30">
                 Ingresar al Aula Virtual
               </Button>
             </Link>

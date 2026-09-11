@@ -9,7 +9,7 @@ interface SubmitButtonProps {
 
 export function SubmitButton({ isLoading, children }: SubmitButtonProps) {
   return (
-    <Button type="submit" className="w-full bg-stone-900 hover:bg-stone-800 shadow-lg shadow-stone-900/20" disabled={isLoading}>
+    <Button type="submit" className="w-full bg-navy hover:bg-navy-800 shadow-lg shadow-navy/20" disabled={isLoading}>
       {isLoading ? (
         <span className="flex items-center gap-2">
           <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">

@@ -91,7 +91,11 @@ export interface CreateCourseData {
   thumbnail?: string;
   promoVideoUrl?: string;
   level?: string;
-  category?: string;
+  line?: string;
+  discipline?: string;
+  academicHours?: number;
+  competencies?: string[];
+  hasFormalEvaluation?: boolean;
   language?: string;
   price?: number;
   requirements?: string[];
@@ -236,35 +240,83 @@ export function getYoutubeThumbnail(videoId: string): string {
 }
 
 export const LEVEL_LABELS: Record<string, string> = {
-  BEGINNER: 'Principiante',
-  INTERMEDIATE: 'Intermedio',
-  ADVANCED: 'Avanzado',
+  ESSENTIALS: 'Essentials',
+  PROFESSIONAL: 'Professional',
+  ADVANCED: 'Advanced',
+  EXECUTIVE: 'Executive',
 };
 
-export const CATEGORY_LABELS: Record<string, string> = {
-  PROGRAMMING: 'Programación',
-  DESIGN: 'Diseño',
-  BUSINESS: 'Negocios',
-  MARKETING: 'Marketing',
-  PHOTOGRAPHY: 'Fotografía',
-  MUSIC: 'Música',
-  HEALTH: 'Salud',
-  OTHER: 'Otro',
+// Qué es cada nivel, para el tooltip y los filtros del catalogo.
+export const LEVEL_DESCRIPTIONS: Record<string, string> = {
+  ESSENTIALS: 'Cursos cortos de entrada',
+  PROFESSIONAL: 'Programas de especialización',
+  ADVANCED: 'Programas avanzados',
+  EXECUTIVE: 'Para gerentes y directivos',
 };
 
+// Progresión visual: del navy claro al navy profundo segun sube el nivel.
 export const LEVEL_COLORS: Record<string, string> = {
-  BEGINNER: 'text-emerald-700 bg-emerald-50 border-emerald-600/20',
-  INTERMEDIATE: 'text-amber-700 bg-amber-50 border-amber-600/20',
-  ADVANCED: 'text-red-700 bg-red-50 border-red-600/20',
+  ESSENTIALS: 'text-navy-600 bg-navy-50 border-navy-300/50',
+  PROFESSIONAL: 'text-navy-700 bg-navy-100 border-navy-300/60',
+  ADVANCED: 'text-navy-50 bg-navy-700 border-navy-700',
+  EXECUTIVE: 'text-navy-50 bg-navy-950 border-navy-950',
 };
 
-export const CATEGORY_COLORS: Record<string, string> = {
-  PROGRAMMING: 'text-stone-700 bg-stone-900/8 border-stone-700/20',
-  DESIGN: 'text-purple-700 bg-purple-50 border-purple-600/20',
-  BUSINESS: 'text-orange-700 bg-orange-50 border-orange-600/20',
-  MARKETING: 'text-pink-700 bg-pink-50 border-pink-600/20',
-  PHOTOGRAPHY: 'text-cyan-700 bg-cyan-50 border-cyan-600/20',
-  MUSIC: 'text-violet-700 bg-violet-50 border-violet-600/20',
-  HEALTH: 'text-green-700 bg-green-50 border-green-600/20',
-  OTHER: 'text-stone-600 bg-stone-900/5 border-stone-500/20',
+export const LINE_LABELS: Record<string, string> = {
+  KORE_AI: 'KORE AI',
+  KORE_PROFESSIONAL: 'KORE Professional',
 };
+
+export const LINE_DESCRIPTIONS: Record<string, string> = {
+  KORE_AI: 'Inteligencia Artificial aplicada',
+  KORE_PROFESSIONAL: 'Especialización por profesión',
+};
+
+// El cian identifica la línea KORE AI; nunca se usa como color de acción.
+export const LINE_COLORS: Record<string, string> = {
+  KORE_AI: 'text-ai-700 bg-ai-50 border-ai-500/25',
+  KORE_PROFESSIONAL: 'text-brand-700 bg-brand-50 border-brand-500/25',
+};
+
+export const DISCIPLINE_LABELS: Record<string, string> = {
+  TRANSVERSAL: 'Todas las profesiones',
+  INGENIERIA: 'Ingeniería',
+  ADMINISTRACION: 'Administración',
+  CONTABILIDAD: 'Contabilidad',
+  ECONOMIA: 'Economía',
+  DERECHO: 'Derecho',
+  EDUCACION: 'Educación',
+  SALUD: 'Salud',
+  MARKETING: 'Marketing',
+  RRHH: 'Recursos Humanos',
+  FINANZAS: 'Finanzas',
+  TECNOLOGIA: 'Tecnología',
+  GESTION_PUBLICA: 'Gestión Pública',
+  ARQUITECTURA: 'Arquitectura',
+  COMUNICACION: 'Comunicación',
+};
+
+// Modelo de formación KORE: COMPRENDER -> APLICAR -> CREAR
+export const PHASE_LABELS: Record<string, string> = {
+  LEARN: 'KORE LEARN',
+  APPLY: 'KORE APPLY',
+  CREATE: 'KORE CREATE',
+};
+
+export const PHASE_SUBTITLES: Record<string, string> = {
+  LEARN: 'Comprender el conocimiento',
+  APPLY: 'Aplicarlo a situaciones profesionales',
+  CREATE: 'Crear soluciones y proyectos',
+};
+
+export function formatAcademicHours(hours: number): string {
+  return hours > 0 ? `${hours} h académicas` : '';
+}
+
+export function formatPEN(amount: number): string {
+  return new Intl.NumberFormat('es-PE', {
+    style: 'currency',
+    currency: 'PEN',
+    minimumFractionDigits: 2,
+  }).format(Number(amount));
+}

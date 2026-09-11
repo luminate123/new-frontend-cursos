@@ -6,7 +6,7 @@ import { Clock, BookOpen, Users, Globe, CheckCircle, Play, ArrowLeft, Loader2, X
 import Link from 'next/link';
 import { Navbar } from '@/components/layout/Navbar';
 import { CourseRoadmap } from '@/components/courses/CourseRoadmap';
-import { LevelBadge, CategoryBadge, StarRating } from '@/components/courses/CourseBadges';
+import { LevelBadge, LineBadge, DisciplineBadge, HoursBadge, StarRating } from '@/components/courses/CourseBadges';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import {
@@ -17,6 +17,7 @@ import {
   getProgress,
   formatDuration,
   getYoutubeThumbnail,
+  formatPEN,
 } from '@/lib/api/courses';
 import { useAuthStore } from '@/lib/store/auth.store';
 import { toast } from 'sonner';
@@ -61,9 +62,15 @@ export default function CourseDetailPage() {
     load();
   }, [slug, isAuthenticated]);
 
+  // Un programa de pago necesita comprobante: se resuelve en /inscripcion.
+  // Solo lo gratuito se solicita directamente desde aquí.
   const handleRequestEnrollment = async () => {
     if (!isAuthenticated) {
       router.push('/login');
+      return;
+    }
+    if (Number(course!.price) > 0) {
+      router.push(`/cursos/${slug}/inscripcion`);
       return;
     }
     setEnrolling(true);
@@ -134,12 +141,12 @@ export default function CourseDetailPage() {
       : null);
 
   return (
-    <div className="min-h-screen bg-background text-stone-900">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
 
       <div className="mx-auto max-w-7xl px-4 py-8">
         {/* Back */}
-        <Link href="/cursos" className="mb-6 inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-700 transition-colors">
+        <Link href="/cursos" className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" />
           Volver a cursos
         </Link>
@@ -156,23 +163,25 @@ export default function CourseDetailPage() {
               )}
 
               <div className="flex flex-wrap gap-2 mb-3">
-                <CategoryBadge category={course.category} />
+                <LineBadge line={course.line} />
+                <HoursBadge hours={course.academicHours} />
+                <DisciplineBadge discipline={course.discipline} />
                 <LevelBadge level={course.level} />
                 {course.language && (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-xs text-stone-600">
+                  <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-xs text-muted-foreground">
                     <Globe className="h-3 w-3" />
                     {course.language.toUpperCase()}
                   </span>
                 )}
               </div>
 
-              <h1 className="text-3xl font-black text-stone-900">{course.title}</h1>
+              <h1 className="text-3xl font-black text-foreground">{course.title}</h1>
 
               {course.shortDescription && (
-                <p className="mt-2 text-lg text-stone-600">{course.shortDescription}</p>
+                <p className="mt-2 text-lg text-muted-foreground">{course.shortDescription}</p>
               )}
 
-              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-stone-500">
+              <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
                 {course.ratingCount > 0 && (
                   <StarRating rating={course.rating} count={course.ratingCount} />
                 )}
@@ -199,12 +208,12 @@ export default function CourseDetailPage() {
               {/* Instructor */}
               {course.instructor && (
                 <div className="mt-4 flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-stone-900/15 text-sm font-bold text-stone-700">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted text-sm font-bold text-foreground">
                     {course.instructor.firstName[0]}
                   </div>
                   <div>
-                    <p className="text-xs text-stone-500">Instructor</p>
-                    <p className="text-sm font-medium text-stone-700">
+                    <p className="text-xs text-muted-foreground">Instructor</p>
+                    <p className="text-sm font-medium text-foreground">
                       {course.instructor.firstName} {course.instructor.lastName}
                     </p>
                   </div>
@@ -214,15 +223,15 @@ export default function CourseDetailPage() {
 
             {/* Rejection notice */}
             {isRejected && (
-              <div className="rounded-xl border border-red-600/30 bg-red-50 p-5">
+              <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-5">
                 <div className="flex items-start gap-3">
-                  <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-700" />
+                  <XCircle className="mt-0.5 h-5 w-5 shrink-0 text-destructive" />
                   <div>
-                    <p className="font-semibold text-red-700">Solicitud rechazada</p>
+                    <p className="font-semibold text-destructive">Solicitud rechazada</p>
                     {enrollment?.rejectionReason && (
-                      <p className="mt-1 text-sm text-red-300/70">{enrollment.rejectionReason}</p>
+                      <p className="mt-1 text-sm text-destructive/70">{enrollment.rejectionReason}</p>
                     )}
-                    <p className="mt-2 text-xs text-stone-500">Puedes volver a solicitar la inscripción.</p>
+                    <p className="mt-2 text-xs text-muted-foreground">Puedes volver a solicitar la inscripción.</p>
                   </div>
                 </div>
               </div>
@@ -234,8 +243,8 @@ export default function CourseDetailPage() {
                 <h2 className="text-lg font-bold mb-4">Lo que aprenderás</h2>
                 <div className="grid gap-2 sm:grid-cols-2">
                   {course.whatYouLearn.map((item, i) => (
-                    <div key={i} className="flex items-start gap-2 text-sm text-stone-600">
-                      <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-emerald-700" />
+                    <div key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-success" />
                       {item}
                     </div>
                   ))}
@@ -246,7 +255,7 @@ export default function CourseDetailPage() {
             {/* Description */}
             <div>
               <h2 className="text-lg font-bold mb-3">Descripción</h2>
-              <p className="text-stone-600 leading-relaxed whitespace-pre-line">{course.description}</p>
+              <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{course.description}</p>
             </div>
 
             {/* Requirements */}
@@ -255,8 +264,8 @@ export default function CourseDetailPage() {
                 <h2 className="text-lg font-bold mb-3">Requisitos</h2>
                 <ul className="space-y-1.5">
                   {course.requirements.map((req, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-stone-600">
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-stone-700" />
+                    <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand" />
                       {req}
                     </li>
                   ))}
@@ -269,7 +278,7 @@ export default function CourseDetailPage() {
               <div>
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="text-lg font-bold">Contenido del curso</h2>
-                  <span className="text-sm text-stone-500">
+                  <span className="text-sm text-muted-foreground">
                     {course.sections.length} secciones · {course.totalLessons} clases
                   </span>
                 </div>
@@ -295,11 +304,11 @@ export default function CourseDetailPage() {
               <div className="p-5 space-y-4">
                 {/* Price */}
                 <div className="flex items-center justify-between">
-                  <span className="text-3xl font-black text-stone-900">
+                  <span className="text-3xl font-black text-foreground">
                     {Number(course.price) === 0 ? (
-                      <span className="text-emerald-700">Gratis</span>
+                      <span className="text-success">Gratis</span>
                     ) : (
-                      `$${Number(course.price).toFixed(2)}`
+                      formatPEN(course.price)
                     )}
                   </span>
                 </div>
@@ -307,12 +316,12 @@ export default function CourseDetailPage() {
                 {/* Progress */}
                 {isApproved && enrollment && (
                   <div className="space-y-1.5">
-                    <div className="flex justify-between text-xs text-stone-500">
+                    <div className="flex justify-between text-xs text-muted-foreground">
                       <span>Tu progreso</span>
-                      <span className="font-semibold text-stone-700">{enrollment.progressPercentage}%</span>
+                      <span className="font-semibold text-foreground">{enrollment.progressPercentage}%</span>
                     </div>
                     <Progress value={enrollment.progressPercentage} />
-                    <p className="text-xs text-stone-400">
+                    <p className="text-xs text-muted-foreground">
                       {completedIds.length} de {course.totalLessons} clases completadas
                     </p>
                   </div>
@@ -321,12 +330,12 @@ export default function CourseDetailPage() {
                 {/* CTA */}
                 {isOwnCourse ? (
                   <div className="space-y-2">
-                    <div className="flex items-center justify-center gap-2 rounded-xl border border-stone-700/20 bg-stone-900/10 px-4 py-3">
-                      <BookOpen className="h-4 w-4 text-stone-700" />
-                      <p className="text-sm font-medium text-stone-700">Eres el instructor</p>
+                    <div className="flex items-center justify-center gap-2 rounded-xl border border-border bg-muted px-4 py-3">
+                      <BookOpen className="h-4 w-4 text-foreground" />
+                      <p className="text-sm font-medium text-foreground">Eres el instructor</p>
                     </div>
                     <Button
-                      className="w-full bg-stone-900 hover:bg-stone-800 font-semibold shadow-lg shadow-stone-900/20"
+                      className="w-full bg-navy hover:bg-navy-800 font-semibold shadow-lg shadow-navy/20"
                       onClick={() => router.push(`/cursos/${slug}/classroom`)}
                     >
                       <Play className="mr-2 h-4 w-4" />
@@ -335,7 +344,7 @@ export default function CourseDetailPage() {
                   </div>
                 ) : isApproved ? (
                   <Button
-                    className="w-full bg-stone-900 hover:bg-stone-800 font-semibold shadow-lg shadow-stone-900/20"
+                    className="w-full bg-navy hover:bg-navy-800 font-semibold shadow-lg shadow-navy/20"
                     onClick={() => router.push(`/cursos/${slug}/classroom`)}
                   >
                     <Play className="mr-2 h-4 w-4" />
@@ -343,16 +352,20 @@ export default function CourseDetailPage() {
                   </Button>
                 ) : isPending ? (
                   <div className="space-y-2">
-                    <div className="flex items-center gap-2 rounded-xl bg-amber-50 border border-amber-600/20 px-4 py-3">
-                      <Clock3 className="h-4 w-4 shrink-0 text-amber-700" />
+                    <div className="flex items-center gap-2 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3">
+                      <Clock3 className="h-4 w-4 shrink-0 text-warning-foreground" />
                       <div>
-                        <p className="text-sm font-medium text-amber-700">Solicitud pendiente</p>
-                        <p className="text-xs text-stone-500">El instructor revisará tu solicitud</p>
+                        <p className="text-sm font-medium text-foreground">Solicitud en revisión</p>
+                        <p className="text-xs text-muted-foreground">
+                          {Number(course.price) > 0
+                            ? 'Estamos validando tu comprobante de pago'
+                            : 'El instructor revisará tu solicitud'}
+                        </p>
                       </div>
                     </div>
                     <Button
                       variant="outline"
-                      className="w-full border-border text-stone-600 hover:text-red-700 hover:border-red-600/30 text-sm"
+                      className="w-full border-border text-muted-foreground hover:border-destructive/30 hover:text-destructive text-sm"
                       onClick={handleCancelRequest}
                       disabled={cancelling}
                     >
@@ -362,7 +375,7 @@ export default function CourseDetailPage() {
                   </div>
                 ) : isRejected ? (
                   <Button
-                    className="w-full bg-stone-900 hover:bg-stone-800 font-semibold shadow-lg shadow-stone-900/20"
+                    className="w-full bg-navy hover:bg-navy-800 font-semibold shadow-lg shadow-navy/20"
                     onClick={handleRequestEnrollment}
                     disabled={enrolling}
                   >
@@ -371,7 +384,7 @@ export default function CourseDetailPage() {
                   </Button>
                 ) : (
                   <Button
-                    className="w-full bg-stone-900 hover:bg-stone-800 font-semibold shadow-lg shadow-stone-900/20"
+                    className="w-full bg-navy hover:bg-navy-800 font-semibold shadow-lg shadow-navy/20"
                     onClick={handleRequestEnrollment}
                     disabled={enrolling}
                   >
@@ -380,13 +393,13 @@ export default function CourseDetailPage() {
                       ? 'Enviando...'
                       : Number(course.price) === 0
                       ? 'Solicitar inscripción gratis'
-                      : 'Solicitar inscripción'}
+                      : 'Inscribirme'}
                   </Button>
                 )}
 
                 {!isAuthenticated && (
-                  <p className="text-center text-xs text-stone-500">
-                    <Link href="/login" className="text-stone-700 hover:text-stone-900 transition-colors">Inicia sesión</Link>
+                  <p className="text-center text-xs text-muted-foreground">
+                    <Link href="/login" className="text-foreground hover:text-foreground transition-colors">Inicia sesión</Link>
                     {' '}para inscribirte
                   </p>
                 )}
@@ -394,25 +407,25 @@ export default function CourseDetailPage() {
                 {/* Course info */}
                 <div className="space-y-2 border-t border-border pt-4 text-sm">
                   {course.totalLessons > 0 && (
-                    <div className="flex items-center justify-between text-stone-500">
+                    <div className="flex items-center justify-between text-muted-foreground">
                       <span className="flex items-center gap-1.5"><BookOpen className="h-4 w-4" />Clases</span>
-                      <span className="text-stone-700">{course.totalLessons}</span>
+                      <span className="text-foreground">{course.totalLessons}</span>
                     </div>
                   )}
                   {course.totalDurationSeconds > 0 && (
-                    <div className="flex items-center justify-between text-stone-500">
+                    <div className="flex items-center justify-between text-muted-foreground">
                       <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" />Duración</span>
-                      <span className="text-stone-700">{formatDuration(course.totalDurationSeconds)}</span>
+                      <span className="text-foreground">{formatDuration(course.totalDurationSeconds)}</span>
                     </div>
                   )}
-                  <div className="flex items-center justify-between text-stone-500">
+                  <div className="flex items-center justify-between text-muted-foreground">
                     <span className="flex items-center gap-1.5"><Globe className="h-4 w-4" />Idioma</span>
-                    <span className="text-stone-700">{course.language?.toUpperCase()}</span>
+                    <span className="text-foreground">{course.language?.toUpperCase()}</span>
                   </div>
                   {course.enrollmentCount > 0 && (
-                    <div className="flex items-center justify-between text-stone-500">
+                    <div className="flex items-center justify-between text-muted-foreground">
                       <span className="flex items-center gap-1.5"><Users className="h-4 w-4" />Estudiantes</span>
-                      <span className="text-stone-700">{course.enrollmentCount.toLocaleString()}</span>
+                      <span className="text-foreground">{course.enrollmentCount.toLocaleString()}</span>
                     </div>
                   )}
                 </div>
@@ -421,7 +434,7 @@ export default function CourseDetailPage() {
                 {course.tags?.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 border-t border-border pt-4">
                     {course.tags.map((tag) => (
-                      <span key={tag} className="rounded-full bg-secondary px-2 py-0.5 text-xs text-stone-500 border border-border">
+                      <span key={tag} className="rounded-full bg-secondary px-2 py-0.5 text-xs text-muted-foreground border border-border">
                         #{tag}
                       </span>
                     ))}

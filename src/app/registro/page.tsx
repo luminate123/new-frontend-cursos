@@ -72,39 +72,39 @@ export default function RegistroPage() {
     <AuthCard title="Crear cuenta" subtitle="Registrate en EduTech Pro">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {serverError && (
-          <div className="rounded-md bg-red-500/10 px-3 py-2 text-sm text-red-400">
+          <div className="rounded-md bg-destructive/100/10 px-3 py-2 text-sm text-destructive">
             {serverError}
           </div>
         )}
         <div className="space-y-2">
           <Label htmlFor="firstName">Nombre</Label>
           <Input id="firstName" placeholder="Juan" {...register("firstName")} className="bg-[var(--background)] border-[var(--border)]" />
-          {errors.firstName && <p className="text-xs text-red-400">{errors.firstName.message}</p>}
+          {errors.firstName && <p className="text-xs text-destructive">{errors.firstName.message}</p>}
         </div>
         <div className="space-y-2">
           <Label htmlFor="lastName">Apellido</Label>
           <Input id="lastName" placeholder="Perez" {...register("lastName")} className="bg-[var(--background)] border-[var(--border)]" />
-          {errors.lastName && <p className="text-xs text-red-400">{errors.lastName.message}</p>}
+          {errors.lastName && <p className="text-xs text-destructive">{errors.lastName.message}</p>}
         </div>
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input id="email" type="email" placeholder="tu@email.com" {...register("email")} className="bg-[var(--background)] border-[var(--border)]" />
-          {errors.email && <p className="text-xs text-red-400">{errors.email.message}</p>}
+          {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">Contrasena</Label>
           <Input id="password" type="password" placeholder="********" {...register("password")} className="bg-[var(--background)] border-[var(--border)]" />
-          {errors.password && <p className="text-xs text-red-400">{errors.password.message}</p>}
+          {errors.password && <p className="text-xs text-destructive">{errors.password.message}</p>}
         </div>
         <div className="space-y-2">
           <Label htmlFor="confirmPassword">Confirmar contrasena</Label>
           <Input id="confirmPassword" type="password" placeholder="********" {...register("confirmPassword")} className="bg-[var(--background)] border-[var(--border)]" />
-          {errors.confirmPassword && <p className="text-xs text-red-400">{errors.confirmPassword.message}</p>}
+          {errors.confirmPassword && <p className="text-xs text-destructive">{errors.confirmPassword.message}</p>}
         </div>
         <SubmitButton isLoading={registerMutation.isPending}>Registrarse</SubmitButton>
-        <p className="text-center text-sm text-stone-600">
+        <p className="text-center text-sm text-muted-foreground">
           Ya tienes cuenta?{" "}
-          <a href="/login" className="text-stone-700 hover:text-stone-900 transition-colors">
+          <a href="/login" className="text-foreground hover:text-foreground transition-colors">
             Inicia sesion
           </a>
         </p>
