@@ -90,7 +90,7 @@ function CommentItem({
       <div className={`relative flex shrink-0 items-center justify-center rounded-full font-bold text-white ${isReply ? 'h-8 w-8 text-xs' : 'h-10 w-10 text-sm'} ${color}`}>
         {initial}
         {!isReply && (
-          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background bg-success/100" />
+          <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-background bg-success" />
         )}
       </div>
 
@@ -203,6 +203,11 @@ export default function ClassroomPage() {
   const [loadingComments, setLoadingComments] = useState(false);
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
   const [replyText, setReplyText] = useState('');
+  // Pestañas bajo el video: separan la descripción de la clase, las preguntas
+  // y el material, en vez de apilarlo todo en una columna infinita.
+  const [activeTab, setActiveTab] = useState<'descripcion' | 'comentarios' | 'material'>(
+    'descripcion',
+  );
 
   const sidebarRef = useRef<HTMLDivElement>(null);
 
@@ -362,7 +367,11 @@ export default function ClassroomPage() {
   const canAccess = isApproved || activeLesson.isFree;
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
+    /* h-screen + overflow-hidden: el aula scrollea por dentro (video y barra
+       lateral, cada uno por su lado). Con min-h-screen scrollaba también la
+       página, y al bajar el video se quedaba fijo con la lista de clases en
+       blanco. */
+    <div className="flex h-screen flex-col overflow-hidden bg-background text-foreground">
       <Navbar />
 
       {/* ── Top bar: progress + back ───────────────────────────── */}
@@ -442,7 +451,7 @@ export default function ClassroomPage() {
                     <Button
                       size="sm"
                       onClick={handleComplete}
-                      className="bg-success hover:bg-success text-xs"
+                      className="bg-success text-white hover:brightness-95 text-xs"
                     >
                       <CheckCircle className="mr-1.5 h-3.5 w-3.5" />
                       Marcar completada
@@ -466,11 +475,62 @@ export default function ClassroomPage() {
             </div>
           </div>
 
-          {/* ── Downloadable resources (enrolled students only) ── */}
-          {isApproved && activeLesson.resources && activeLesson.resources.length > 0 && (
-            <div className="border-b border-border bg-card px-6 py-4">
+          {/* ── Pestañas ───────────────────────────────────────── */}
+          <div className="border-b border-border bg-card px-6">
+            <div className="mx-auto flex max-w-screen-xl gap-6">
+              {([
+                ['descripcion', 'Descripción'],
+                ['comentarios', `Preguntas${comments.length > 0 ? ` (${comments.length})` : ''}`],
+                ['material', 'Material'],
+              ] as const).map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => setActiveTab(key)}
+                  className={`-mb-px border-b-2 py-3 text-sm font-bold transition-colors ${
+                    activeTab === key
+                      ? 'border-foreground text-foreground'
+                      : 'border-transparent text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Descripción de la clase ─────────────────────────── */}
+          {activeTab === 'descripcion' && (
+            <div className="px-6 py-6">
               <div className="mx-auto max-w-screen-xl">
-                <h2 className="mb-3 text-sm font-semibold text-foreground">Material descargable</h2>
+                <h2 className="text-lg font-bold text-foreground">{activeLesson.title}</h2>
+                <p className="mt-2 leading-relaxed text-muted-foreground">
+                  {activeLesson.description || 'Esta clase no tiene descripción.'}
+                </p>
+                <div className="mt-4 border-t border-border pt-4 text-sm text-muted-foreground">
+                  <p>
+                    <span className="font-semibold text-foreground">{course.title}</span> ·{' '}
+                    {course.sections.length} secciones · {totalLessons} clases
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* ── Material descargable (solo inscritos) ───────────── */}
+          {activeTab === 'material' && (
+            <div className="px-6 py-6">
+              <div className="mx-auto max-w-screen-xl">
+                {!isApproved ||
+                !activeLesson.resources ||
+                activeLesson.resources.length === 0 ? (
+                  <p className="text-sm text-muted-foreground">
+                    Esta clase no tiene material descargable.
+                  </p>
+                ) : (
+                  <>
+                    <h2 className="mb-3 text-sm font-semibold text-foreground">
+                      Material descargable
+                    </h2>
                 <div className="flex flex-wrap gap-2">
                   {activeLesson.resources.map((r, i) => (
                     <a
@@ -485,12 +545,15 @@ export default function ClassroomPage() {
                       {r.title}
                     </a>
                   ))}
-                </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           )}
 
           {/* ── Comments section ───────────────────────────────── */}
+          {activeTab === 'comentarios' && (
           <div className="flex-1 px-6 py-8">
             <div className="mx-auto max-w-screen-xl">
 
@@ -586,6 +649,7 @@ export default function ClassroomPage() {
               )}
             </div>
           </div>
+          )}
         </div>
 
         {/* ── Sidebar: sections + lessons ───────────────────────── */}
@@ -658,7 +722,7 @@ export default function ClassroomPage() {
                               {done ? (
                                 <CheckCircle className="h-4 w-4 text-success" />
                               ) : canAccess ? (
-                                <div className={`flex h-4 w-4 items-center justify-center rounded-full border ${isActive ? 'border-border bg-muted' : 'border-border bg-muted'}`}>
+                                <div className="flex h-4 w-4 items-center justify-center rounded-full border border-border bg-muted">
                                   <Play className={`h-2 w-2 translate-x-px ${isActive ? 'text-muted-foreground' : 'text-foreground'}`} />
                                 </div>
                               ) : (

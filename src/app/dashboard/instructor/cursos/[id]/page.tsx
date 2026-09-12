@@ -8,7 +8,6 @@ import {
   ChevronDown, ChevronUp, GripVertical, BookOpen, Play, Lock, Pencil, Check,
   Upload, FileDown,
 } from 'lucide-react';
-import { Navbar } from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/button';
 import {
   getCourse, updateCourse, publishCourse,
@@ -573,9 +572,7 @@ export default function CourseEditorPage() {
   const totalLessons = sections.reduce((acc, s) => acc + s.lessons.length, 0);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
-
+    <div className="text-foreground">
       <div className="mx-auto max-w-4xl px-4 py-8">
         {/* Breadcrumb */}
         <div className="mb-4 flex items-center gap-1.5 text-xs text-muted-foreground">

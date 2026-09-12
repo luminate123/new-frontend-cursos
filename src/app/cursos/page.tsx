@@ -1,32 +1,72 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Search, X, BookOpen } from 'lucide-react';
+import { Search, X, SlidersHorizontal } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
-import { CourseCard } from '@/components/courses/CourseCard';
+import { CourseRow } from '@/components/courses/CourseRow';
 import { Button } from '@/components/ui/button';
 import {
   getCourses,
   getMyEnrollments,
   LINE_LABELS,
-  LINE_DESCRIPTIONS,
   LEVEL_LABELS,
   LEVEL_DESCRIPTIONS,
   DISCIPLINE_LABELS,
 } from '@/lib/api/courses';
 import { useAuthStore } from '@/lib/store/auth.store';
 import type {
-  Course, CourseLine, Discipline, CourseLevel, CoursesResponse, Enrollment,
+  CourseLine, Discipline, CourseLevel, CoursesResponse, Enrollment,
 } from '@/lib/types';
 
 const LINES = Object.entries(LINE_LABELS) as [CourseLine, string][];
 const LEVELS = Object.entries(LEVEL_LABELS) as [CourseLevel, string][];
 const DISCIPLINES = Object.entries(DISCIPLINE_LABELS) as [Discipline, string][];
 
-const selectCls =
-  'h-10 rounded-xl border border-white/20 bg-white/10 px-3 text-sm text-white transition-colors focus:border-brand/60 focus:outline-none';
-const chipCls =
-  'flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-0.5 text-xs text-foreground';
+/**
+ * Catálogo con el formato de una lista de resultados: filtros en una columna
+ * a la izquierda y los programas en filas horizontales a la derecha. La
+ * rejilla de tarjetas se quedó solo para "Mis cursos" del panel, donde el
+ * alumno reconoce por imagen y no compara entre opciones.
+ */
+
+/** Grupo de filtros con casillas. Un filtro, un valor: seleccionar sustituye. */
+function FilterGroup<T extends string>({
+  title,
+  options,
+  value,
+  onChange,
+  describe,
+}: {
+  title: string;
+  options: [T, string][];
+  value: T | '';
+  onChange: (v: T | '') => void;
+  describe?: (v: T) => string | undefined;
+}) {
+  return (
+    <div className="border-b border-border py-4">
+      <p className="mb-3 text-sm font-bold text-foreground">{title}</p>
+      <div className="space-y-2">
+        {options.map(([val, label]) => (
+          <label key={val} className="flex cursor-pointer items-start gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={value === val}
+              onChange={() => onChange(value === val ? '' : val)}
+              className="mt-0.5 h-4 w-4 shrink-0 accent-brand"
+            />
+            <span className="text-muted-foreground">
+              {label}
+              {describe?.(val) && (
+                <span className="block text-xs text-muted-foreground/70">{describe(val)}</span>
+              )}
+            </span>
+          </label>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function CursosPage() {
   const { isAuthenticated } = useAuthStore();
@@ -38,14 +78,21 @@ export default function CursosPage() {
   const [line, setLine] = useState<CourseLine | ''>('');
   const [discipline, setDiscipline] = useState<Discipline | ''>('');
   const [level, setLevel] = useState<CourseLevel | ''>('');
+  const [sort, setSort] = useState<'popular' | 'price_asc' | 'price_desc'>('popular');
   const [page, setPage] = useState(1);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
-    if (!isAuthenticated) { setEnrollmentMap({}); return; }
+    if (!isAuthenticated) {
+      setEnrollmentMap({});
+      return;
+    }
     getMyEnrollments()
       .then((list) => {
         const map: Record<string, Enrollment> = {};
-        list.forEach((e) => { map[e.courseId] = e; });
+        list.forEach((e) => {
+          map[e.courseId] = e;
+        });
         setEnrollmentMap(map);
       })
       .catch(() => {});
@@ -67,270 +114,253 @@ export default function CursosPage() {
     }
   }, [search, line, discipline, level, page]);
 
-  useEffect(() => { fetchCourses(); }, [fetchCourses]);
+  useEffect(() => {
+    fetchCourses();
+  }, [fetchCourses]);
 
   const clearFilters = () => {
-    setSearch(''); setLine(''); setDiscipline(''); setLevel(''); setPage(1);
+    setSearch('');
+    setLine('');
+    setDiscipline('');
+    setLevel('');
+    setPage(1);
   };
-  const hasFilters = search || line || discipline || level;
+  const hasFilters = !!(search || line || discipline || level);
+
+  // ponytail: el orden se aplica sobre la página actual, no en el backend.
+  // Si el catálogo pasa de unas decenas de programas, mover a la query.
+  const courses = [...(data?.data ?? [])].sort((a, b) => {
+    if (sort === 'price_asc') return Number(a.price) - Number(b.price);
+    if (sort === 'price_desc') return Number(b.price) - Number(a.price);
+    return b.enrollmentCount - a.enrollmentCount;
+  });
+
+  const filterPanel = (
+    <>
+      <FilterGroup
+        title="Línea de formación"
+        options={LINES}
+        value={line}
+        onChange={(v) => {
+          setLine(v);
+          setPage(1);
+        }}
+      />
+      <FilterGroup
+        title="Nivel"
+        options={LEVELS}
+        value={level}
+        onChange={(v) => {
+          setLevel(v);
+          setPage(1);
+        }}
+        describe={(v) => LEVEL_DESCRIPTIONS[v]}
+      />
+      <FilterGroup
+        title="Profesión"
+        options={DISCIPLINES}
+        value={discipline}
+        onChange={(v) => {
+          setDiscipline(v);
+          setPage(1);
+        }}
+      />
+    </>
+  );
 
   return (
-    <div className="min-h-screen bg-background text-navy">
+    <div className="min-h-screen bg-background text-foreground">
       <Navbar />
 
-      {/* ── Hero header ─────────────────────────────────────────────── */}
-      <div className="bg-navy">
-        <div className="mx-auto max-w-7xl px-4 py-12">
-          <div className="max-w-2xl">
-            <h1 className="text-4xl font-black tracking-tight text-white">
-              Programas{' '}
-              <span className="bg-gradient-to-r from-brand-400 to-brand-600 bg-clip-text text-transparent">
-                KORE Academy
-              </span>
-            </h1>
-            <p className="mt-2 text-white/60">
-              {data ? (
-                <>
-                  <span className="font-semibold text-white">{data.meta.total}</span> programas disponibles
-                  {isAuthenticated && Object.keys(enrollmentMap).length > 0 && (
-                    <> · <span className="text-white font-medium">{Object.keys(enrollmentMap).length} con solicitud activa</span></>
-                  )}
-                </>
-              ) : 'Cargando catálogo...'}
-            </p>
-          </div>
+      {/* ── Cabecera ────────────────────────────────────────────────── */}
+      <div className="border-b border-border bg-card">
+        <div className="mx-auto max-w-7xl px-4 py-8">
+          <h1 className="text-3xl font-black tracking-tight">Programas KORE Academy</h1>
+          <p className="mt-1 text-muted-foreground">
+            {data
+              ? `${data.meta.total} programa${data.meta.total !== 1 ? 's' : ''} disponible${data.meta.total !== 1 ? 's' : ''}`
+              : 'Cargando catálogo...'}
+          </p>
 
-          {/* ── Search + filters ──────────────────────────────────────── */}
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-            {/* Search */}
-            <div className="relative flex-1 max-w-lg">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="text"
-                placeholder="Buscar por programa, tema o competencia..."
-                value={search}
-                onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                className="h-10 w-full rounded-xl border border-white/20 bg-white/10 pl-9 pr-4 text-sm text-white placeholder:text-white/40 focus:border-brand/60 focus:outline-none focus:ring-2 focus:ring-brand/20 transition-colors"
-              />
-              {search && (
-                <button
-                  onClick={() => setSearch('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
-            </div>
-
-            {/* Línea de negocio */}
-            <select
-              value={line}
-              onChange={(e) => { setLine(e.target.value as CourseLine | ''); setPage(1); }}
-              aria-label="Línea"
-              className={selectCls}
-            >
-              <option value="" className="bg-white text-navy">Todas las líneas</option>
-              {LINES.map(([val, label]) => (
-                <option key={val} value={val} className="bg-white text-navy">{label}</option>
-              ))}
-            </select>
-
-            {/* Nivel académico */}
-            <select
-              value={level}
-              onChange={(e) => { setLevel(e.target.value as CourseLevel | ''); setPage(1); }}
-              aria-label="Nivel"
-              className={selectCls}
-            >
-              <option value="" className="bg-white text-navy">Todos los niveles</option>
-              {LEVELS.map(([val, label]) => (
-                <option key={val} value={val} className="bg-white text-navy">
-                  {label} — {LEVEL_DESCRIPTIONS[val]}
-                </option>
-              ))}
-            </select>
-
-            {/* Profesión destino */}
-            <select
-              value={discipline}
-              onChange={(e) => { setDiscipline(e.target.value as Discipline | ''); setPage(1); }}
-              aria-label="Profesión"
-              className={selectCls}
-            >
-              <option value="" className="bg-white text-navy">Todas las profesiones</option>
-              {DISCIPLINES.map(([val, label]) => (
-                <option key={val} value={val} className="bg-white text-navy">{label}</option>
-              ))}
-            </select>
-
-            {hasFilters && (
-              <Button variant="ghost" size="sm" onClick={clearFilters} className="text-white/60 hover:text-white gap-1.5">
-                <X className="h-3.5 w-3.5" /> Limpiar
-              </Button>
+          <div className="relative mt-5 max-w-xl">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Buscar por programa, tema o competencia..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              className="h-11 w-full border border-border bg-background pl-9 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-brand focus:outline-none"
+            />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                aria-label="Limpiar búsqueda"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
             )}
           </div>
-
-          {/* Accesos por línea, solo cuando no hay filtros */}
-          {!hasFilters && (
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              {LINES.map(([val, label]) => (
-                <button
-                  key={val}
-                  onClick={() => { setLine(val); setPage(1); }}
-                  className="rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-left transition-colors hover:border-white/35 hover:bg-white/10"
-                >
-                  <div className="text-sm font-semibold text-white">{label}</div>
-                  <div className="mt-0.5 text-xs text-white/55">{LINE_DESCRIPTIONS[val]}</div>
-                </button>
-              ))}
-            </div>
-          )}
         </div>
       </div>
 
-      {/* ── Active filter chips ──────────────────────────────────────── */}
-      {hasFilters && (
-        <div className="border-b border-border bg-card/30">
-          <div className="mx-auto max-w-7xl px-4 py-3 flex items-center gap-2 flex-wrap">
-            <span className="text-xs text-muted-foreground">Filtros activos:</span>
-            {search && (
-              <span className={chipCls}>
-                "{search}"
-                <button onClick={() => setSearch('')}><X className="h-3 w-3 text-muted-foreground hover:text-destructive" /></button>
-              </span>
-            )}
-            {line && (
-              <span className={chipCls}>
-                {LINE_LABELS[line]}
-                <button onClick={() => setLine('')} aria-label="Quitar filtro de línea">
-                  <X className="h-3 w-3 text-muted-foreground hover:text-destructive" />
+      {/* ── Filtros + resultados ────────────────────────────────────── */}
+      <div className="mx-auto max-w-7xl px-4 py-6">
+        {/* Barra de control */}
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1.5 lg:hidden"
+            onClick={() => setFiltersOpen((o) => !o)}
+          >
+            <SlidersHorizontal className="h-3.5 w-3.5" />
+            Filtrar
+          </Button>
+
+          <label className="flex items-center gap-2 text-sm">
+            <span className="text-muted-foreground">Ordenar por</span>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as typeof sort)}
+              className="h-9 border border-border bg-card px-2 text-sm text-foreground focus:border-brand focus:outline-none"
+            >
+              <option value="popular">Más populares</option>
+              <option value="price_asc">Precio: menor a mayor</option>
+              <option value="price_desc">Precio: mayor a menor</option>
+            </select>
+          </label>
+
+          {hasFilters && (
+            <Button variant="ghost" size="sm" onClick={clearFilters} className="gap-1.5">
+              <X className="h-3.5 w-3.5" /> Limpiar filtros
+            </Button>
+          )}
+
+          <p className="ml-auto text-sm font-bold text-foreground">
+            {data?.meta.total ?? 0} resultado{(data?.meta.total ?? 0) !== 1 ? 's' : ''}
+          </p>
+        </div>
+
+        <div className="flex gap-8">
+          {/* Columna de filtros */}
+          <aside className="hidden w-64 shrink-0 lg:block">{filterPanel}</aside>
+
+          {/* Panel de filtros en móvil */}
+          {filtersOpen && (
+            <div className="fixed inset-0 z-50 bg-background p-4 lg:hidden">
+              <div className="mb-4 flex items-center justify-between">
+                <p className="text-lg font-bold">Filtros</p>
+                <button onClick={() => setFiltersOpen(false)} aria-label="Cerrar filtros">
+                  <X className="h-5 w-5" />
                 </button>
-              </span>
-            )}
-            {discipline && (
-              <span className={chipCls}>
-                {DISCIPLINE_LABELS[discipline]}
-                <button onClick={() => setDiscipline('')} aria-label="Quitar filtro de profesión">
-                  <X className="h-3 w-3 text-muted-foreground hover:text-destructive" />
-                </button>
-              </span>
-            )}
-            {level && (
-              <span className={chipCls}>
-                {LEVEL_LABELS[level]}
-                <button onClick={() => setLevel('')}><X className="h-3 w-3 text-muted-foreground hover:text-destructive" /></button>
-              </span>
+              </div>
+              <div className="overflow-y-auto">{filterPanel}</div>
+              <Button className="mt-4 w-full" onClick={() => setFiltersOpen(false)}>
+                Ver {data?.meta.total ?? 0} resultados
+              </Button>
+            </div>
+          )}
+
+          {/* Resultados */}
+          <div className="min-w-0 flex-1">
+            {loading ? (
+              <div className="space-y-4">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="flex gap-5 border-b border-border py-4">
+                    <div className="aspect-video w-60 shrink-0 animate-pulse bg-secondary" />
+                    <div className="flex-1 space-y-2">
+                      <div className="h-4 w-3/4 animate-pulse bg-secondary" />
+                      <div className="h-3 w-full animate-pulse bg-secondary" />
+                      <div className="h-3 w-1/3 animate-pulse bg-secondary" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : courses.length > 0 ? (
+              <>
+                <div className="border-t border-border">
+                  {courses.map((course) => (
+                    <CourseRow
+                      key={course.id}
+                      course={course}
+                      enrollmentStatus={enrollmentMap[course.id]?.status}
+                    />
+                  ))}
+                </div>
+
+                {data && data.meta.lastPage > 1 && (
+                  <div className="mt-8 flex items-center justify-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={page === 1}
+                      onClick={() => setPage((p) => p - 1)}
+                    >
+                      ← Anterior
+                    </Button>
+                    <div className="flex items-center gap-1">
+                      {Array.from({ length: data.meta.lastPage }, (_, i) => i + 1)
+                        .filter(
+                          (p) => p === 1 || p === data.meta.lastPage || Math.abs(p - page) <= 1,
+                        )
+                        .reduce<(number | 'ellipsis')[]>((acc, p, i, arr) => {
+                          if (i > 0 && p - (arr[i - 1] as number) > 1) acc.push('ellipsis');
+                          acc.push(p);
+                          return acc;
+                        }, [])
+                        .map((p, i) =>
+                          p === 'ellipsis' ? (
+                            <span key={`e${i}`} className="px-2 text-muted-foreground">
+                              …
+                            </span>
+                          ) : (
+                            <button
+                              key={p}
+                              onClick={() => setPage(p as number)}
+                              className={`h-9 w-9 border text-sm font-medium transition-colors ${
+                                page === p
+                                  ? 'border-navy bg-navy text-white'
+                                  : 'border-border text-foreground hover:bg-muted'
+                              }`}
+                            >
+                              {p}
+                            </button>
+                          ),
+                        )}
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      disabled={page === data.meta.lastPage}
+                      onClick={() => setPage((p) => p + 1)}
+                    >
+                      Siguiente →
+                    </Button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="flex flex-col items-center justify-center border border-border bg-card py-20 text-center">
+                <Search className="mb-4 h-10 w-10 text-border" />
+                <h3 className="text-lg font-bold">No se encontraron programas</h3>
+                <p className="mt-1 max-w-xs text-sm text-muted-foreground">
+                  {hasFilters
+                    ? 'Prueba con otros filtros o términos de búsqueda'
+                    : 'Aún no hay programas publicados. Vuelve pronto.'}
+                </p>
+                {hasFilters && (
+                  <Button variant="outline" className="mt-5 gap-2" onClick={clearFilters}>
+                    <X className="h-4 w-4" /> Limpiar filtros
+                  </Button>
+                )}
+              </div>
             )}
           </div>
         </div>
-      )}
-
-      {/* ── Course grid ─────────────────────────────────────────────── */}
-      <div className="mx-auto max-w-7xl px-4 py-10">
-        {loading ? (
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="rounded-2xl border border-border bg-card animate-pulse">
-                <div className="aspect-video bg-secondary rounded-t-2xl" />
-                <div className="p-4 space-y-3">
-                  <div className="h-3 w-20 rounded bg-secondary" />
-                  <div className="h-4 w-3/4 rounded bg-secondary" />
-                  <div className="h-3 w-full rounded bg-secondary" />
-                  <div className="h-3 w-1/2 rounded bg-secondary" />
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : data && data.data.length > 0 ? (
-          <>
-            <p className="mb-5 text-sm text-muted-foreground">
-              {data.meta.total} resultado{data.meta.total !== 1 ? 's' : ''}
-              {hasFilters ? ' para tu búsqueda' : ''}
-            </p>
-
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {data.data.map((course) => {
-                const enrollment = enrollmentMap[course.id];
-                return (
-                  <CourseCard
-                    key={course.id}
-                    course={course}
-                    enrollmentStatus={enrollment?.status}
-                    showProgress={enrollment?.status === 'APPROVED'}
-                    progressPercentage={enrollment?.progressPercentage}
-                  />
-                );
-              })}
-            </div>
-
-            {/* Pagination */}
-            {data.meta.lastPage > 1 && (
-              <div className="mt-10 flex items-center justify-center gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={page === 1}
-                  onClick={() => setPage((p) => p - 1)}
-                  className="border-border text-navy hover:text-navy"
-                >
-                  ← Anterior
-                </Button>
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: data.meta.lastPage }, (_, i) => i + 1)
-                    .filter((p) => p === 1 || p === data.meta.lastPage || Math.abs(p - page) <= 1)
-                    .reduce<(number | 'ellipsis')[]>((acc, p, i, arr) => {
-                      if (i > 0 && p - (arr[i - 1] as number) > 1) acc.push('ellipsis');
-                      acc.push(p);
-                      return acc;
-                    }, [])
-                    .map((p, i) =>
-                      p === 'ellipsis' ? (
-                        <span key={`e${i}`} className="px-2 text-muted-foreground">…</span>
-                      ) : (
-                        <button
-                          key={p}
-                          onClick={() => setPage(p as number)}
-                          className={`h-8 w-8 rounded-lg text-sm font-medium transition-colors ${
-                            page === p
-                              ? 'bg-brand text-white shadow-md shadow-brand/30'
-                              : 'border border-border text-navy hover:border-navy/40 hover:text-navy'
-                          }`}
-                        >
-                          {p}
-                        </button>
-                      ),
-                    )}
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={page === data.meta.lastPage}
-                  onClick={() => setPage((p) => p + 1)}
-                  className="border-border text-navy hover:text-navy"
-                >
-                  Siguiente →
-                </Button>
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="mb-4 rounded-2xl border border-border bg-card p-6">
-              <Search className="h-10 w-10 text-border" />
-            </div>
-            <h3 className="text-lg font-semibold text-navy">No se encontraron cursos</h3>
-            <p className="mt-1 text-sm text-muted-foreground max-w-xs">
-              {hasFilters
-                ? 'Prueba con otros filtros o términos de búsqueda'
-                : 'Aún no hay cursos publicados. Vuelve pronto.'}
-            </p>
-            {hasFilters && (
-              <Button variant="outline" className="mt-5 border-border text-navy gap-2" onClick={clearFilters}>
-                <X className="h-4 w-4" /> Limpiar filtros
-              </Button>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );

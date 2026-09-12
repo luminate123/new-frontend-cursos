@@ -5,12 +5,12 @@ import Link from 'next/link';
 import {
   BookOpen, Clock3, Trophy, TrendingUp, Play, XCircle, CheckCircle,
 } from 'lucide-react';
-import { Navbar } from '@/components/layout/Navbar';
 import { CourseCard } from '@/components/courses/CourseCard';
 import { useAuthStore } from '@/lib/store/auth.store';
 import { getMyEnrollments } from '@/lib/api/courses';
 import { InstructorPanel } from '@/components/instructor/InstructorPanel';
 import { AdminPanel } from '@/components/admin/AdminPanel';
+import { StatTile } from '@/components/ui/stat-tile';
 import { Button } from '@/components/ui/button';
 import type { Enrollment } from '@/lib/types';
 
@@ -34,23 +34,15 @@ function StatusBadge({ status }: { status: Enrollment['status'] }) {
   );
 }
 
+// Mismo adaptador que en el panel de administración: render común, el color
+// que pasaba cada llamada se ignora.
 function StatCard({
-  label, value, icon: Icon, color, bg,
+  label, value, icon,
 }: {
   label: string; value: number; icon: React.ElementType;
-  color: string; bg: string;
+  color?: string; bg?: string;
 }) {
-  return (
-    <div className={`flex items-center gap-4 rounded-xl border bg-card p-5 ${bg}`}>
-      <div className={`rounded-xl p-3 ${bg}`}>
-        <Icon className={`h-5 w-5 ${color}`} />
-      </div>
-      <div>
-        <p className={`text-2xl font-black ${color}`}>{value}</p>
-        <p className="text-xs text-muted-foreground">{label}</p>
-      </div>
-    </div>
-  );
+  return <StatTile label={label} value={value} icon={icon} />;
 }
 
 // ─── Student view ─────────────────────────────────────────────────────────────
@@ -58,6 +50,7 @@ function StatCard({
 function StudentView() {
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [tab, setTab] = useState<'todos' | 'progreso' | 'completados'>('todos');
 
   useEffect(() => {
     getMyEnrollments()
@@ -78,7 +71,7 @@ function StudentView() {
       <div className="mb-10 grid gap-4 sm:grid-cols-3">
         <StatCard label="Cursos aprobados" value={approved.length} icon={BookOpen} color="text-foreground" bg="bg-muted border-border" />
         <StatCard label="En progreso" value={inProgress.length} icon={TrendingUp} color="text-foreground" bg="bg-muted border-border" />
-        <StatCard label="Completados" value={completed.length} icon={Trophy} color="text-success" bg="bg-success/100/10 border-success/20" />
+        <StatCard label="Completados" value={completed.length} icon={Trophy} color="text-success" bg="bg-success/10 border-success/20" />
       </div>
 
       {/* Pending requests */}
@@ -176,12 +169,29 @@ function StudentView() {
       {/* All approved courses */}
       {approved.length > 0 ? (
         <section className="mb-10">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="flex items-center gap-2 text-lg font-bold">
-              <BookOpen className="h-5 w-5 text-muted-foreground" />
-              Mis cursos
-            </h2>
-            <Link href="/cursos" className="text-sm text-foreground hover:text-foreground transition-colors">
+          {/* Pestañas sobre la rejilla: el alumno separa lo que tiene entre
+              manos de lo ya terminado sin cambiar de pantalla. */}
+          <div className="mb-4 flex flex-wrap items-end justify-between gap-3 border-b border-border">
+            <div className="flex gap-6">
+              {([
+                ['todos', `Todos (${approved.length})`],
+                ['progreso', `En progreso (${inProgress.length})`],
+                ['completados', `Completados (${completed.length})`],
+              ] as const).map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => setTab(key)}
+                  className={`-mb-px border-b-2 pb-2.5 text-sm font-bold transition-colors ${
+                    tab === key
+                      ? 'border-foreground text-foreground'
+                      : 'border-transparent text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <Link href="/cursos" className="pb-2.5 text-sm font-semibold text-foreground hover:underline">
               Explorar más →
             </Link>
           </div>
@@ -193,7 +203,7 @@ function StudentView() {
             </div>
           ) : (
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {approved.map((enrollment) => (
+              {(tab === 'progreso' ? inProgress : tab === 'completados' ? completed : approved).map((enrollment) => (
                 <CourseCard
                   key={enrollment.id}
                   course={enrollment.course}
@@ -242,10 +252,7 @@ export default function DashboardPage() {
   if (!isAuthenticated || !user) return null;
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
-
-      <div className="mx-auto max-w-7xl px-4 py-10">
+    <div className="mx-auto max-w-7xl px-4 py-10">
         {/* Header */}
         <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -294,7 +301,6 @@ export default function DashboardPage() {
           ? <InstructorPanel />
           : <StudentView />
         }
-      </div>
     </div>
   );
 }

@@ -52,6 +52,14 @@ export interface Revenue {
   pendingAmount: number;
   series: { period: string; revenue: number; sales: number }[];
   byCourse: { courseId: string; title: string; line: string; revenue: number; sales: number }[];
+  // Solo en la vista general del admin; vacío en la del instructor.
+  byInstructor: {
+    instructorId: string;
+    name: string;
+    revenue: number;
+    sales: number;
+    courses: number;
+  }[];
 }
 
 export interface CheckoutData {
@@ -153,10 +161,21 @@ export function rejectPayment(id: string, reason: string): Promise<Payment> {
   });
 }
 
-export function getRevenue(range: { from?: string; to?: string } = {}): Promise<Revenue> {
+function revenueQuery(range: { from?: string; to?: string }) {
   const qs = new URLSearchParams();
   if (range.from) qs.set('from', range.from);
   if (range.to) qs.set('to', range.to);
-  const suffix = qs.toString() ? `?${qs}` : '';
-  return apiFetch<Revenue>(`/admin/revenue${suffix}`);
+  return qs.toString() ? `?${qs}` : '';
+}
+
+/** Vista general de la academia. Solo admin. */
+export function getRevenue(range: { from?: string; to?: string } = {}): Promise<Revenue> {
+  return apiFetch<Revenue>(`/admin/revenue${revenueQuery(range)}`);
+}
+
+/** Ingresos de los programas del instructor autenticado. */
+export function getInstructorRevenue(
+  range: { from?: string; to?: string } = {},
+): Promise<Revenue> {
+  return apiFetch<Revenue>(`/instructor/revenue${revenueQuery(range)}`);
 }

@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
   BookOpen, Users, CheckCircle, XCircle, Clock3,
-  ChevronDown, ChevronRight, Eye, Pencil, Plus, Award,} from 'lucide-react';
+  ChevronDown, ChevronRight, Eye, Pencil, Plus, Award, TrendingUp,
+} from 'lucide-react';
 import {
   getMyCourses,
   getCourseEnrollments,
@@ -12,6 +13,7 @@ import {
   rejectEnrollment,
 } from '@/lib/api/courses';
 import { Button } from '@/components/ui/button';
+import { StatTile } from '@/components/ui/stat-tile';
 import { toast } from 'sonner';
 import { issueCertificate } from '@/lib/api/certificates';
 import type { Course, Enrollment } from '@/lib/types';
@@ -30,7 +32,9 @@ export function InstructorPanel() {
   const [courseData, setCourseData] = useState<CourseEnrollments[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
-  const [filterStatus, setFilterStatus] = useState<FilterStatus>('PENDING');
+  // Arranca en "Todos": con el filtro en Pendientes, un instructor sin
+  // solicitudes abría el curso y lo veía vacío, como si no tuviera alumnos.
+  const [filterStatus, setFilterStatus] = useState<FilterStatus>('ALL');
 
   useEffect(() => {
     async function load() {
@@ -140,21 +144,14 @@ export function InstructorPanel() {
     <div>
       {/* Stats */}
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
-        {[
-          { label: 'Mis cursos', value: courseData.length, icon: BookOpen, color: 'text-foreground', bg: 'bg-muted border-border' },
-          { label: 'Estudiantes activos', value: totalStudents, icon: Users, color: 'text-success', bg: 'bg-success/100/10 border-success/20' },
-          { label: 'Solicitudes pendientes', value: pendingCount, icon: Clock3, color: 'text-warning-foreground', bg: 'bg-warning/100/10 border-warning/20' },
-        ].map((stat) => (
-          <div key={stat.label} className={`flex items-center gap-4 rounded-xl border bg-card p-5 ${stat.bg}`}>
-            <div className={`rounded-xl p-3 ${stat.bg}`}>
-              <stat.icon className={`h-5 w-5 ${stat.color}`} />
-            </div>
-            <div>
-              <p className={`text-2xl font-black ${stat.color}`}>{stat.value}</p>
-              <p className="text-xs text-muted-foreground">{stat.label}</p>
-            </div>
-          </div>
-        ))}
+        <StatTile label="Mis cursos" value={courseData.length} icon={BookOpen} />
+        <StatTile label="Estudiantes activos" value={totalStudents} icon={Users} />
+        <StatTile
+          label="Solicitudes pendientes"
+          value={pendingCount}
+          icon={Clock3}
+          hint={pendingCount > 0 ? 'Requieren tu revisión' : undefined}
+        />
       </div>
 
       {/* Toolbar: filter + new course button */}
@@ -182,12 +179,20 @@ export function InstructorPanel() {
           ))}
         </div>
 
-        <Link href="/dashboard/instructor/cursos/nuevo">
-          <Button className="bg-navy hover:bg-navy-800 font-semibold text-sm shadow-lg shadow-navy/20">
-            <Plus className="mr-1.5 h-4 w-4" />
-            Nuevo curso
-          </Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href="/dashboard/instructor/ingresos">
+            <Button variant="outline" size="sm" className="gap-1.5 text-sm">
+              <TrendingUp className="h-4 w-4" />
+              Mis ingresos
+            </Button>
+          </Link>
+          <Link href="/dashboard/instructor/cursos/nuevo">
+            <Button className="bg-navy hover:bg-navy-800 font-semibold text-sm shadow-lg shadow-navy/20">
+              <Plus className="mr-1.5 h-4 w-4" />
+              Nuevo curso
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Course list */}

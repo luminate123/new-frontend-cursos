@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ChevronRight, Plus, X, Loader2 } from 'lucide-react';
-import { Navbar } from '@/components/layout/Navbar';
 import { Button } from '@/components/ui/button';
 import { createCourse, LEVEL_LABELS, LINE_LABELS, DISCIPLINE_LABELS } from '@/lib/api/courses';
 import { toast } from 'sonner';
@@ -137,8 +136,7 @@ export default function NuevoCursoPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
+    <div className="text-foreground">
       <div className="mx-auto max-w-3xl px-4 py-10">
         {/* Breadcrumb */}
         <div className="mb-6 flex items-center gap-1.5 text-xs text-muted-foreground">

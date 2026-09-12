@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "EduTech Pro",
-	description: "Plataforma educativa",
+	title: "KORE Academy",
+	description: "Aula Virtual de KORE Training & Consulting",
 };
 
 export default function RootLayout({

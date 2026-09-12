@@ -6,7 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useAuthStore } from "@/lib/store/auth.store";
 import { useLogout } from "@/lib/hooks/useAuth";
 import { Button } from "@/components/ui/button";
-import { BookOpen, LayoutDashboard, Receipt, Award } from "lucide-react";
+import { BookOpen, LayoutDashboard, Receipt, Award, TrendingUp } from "lucide-react";
 
 function NavLink({ href, children, icon: Icon }: { href: string; children: React.ReactNode; icon?: React.ElementType }) {
   const pathname = usePathname();
@@ -51,12 +51,16 @@ export function Navbar() {
             </>
           )}
           {isAuthenticated && user?.role === 'INSTRUCTOR' && (
-            <NavLink href="/dashboard" icon={LayoutDashboard}>Mi panel</NavLink>
+            <>
+              <NavLink href="/dashboard" icon={LayoutDashboard}>Mi panel</NavLink>
+              <NavLink href="/dashboard/instructor/ingresos" icon={TrendingUp}>Mis ingresos</NavLink>
+            </>
           )}
           {isAuthenticated && user?.role === 'ADMIN' && (
             <>
               <NavLink href="/dashboard" icon={LayoutDashboard}>Admin</NavLink>
               <NavLink href="/dashboard/admin/pagos" icon={Receipt}>Pagos</NavLink>
+              <NavLink href="/dashboard/admin/ingresos" icon={TrendingUp}>Ingresos</NavLink>
             </>
           )}
         </div>
@@ -70,12 +74,14 @@ export function Navbar() {
                   {user.firstName[0]}{user.lastName[0]}
                 </div>
                 <span className="text-sm text-white">{user.firstName}</span>
+                {/* Sobre el navy del navbar el texto va siempre claro: antes se
+                    pintaba del mismo color que su fondo y quedaba invisible. */}
                 <span className={`rounded-full px-1.5 py-0.5 text-[9px] font-bold ${
                   user.role === 'ADMIN'
-                    ? 'bg-ai-500/30 text-ai-500/30'
+                    ? 'bg-ai-500/30 text-white'
                     : user.role === 'INSTRUCTOR'
                     ? 'bg-white/20 text-white'
-                    : 'bg-success/100/30 text-success/30'
+                    : 'bg-success/30 text-white'
                 }`}>
                   {user.role}
                 </span>

@@ -8,6 +8,7 @@ import {
   ChevronLeft, ChevronRight, Loader2, Receipt,
 } from 'lucide-react';
 import { getAdminStats, type AdminStats } from '@/lib/api/admin';
+import { StatTile } from '@/components/ui/stat-tile';
 import { getUsers, updateUserRole, type UsersResponse } from '@/lib/api/users';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
@@ -16,23 +17,15 @@ import { useAuthStore } from '@/lib/store/auth.store';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
+// Adaptador: las llamadas siguen pasando color/bg, pero el render es el común.
+// El color por tarjeta se ignora a propósito — era lo que descuadraba los paneles.
 function StatCard({
-  label, value, icon: Icon, color, bg,
+  label, value, icon,
 }: {
   label: string; value: number; icon: React.ElementType;
-  color: string; bg: string;
+  color?: string; bg?: string;
 }) {
-  return (
-    <div className={`flex items-center gap-4 rounded-xl border bg-card p-5 ${bg}`}>
-      <div className={`rounded-xl p-3 ${bg}`}>
-        <Icon className={`h-5 w-5 ${color}`} />
-      </div>
-      <div>
-        <p className={`text-2xl font-black ${color}`}>{value}</p>
-        <p className="text-xs text-muted-foreground">{label}</p>
-      </div>
-    </div>
-  );
+  return <StatTile label={label} value={value} icon={icon} />;
 }
 
 const ROLE_BADGE: Record<User['role'], string> = {
@@ -79,7 +72,7 @@ function StatsSection() {
         <p className="mb-3 text-xs font-bold uppercase tracking-wide text-muted-foreground">Usuarios</p>
         <div className="grid gap-4 sm:grid-cols-4">
           <StatCard label="Total" value={stats.users.total} icon={Users} color="text-foreground" bg="bg-secondary/80 border-border" />
-          <StatCard label="Estudiantes" value={stats.users.students} icon={GraduationCap} color="text-success" bg="bg-success/100/10 border-success/20" />
+          <StatCard label="Estudiantes" value={stats.users.students} icon={GraduationCap} color="text-success" bg="bg-success/10 border-success/20" />
           <StatCard label="Instructores" value={stats.users.instructors} icon={BookOpen} color="text-foreground" bg="bg-muted border-border" />
           <StatCard label="Admins" value={stats.users.admins} icon={BarChart3} color="text-ai-700" bg="bg-ai-500/10 border-ai-500/20" />
         </div>
@@ -90,8 +83,8 @@ function StatsSection() {
         <p className="mb-3 text-xs font-bold uppercase tracking-wide text-muted-foreground">Cursos</p>
         <div className="grid gap-4 sm:grid-cols-3">
           <StatCard label="Total" value={stats.courses.total} icon={BookOpen} color="text-foreground" bg="bg-secondary/80 border-border" />
-          <StatCard label="Publicados" value={stats.courses.published} icon={Globe} color="text-success" bg="bg-success/100/10 border-success/20" />
-          <StatCard label="Borradores" value={stats.courses.drafts} icon={BookOpen} color="text-warning-foreground" bg="bg-warning/100/10 border-warning/20" />
+          <StatCard label="Publicados" value={stats.courses.published} icon={Globe} color="text-success" bg="bg-success/10 border-success/20" />
+          <StatCard label="Borradores" value={stats.courses.drafts} icon={BookOpen} color="text-warning-foreground" bg="bg-warning/10 border-warning/20" />
         </div>
       </section>
 
@@ -100,9 +93,9 @@ function StatsSection() {
         <p className="mb-3 text-xs font-bold uppercase tracking-wide text-muted-foreground">Inscripciones</p>
         <div className="grid gap-4 sm:grid-cols-4">
           <StatCard label="Total" value={stats.enrollments.total} icon={TrendingUp} color="text-foreground" bg="bg-secondary/80 border-border" />
-          <StatCard label="Aprobadas" value={stats.enrollments.approved} icon={CheckCircle} color="text-success" bg="bg-success/100/10 border-success/20" />
-          <StatCard label="Pendientes" value={stats.enrollments.pending} icon={Clock3} color="text-warning-foreground" bg="bg-warning/100/10 border-warning/20" />
-          <StatCard label="Rechazadas" value={stats.enrollments.rejected} icon={XCircle} color="text-destructive" bg="bg-destructive/100/10 border-destructive/20" />
+          <StatCard label="Aprobadas" value={stats.enrollments.approved} icon={CheckCircle} color="text-success" bg="bg-success/10 border-success/20" />
+          <StatCard label="Pendientes" value={stats.enrollments.pending} icon={Clock3} color="text-warning-foreground" bg="bg-warning/10 border-warning/20" />
+          <StatCard label="Rechazadas" value={stats.enrollments.rejected} icon={XCircle} color="text-destructive" bg="bg-destructive/10 border-destructive/20" />
         </div>
       </section>
 

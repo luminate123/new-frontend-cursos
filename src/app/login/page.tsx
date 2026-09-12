@@ -53,10 +53,10 @@ export default function LoginPage() {
   };
 
   return (
-    <AuthCard title="Iniciar sesion" subtitle="Accede a tu cuenta">
+    <AuthCard title="Iniciar sesión" subtitle="Accede al Aula Virtual de KORE Group">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         {serverError && (
-          <div className="rounded-md bg-destructive/100/10 px-3 py-2 text-sm text-destructive">
+          <div className="rounded-md border border-destructive/20 bg-destructive/10 px-3 py-2 text-sm text-destructive">
             {serverError}
           </div>
         )}
