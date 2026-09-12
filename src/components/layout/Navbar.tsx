@@ -53,6 +53,7 @@ export function Navbar() {
           {isAuthenticated && user?.role === 'INSTRUCTOR' && (
             <>
               <NavLink href="/dashboard" icon={LayoutDashboard}>Mi panel</NavLink>
+              <NavLink href="/dashboard/instructor/pagos" icon={Receipt}>Pagos</NavLink>
               <NavLink href="/dashboard/instructor/ingresos" icon={TrendingUp}>Mis ingresos</NavLink>
             </>
           )}
@@ -60,6 +61,7 @@ export function Navbar() {
             <>
               <NavLink href="/dashboard" icon={LayoutDashboard}>Admin</NavLink>
               <NavLink href="/dashboard/admin/pagos" icon={Receipt}>Pagos</NavLink>
+
               <NavLink href="/dashboard/admin/ingresos" icon={TrendingUp}>Ingresos</NavLink>
             </>
           )}

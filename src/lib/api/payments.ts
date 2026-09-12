@@ -150,6 +150,20 @@ export function getPayments(params: {
   return apiFetch<PaymentsResponse>(`/payments${suffix}`);
 }
 
+/** Comprobantes de los programas del instructor autenticado. */
+export function getInstructorPayments(params: {
+  status?: PaymentStatus;
+  page?: number;
+  limit?: number;
+} = {}): Promise<PaymentsResponse> {
+  const qs = new URLSearchParams();
+  if (params.status) qs.set('status', params.status);
+  if (params.page) qs.set('page', String(params.page));
+  if (params.limit) qs.set('limit', String(params.limit));
+  const suffix = qs.toString() ? `?${qs}` : '';
+  return apiFetch<PaymentsResponse>(`/instructor/payments${suffix}`);
+}
+
 export function approvePayment(id: string): Promise<Payment> {
   return apiFetch<Payment>(`/payments/${id}/approve`, { method: 'PATCH' });
 }
